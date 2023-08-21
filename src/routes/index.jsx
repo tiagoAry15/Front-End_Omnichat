@@ -38,46 +38,47 @@ import TwostepVerification from "../pages/AuthenticationInner/auth-two-step-veri
 
 
 const authProtectedRoutes = [
-  { path: "/", component: () => <Redirect to="/chat" />},
-   { path: "/dashboard", component: () => <Redirect to="/chat" />},
-  
+  { path: "/", component: () => <Redirect to="/chat" /> },
+  { path: "/dashboard", component: () => <Redirect to="/chat" /> },
+
   //chat
   { path: "/chat", component: Chat },
 
-  { path: "/orders", component: OrderScreen },                                          
+  { path: "/orders", component: OrderScreen },
 
-  
+
   //   // //profile
   { path: "/profile", component: UserProfile },
 
   //   //Charts
 
 
-//  { path: "/", exact: true, component: () => <Redirect to="/chat" /> },
+  //  { path: "/", exact: true, component: () => <Redirect to="/chat" /> },
 ];
 
 const publicRoutes = [
+  { path: "/", component: () => <Redirect to="/login" /> },
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
- // { path: "/forgot-password", component: ForgetPwd },
+  // { path: "/forgot-password", component: ForgetPwd },
   { path: "/register", component: Register },
 
   //   // Authentication Inner
   { path: "/pages-login", component: Login1 },
- 
+
   { path: "/pages-register", component: Register1 },
 
   // { path: "/page-recoverpw", component: Recoverpw },
 
- // { path: "/pages-forgot-pwd", component: ForgetPwd1 },
+  // { path: "/pages-forgot-pwd", component: ForgetPwd1 },
 
   // {  path: "/auth-lock-screen", component: LockScreen },
-,
+  ,
   //{ path: "/page-confirm-mail", component: ConfirmMail },
 
   // { path: "/auth-email-verification", component: EmailVerification },
 
- // { path: "/auth-two-step-verification", component: TwostepVerification },
+  // { path: "/auth-two-step-verification", component: TwostepVerification },
 
 ];
 

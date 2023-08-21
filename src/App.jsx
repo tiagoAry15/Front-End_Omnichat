@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import React from "react"
-
+import { Analytics } from '@vercel/analytics/react';
 import { Switch, BrowserRouter as Router } from "react-router-dom"
 import { connect } from "react-redux"
 
-import { authProtectedRoutes,publicRoutes } from "./routes"
+import { authProtectedRoutes, publicRoutes } from "./routes"
 
 import Authmiddleware from "./routes/route"
 
@@ -34,7 +34,7 @@ const App = props => {
     }
     return layoutCls
   }
-                
+
   const Layout = getLayout()
   return (
     <React.Fragment>
@@ -63,6 +63,7 @@ const App = props => {
           ))}
         </Switch>
       </Router>
+      <Analytics />
     </React.Fragment>
   )
 }
