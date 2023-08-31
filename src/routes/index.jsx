@@ -39,7 +39,7 @@ import TwostepVerification from "../pages/AuthenticationInner/auth-two-step-veri
 
 const authProtectedRoutes = [
   { path: "/", component: () => <Redirect to="/chat" /> },
-  { path: "/dashboard", component: () => <Redirect to="/chat" /> },
+  { path: "/dashboard", component: () => <Redirect to="/dashboard" /> },
 
   //chat
   { path: "/chat", component: Chat },
@@ -52,7 +52,6 @@ const authProtectedRoutes = [
 
   //   //Charts
 
-
   //  { path: "/", exact: true, component: () => <Redirect to="/chat" /> },
 ];
 
@@ -64,9 +63,6 @@ const publicRoutes = [
   { path: "/register", component: Register },
 
   //   // Authentication Inner
-  { path: "/pages-login", component: Login1 },
-
-  { path: "/pages-register", component: Register1 },
 
   // { path: "/page-recoverpw", component: Recoverpw },
 

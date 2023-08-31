@@ -1,0 +1,14 @@
+{
+  "routes": [
+    { "src": "^/$", "dest": "/index.html" },
+    { "src": "^/chat$", "dest": "/index.html" },
+    { "src": "^/orders$", "dest": "/index.html" },
+    { "src": "^/profile$", "dest": "/index.html" },
+    { "src": "^/logout$", "dest": "/index.html" },
+    { "src": "^/login$", "dest": "/index.html" },
+    { "src": "^/register$", "dest": "/index.html" },
+    { "src": "^/inner/login$", "dest": "/index.html" },
+    { "src": "^/inner/register$", "dest": "/index.html" },
+    { "src": "/.*", "dest": "/index.html" }
+  ]
+}

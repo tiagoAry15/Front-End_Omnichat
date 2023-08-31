@@ -1,16 +1,15 @@
-import React, { createContext, useState, useEffect} from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import whatsappIcon from "../../assets/images/chat/whatsappIcon.png";
 import instagramIcon from "../../assets/images/chat/instagramIcon.png";
 import facebookIcon from "../../assets/images/chat/MenssagerIcon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from 'socket.io-client';
 import { isEmpty } from "lodash";
-import { toast,  ToastContainer  } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import {
   addMessage as onAddMessage,
   addChat as onAddChat,
   getChats as onGetChats,
-  getMessages as onGetMessages,
   updateChat as onUpdateChat,
 } from "/src/store/actions";
 import { LOCALHOST_API_BASE_URL } from '../../constants/apiUrls';
@@ -30,23 +29,27 @@ const ChatProvider = ({ children }) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [isToastActive, setIsToastActive] = useState(false);
   const [messages, setMessages] = useState("");
-   const dispatch = useDispatch();
-    const socket = io(LOCALHOST_API_BASE_URL);
+  const dispatch = useDispatch();
+  const socket = io(LOCALHOST_API_BASE_URL, {
+    reconnection: false,
+    reconnectionAttempts: 10,
+    reconnectionDelay: 2000,
+  });
 
-   const social_icons = {
+  const social_icons = {
     whatsapp: whatsappIcon,
     instagram: instagramIcon,
     messenger: facebookIcon,
   }
-  const {chats, error } = useSelector(state => ({
+  const { chats, error } = useSelector(state => ({
     chats: state.chat.chats,
     error: state.chat.error
   }));
-    useEffect(() => {
-      dispatch(onGetChats());
+  useEffect(() => {
+    dispatch(onGetChats());
 
-      if (currentPhoneNumber) { set }
-    }, [dispatch]);
+    if (currentPhoneNumber) { set }
+  }, [dispatch]);
 
 
   useEffect(() => {
@@ -55,8 +58,13 @@ const ChatProvider = ({ children }) => {
 
 
   useEffect(() => {
+
     socket.on('connect', () => {
       console.log('connected');
+    });
+
+    socket.on('connect_error', (error) => {
+      console.error("Error connecting to socket.io server:", error);
     });
 
     socket.on('message', (data) => {
@@ -66,12 +74,12 @@ const ChatProvider = ({ children }) => {
 
     socket.on('my response', (data) => {
       console.log('my_response:', data);
-    }) 
+    })
   }, []);
 
   useEffect(() => {
-  console.log('currentPhoneNumber atualizado:', currentPhoneNumber);
-}, [currentPhoneNumber]);
+    console.log('currentPhoneNumber atualizado:', currentPhoneNumber);
+  }, [currentPhoneNumber]);
 
 
   const displayErrorToast = (message) => {
@@ -96,35 +104,35 @@ const ChatProvider = ({ children }) => {
     }
   }, [error]);
 
-  const handleMessage =  (chat) => {
+  const handleMessage = (chat) => {
     dispatch(onAddChat(chat));
-    }
-  
+  }
+
 
   const userChatOpen = (chat) => {
     setChatBoxUsername(chat.name);
     console.log(chat.name);
     setChatBoxUserStatus(chat.status);
-console.log(chat.status);
+    console.log(chat.status);
     setCurrentPhoneNumber(chat.phoneNumber);
-  console.log(chat.phoneNumber);
+    console.log(chat.phoneNumber);
 
     if (chat.unreadMessages && chat.unreadMessages > 0) {
-      
-     chat.unreadMessages = 0;
 
-    dispatch(onUpdateChat(chat))
+      chat.unreadMessages = 0;
+
+      dispatch(onUpdateChat(chat))
     }
     console.log(chat.messagePot);
     setMessages(chat.messagePot);
   };
 
   const addMessage = (messageData) => {
-    
+
     console.log(currentPhoneNumber);
-  
+
     const message = {
-      
+
       phoneNumber: messageData.phoneNumber,
       sender: messageData.sender,
       body: messageData.body,
@@ -151,8 +159,8 @@ console.log(chat.status);
       addMessage(currentPhoneNumber, currentUser.name, value);
     }
   };
-   
-   const chatContextValue = {
+
+  const chatContextValue = {
     messageBox,
     setMessageBox,
     currentPhoneNumber,
@@ -174,13 +182,13 @@ console.log(chat.status);
     chats,
     handleMessage,
     userChatOpen,
-       onKeyPress,
-     social_icons,
+    onKeyPress,
+    social_icons,
     messages,
   };
 
-    
-    
+
+
   return (
     <ChatContext.Provider value={chatContextValue}>
       {children}
