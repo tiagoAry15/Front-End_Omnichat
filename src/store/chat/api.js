@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { LOCALHOST_API_BASE_URL } from '../../constants/apiUrls';
 
-const apiUrl=  import.meta.env.VITE_GCP_CHATS_URL;
+const apiUrl = import.meta.env.VITE_GCP_CHATS_URL;
 
 const ChatsAPI = axios.create({
-    baseURL: apiUrl
+    baseURL: apiUrl 
 });
 
 export const getChats = async () => {
