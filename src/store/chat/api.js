@@ -1,18 +1,15 @@
 import axios from 'axios';
-import { GCP_API_BASE_URL, LOCALHOST_API_BASE_URL } from '../../constants/apiUrls';
+import { LOCALHOST_API_BASE_URL } from '../../constants/apiUrls';
 
+const apiUrl=  import.meta.env.VITE_GCP_CHATS_URL;
 
-const GCPaxiosApi = axios.create({
-    baseURL: GCP_API_BASE_URL 
-})
-
-const localHostaxiosApi = axios.create({
-    baseURL: LOCALHOST_API_BASE_URL + '/conversations'
-})
+const ChatsAPI = axios.create({
+    baseURL: apiUrl
+});
 
 export const getChats = async () => {
     try {
-        const response = await localHostaxiosApi.get(`/get_all_conversations`);
+        const response = await ChatsAPI.get(`/get_all_conversations`);
         return response.data != null ? response.data : [];
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao obter chats";
@@ -26,7 +23,7 @@ export const addChat = async (chatData) => {
         console.log('chatData', chatData)
         if (!chatData) throw new Error("Dados de chat inválidos");
         console.log('enviando requisição para create_conversation', chatData)
-        const response = await localHostaxiosApi.get(`/get_conversation_by_whatsapp_number/${chatData.phoneNumber}`,);
+        const response = await ChatsAPI.get(`/get_conversation_by_whatsapp_number/${chatData.phoneNumber}`,);
         return response.data;
     } catch (error) {
         console.error("Erro ao adicionar chat", error);
@@ -39,7 +36,7 @@ export const updateChat = async (chatData) => {
     try {
         console.log('chatData', chatData)
         if (!chatData) throw new Error("Dados de chat inválidos");
-        const response = await localHostaxiosApi.put(`/update_conversation`, chatData);
+        const response = await ChatsAPI.put(`/update_conversation`, chatData);
         return response.data;
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao atualizar chats";
@@ -51,7 +48,7 @@ export const updateChat = async (chatData) => {
 export const addMessage = async (messageData) => {
     try {
         if (!messageData) throw new Error("Dados de mensagem inválidos");
-        const response = await localHostaxiosApi.post(`/add_message`, messageData);
+        const response = await ChatsAPI.post(`/add_message`, messageData);
         console.log('adicionou mensagem ',response.data )
         return response.data;
     } catch (error) {
@@ -64,7 +61,7 @@ export const addMessage = async (messageData) => {
 export const getMessages = async (telephone) => {
     try {
         if (!telephone) throw new Error("ID de sala inválido");
-        const response = await localHostaxiosApi.get(`/get_conversation_by_whatsapp_number/${telephone}`);
+        const response = await ChatsAPI.get(`/get_conversation_by_whatsapp_number/${telephone}`);
         return response.data;
     } catch (error) {
         console.error("Erro ao obter mensagens", error);
