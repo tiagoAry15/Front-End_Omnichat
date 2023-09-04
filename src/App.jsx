@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React from "react"
-import { Analytics } from '@vercel/analytics/react';
+//import { Analytics } from '@vercel/analytics/react';
 import { Switch, BrowserRouter as Router } from "react-router-dom"
 import { connect } from "react-redux"
 
@@ -63,7 +63,6 @@ const App = props => {
           ))}
         </Switch>
       </Router>
-      <Analytics />
     </React.Fragment>
   )
 }
