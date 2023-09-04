@@ -7,10 +7,6 @@ export default defineConfig({
     jsxFactory: 'h',
     jsxFragment: 'Fragment'
   },
-  build: {
-    rollupOptions: {
-      external: ['@vercel/analytics/react']
-    }
-  }
+ 
 })
 
