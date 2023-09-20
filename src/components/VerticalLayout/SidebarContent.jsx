@@ -143,16 +143,11 @@ const SidebarContent = props => {
 
             <li>
               <Link to="/orders">
-                 <i className="bx bx-receipt"></i>
+                <i className="bx bx-receipt"></i>
                 <span>{props.t("OrderScreen")}</span>
               </Link>
             </li>
-            <li>
-              <Link to="/dashboard">
-                 <i className="bx bx-receipt"></i>
-                <span>{props.t("OrderScreen")}</span>
-              </Link>
-            </li>
+
             {/* <li>
               <Link to="/apps-filemanager" >
                 <i className="bx bx-file"></i>

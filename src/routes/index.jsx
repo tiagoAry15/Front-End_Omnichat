@@ -33,6 +33,7 @@ import TwostepVerification from "../pages/AuthenticationInner/auth-two-step-veri
 import TwostepVerification2 from "../pages/AuthenticationInner/auth-two-step-verification-2";
 
 // // Charts
+/*
 import ChartApex from "../pages/Charts/Apexcharts";
 import ChartistChart from "../pages/Charts/ChartistChart";
 import ChartjsChart from "../pages/Charts/ChartjsChart";
@@ -40,7 +41,7 @@ import EChart from "../pages/Charts/EChart";
 import SparklineChart from "../pages/Charts/SparklineChart";
 import ChartsKnob from "../pages/Charts/charts-knob";
 import ReCharts from "../pages/Charts/ReCharts";
-
+*/
 
 const authProtectedRoutes = [
   { path: "/", component: () => <Redirect to="/chat" /> },
@@ -56,6 +57,7 @@ const authProtectedRoutes = [
   { path: "/profile", component: UserProfile },
 
   //   //Charts
+  /*
   { path: "/apex-charts", component: ChartApex },
   { path: "/chartist-charts", component: ChartistChart },
   { path: "/chartjs-charts", component: ChartjsChart },
@@ -63,7 +65,7 @@ const authProtectedRoutes = [
   { path: "/sparkline-charts", component: SparklineChart },
   { path: "/charts-knob", component: ChartsKnob },
   { path: "/re-charts", component: ReCharts },
-
+*/
   { path: "/", exact: true, component: () => <Redirect to="/chat" /> },
 ];
 
