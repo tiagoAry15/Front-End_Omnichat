@@ -122,15 +122,9 @@ const Calendar = (state = INIT_STATE, action) => {
       console.log('updatedChat: ', updatedChat)
       for (const chatId in state.chats) {
         if (state.chats.hasOwnProperty(chatId)) {
-
-    const messages = state.chats[chatId].messagePot;
-    console.log(messages)
-    // Iterando sobre as mensagens da conversa atual
-    messages.forEach(message => {
-      console.log(message.body);
-      console.log(message.sender);
-      // ... outros campos ...
-    });
+          if (state.chats[chatId].phoneNumber == updatedChat.phoneNumber) {
+          state.chats[chatId] = updatedChat
+          }
   }
 }
     const chats = [...state.chats]       
