@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Row, Card } from 'reactstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
@@ -6,7 +6,7 @@ import { ChatContext } from "./ChatContext";
 
 const ChatWindow = () => {
 
-      const {
+  const {
     currentPhoneNumber,
     ChatBoxUsername,
     Chat_Box_User_Status,
@@ -19,7 +19,7 @@ const ChatWindow = () => {
     addMessage,
   } = useContext(ChatContext);
 
-  
+
   return (
     <div className="w-100 user-chat">
       <Card className="border_rounded">
@@ -34,8 +34,8 @@ const ChatWindow = () => {
                       Chat_Box_User_Status === 'Active'
                         ? 'mdi mdi-circle text-success align-middle me-2'
                         : Chat_Box_User_Status === 'intermediate'
-                        ? 'mdi mdi-circle text-warning align-middle me-1'
-                        : 'mdi mdi-circle align-middle me-1'
+                          ? 'mdi mdi-circle text-warning align-middle me-1'
+                          : 'mdi mdi-circle align-middle me-1'
                     }
                   />
                   {Chat_Box_User_Status}
@@ -56,38 +56,37 @@ const ChatWindow = () => {
                     <span className="title">Today</span>
                   </div>
                 </li>
+
                 {messages &&
                   messages.length > 0 &&
                   messages.map((message) => {
-                    if (message.phoneNumber === currentPhoneNumber) {
-                      return (
-                        <li
-                          key={'test_k' + message.id}
-                          className={
-                            message.sender === currentUser.name ||
-                            message.sender === 'ChatBot'
-                              ? 'right'
-                              : 'left'
-                          }
-                        >
-                          <div className="conversation-list">
-                            <div className="ctext-wrap">
-                              <div className="conversation-name">
-                                {message.sender}
-                              </div>
-                              <p>{message.body}</p>
-                              <p className="chat-time mb-0">
-                                {message.time}{' '}
-                                <i className="bx bx-check-double align-middle me-1"></i>
-                              </p>
+
+                    return (
+                      <li
+                        key={'test_k' + message.id}
+                        className={
+                          message.sender === currentUser.name ||
+                            message.sender === 'Bot' || message.sender === 'ChatBot'
+                            ? 'right'
+                            : 'left'
+                        }
+                      >
+                        <div className="conversation-list">
+                          <div className="ctext-wrap">
+                            <div className="conversation-name">
+                              {message.sender}
                             </div>
+                            <p>{message.body}</p>
+                            <p className="chat-time mb-0">
+                              {message.time}{' '}
+                              <i className="bx bx-check-double align-middle me-1"></i>
+                            </p>
                           </div>
-                        </li>
-                      );
-                    } else {
-                      return null;
-                    }
+                        </div>
+                      </li>)
                   })}
+
+
               </PerfectScrollbar>
             </ul>
           </div>

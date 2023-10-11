@@ -1,8 +1,10 @@
 import axios from 'axios';
 
-const axiosApi = axios.create({
-    baseURL: 'https://southamerica-east1-newagent-ponu.cloudfunctions.net',
-})
+const apiUrl = import.meta.env.VITE_GCP_URL;
+
+const ordersAPI = axios.create({
+    baseURL: apiUrl 
+});
 
 export const getOrders = async () => {
     try {
@@ -10,7 +12,7 @@ export const getOrders = async () => {
             'Access-Control-Allow-Origin': '*' // Defina a origem correta
         };
 
-        const response = await axiosApi.get(`/get_all_orders`, { headers });
+        const response = await ordersAPI.get(`/get_all_orders`, { headers });
         return response.data ? response.data : [];
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao obter pedidos";
@@ -22,7 +24,7 @@ export const getOrders = async () => {
 export const addOrder = async (orderData) => {
     try {
         if (!orderData) throw new Error("Dados de pedido inválidos");
-        const response = await axiosApi.post(`/create_order`, orderData);
+        const response = await ordersAPI.post(`/create_order`, orderData);
         return response.data;
     } catch (error) {
         console.error("Erro ao adicionar pedido", error);
@@ -34,7 +36,7 @@ export const addOrder = async (orderData) => {
 export const updateOrder = async (orderData) => {
     try {
         if (!orderData) throw new Error("Dados de pedido inválidos");
-        const response = await axiosApi.put(`/update_order`, orderData);
+        const response = await ordersAPI.put(`/update_order`, orderData);
         return response.data;
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao atualizar pedidos";
@@ -46,7 +48,7 @@ export const updateOrder = async (orderData) => {
 export const deleteOrder = async (orderId) => {
     try {
         if (!orderId) throw new Error("ID de pedido inválido");
-        const response = await axiosApi.delete(`/delete_order/${orderId}`);
+        const response = await ordersAPI.delete(`/delete_order/${orderId}`);
         return response.data;
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao deletar pedido";

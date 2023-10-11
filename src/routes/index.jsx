@@ -15,6 +15,7 @@ import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
 
 // //  // Inner Authentication
+/*
 import Login1 from "../pages/AuthenticationInner/Login";
 import Login2 from "../pages/AuthenticationInner/Login2";
 import Register1 from "../pages/AuthenticationInner/Register";
@@ -31,6 +32,7 @@ import EmailVerification from "../pages/AuthenticationInner/auth-email-verificat
 import EmailVerification2 from "../pages/AuthenticationInner/auth-email-verification-2";
 import TwostepVerification from "../pages/AuthenticationInner/auth-two-step-verification";
 import TwostepVerification2 from "../pages/AuthenticationInner/auth-two-step-verification-2";
+*/
 
 // // Charts
 /*
@@ -77,6 +79,7 @@ const publicRoutes = [
   { path: "/register", component: Register },
 
   //   // Authentication Inner
+  /*
   { path: "/pages-login", component: Login1 },
   { path: "/pages-login-2", component: Login2 },
   { path: "/pages-register", component: Register1 },
@@ -93,6 +96,7 @@ const publicRoutes = [
   { path: "/auth-email-verification-2", component: EmailVerification2 },
   { path: "/auth-two-step-verification", component: TwostepVerification },
   { path: "/auth-two-step-verification-2", component: TwostepVerification2 },
+  */
 ];
 
 export { authProtectedRoutes, publicRoutes };

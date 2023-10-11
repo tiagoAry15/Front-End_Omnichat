@@ -33,15 +33,14 @@ const ProfileMenu = (props) => {
         import.meta.env.VITE_APP_DEFAULTAUTH === "jwt"
       ) {
         const obj = JSON.parse(localStorage.getItem("authUser"));
-        console.log(obj.username);
         setusername(obj.username);
-        console.log(username)
-         
+
+
       }
-    
-  
+
+
     }
-   
+
   }, [props.success]);
 
   return (

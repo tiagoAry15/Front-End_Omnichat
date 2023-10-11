@@ -59,7 +59,7 @@ function* onGetChats() {
 function* onAddChats({ chat }) {
   try {
     const response = yield call(addChat, chat);
-    console.log(response)
+   
     yield put(addChatSuccess(response));
   } catch (error) {
     console.log(error)
@@ -69,7 +69,7 @@ function* onAddChats({ chat }) {
 
 function* onGetMessages({ phoneNumber }) {
   try {
-    console.log(phoneNumber)
+
     const response = yield call(getMessages, phoneNumber);
     yield put(getMessagesSuccess(response));
   } catch (error) {
@@ -90,7 +90,6 @@ function* onAddMessage({ message }) {
 function* onUpdateChat({ chatData }) {
   try {
     const response = yield call(updateChat, chatData);
-    console.log(response)
     yield put(updateChatSuccess(response));
   } catch (error) {
     console.log(error)

@@ -29,6 +29,7 @@ const INIT_STATE = {
 const Calendar = (state = INIT_STATE, action) => {
   switch (action.type) {
     case GET_CHATS_SUCCESS:
+      console.log('action.payload: ', action.payload)
       return {
         ...state,
         chats: action.payload,
@@ -87,11 +88,13 @@ const Calendar = (state = INIT_STATE, action) => {
       }
     
     case POST_ADD_CHAT_SUCCESS: {
-      console.log('action.payload: ', action.payload)
+      
       for (const chatId in state.chats) {
         if (state.chats.hasOwnProperty(chatId)) {
           if (state.chats[chatId].phoneNumber == action.payload.phoneNumber) {
-            state.chats[chatId].messagePot = [...state.chats[chatId].messagePot, action.payload.messagePot[0]]
+            console.log('mensagem nova em chat ', action.payload)
+            state.chats[chatId].messagePot = [...action.payload.messagePot]
+            state.chats[chatId].unreadMessages = action.payload.unreadMessages
             return {
               ...state,
               chats: [...state.chats]
@@ -99,6 +102,7 @@ const Calendar = (state = INIT_STATE, action) => {
           }
         }
       }
+      console.log('chat novo')
       return {
         ...state,
         chats: [...state.chats , action.payload]

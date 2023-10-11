@@ -1,22 +1,20 @@
 import axios from 'axios';
 let accessToken = null;
 
-const apiUrl = import.meta.env.VITE_GCP_CHATS_URL;
+const apiUrl = import.meta.env.VITE_GCP_URL;
 
 const ChatsAPI = axios.create({
     baseURL: apiUrl 
 });
 
 
-
-
-
 export const getChats = async () => {
     try {
         const response = await ChatsAPI.get(`/get_all_conversations`);
-        return response.data != null ? response.data : [];
+        console.log('response.data', response.data)
+        return response.data[0] != 'None' ?  response.data : [];
     } catch (error) {
-        error.message = "Erro na comunicação com o servidor ao obter chats";
+        error.message = `Erro na comunicação com o servidor ao obter chats`;
         throw error;
     }
 }
@@ -24,11 +22,10 @@ export const getChats = async () => {
 // Adicionar um novo chat
 export const addChat = async (chatData) => {
     try {
-        console.log('chatData', chatData)
         if (!chatData) throw new Error("Dados de chat inválidos");
-        console.log('enviando requisição para create_conversation', chatData)
-        const response = await ChatsAPI.get(`/get_conversation_by_whatsapp_number/${chatData.phoneNumber}`,);
-        return response.data;
+        const response = await ChatsAPI.get(`/get_all_conversations`);
+        var new_chat = response.data.filter(chat => chat.phoneNumber == chatData.phoneNumber)
+        return new_chat == [] ? []: new_chat[0];
     } catch (error) {
         console.error("Erro ao adicionar chat", error);
         throw error;
@@ -38,10 +35,10 @@ export const addChat = async (chatData) => {
 // Atualizar um chat existente
 export const updateChat = async (chatData) => {
     try {
-        console.log('chatData', chatData)
+       
         if (!chatData) throw new Error("Dados de chat inválidos");
         const response = await ChatsAPI.put(`/update_conversation`, chatData);
-        return response.data;
+        return chatData;
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao atualizar chats";
         throw error;
