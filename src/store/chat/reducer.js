@@ -128,7 +128,10 @@ const Calendar = (state = INIT_STATE, action) => {
       for (const chatId in state.chats) {
         if (state.chats.hasOwnProperty(chatId)) {
           if (state.chats[chatId].phoneNumber == updatedChat.phoneNumber) {
-          state.chats[chatId] = updatedChat
+           state.chats[chatId] = {
+                    ...state.chats[chatId], // mantém os campos existentes
+                    ...updatedChat         // sobrescreve com os novos campos de updatedChat
+                };
           }
   }
 }

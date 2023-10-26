@@ -64,7 +64,7 @@ const ChatProvider = ({ children }) => {
 
   useEffect(() => {
     if (!isEmpty(messages)) scrollToBottom();
-  }, [messages]);
+  }, [chats]);
 
 
   useEffect(() => {
@@ -113,10 +113,10 @@ const ChatProvider = ({ children }) => {
   const handleMessage = (message) => {
 
     dispatch(onAddChat(message));
-
-
+    if (message.phoneNumber === currentPhoneNumber) {
+      dispatch(onUpdateChat({ phoneNumber: message.phoneNumber, unreadMessages: 0 }));
+    }
   }
-
   const userChatOpen = (chat) => {
     setChatBoxUsername(chat.name);
     setChatBoxUserStatus(chat.status)
