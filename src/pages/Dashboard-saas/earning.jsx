@@ -67,53 +67,21 @@ const Earning = ({ dataColors }) => {
         <Card>
           <CardBody>
             <div className="clearfix">
-              <div className="float-end">
-                <div className="input-group input-group-sm">
-                  <select
-                    className="form-select form-select-sm"
-                    value={seletedMonth}
-                    onChange={(e) => {
-                      onChangeMonth(e.target.value);
-                    }}
-                  >
-                    <option value="jan">Jan</option>
-                    <option value="dec">Dec</option>
-                    <option value="nov">Nov</option>
-                    <option value="oct">Oct</option>
-                  </select>
-                  {/* <div className="input-group-append"> */}
-                  <label className="input-group-text">Month</label>
-                  {/* </div> */}
-                </div>
-              </div>
-              <h4 className="card-title mb-4">Earning</h4>
+             
+              <h4 className="card-title mb-4">Pedidos por status</h4>
             </div>
 
             <Row>
               <Col lg="4">
                 <div className="text-muted">
                   <div className="mb-4">
-                    <p>This month</p>
-                    <h4>$2453.35</h4>
-                    <div>
-                      <span className="badge badge-soft-success font-size-12 me-1">
-                        {" "}
-                        + 0.2%{" "}
-                      </span>{" "}
-                      From previous period
-                    </div>
-                  </div>
-
-                  <div>
-                    <Link to="#" className="btn btn-primary  btn-sm">
-                      View Details{" "}
-                      <i className="mdi mdi-chevron-right ms-1"></i>
-                    </Link>
+                    <p>Finalizados</p>
+                    <h4>40 Pedidos</h4>
                   </div>
 
                   <div className="mt-4">
-                    <p className="mb-2">Last month</p>
-                    <h5>$2281.04</h5>
+                    <p className="mb-2">Cancelados</p>
+                    <h5>8 Pedidos</h5>
                   </div>
                 </div>
               </Col>

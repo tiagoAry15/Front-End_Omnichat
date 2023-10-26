@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Col, Row, Card } from 'reactstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { ChatContext } from "./ChatContext";
+import './Chat.css'
 
 const ChatWindow = () => {
 
@@ -17,15 +18,18 @@ const ChatWindow = () => {
     setCurrentMessage,
     setMessageBox,
     addMessage,
+    booleanName,
+    chatStatus,
+    setChatStatus
   } = useContext(ChatContext);
 
 
   return (
     <div className="w-100 user-chat">
       <Card className="border_rounded">
-        <div className="p-4 border-bottom ">
+        <div className="p-4 border-bottom" id='divHeader'>
           {currentPhoneNumber && (
-            <Row>
+            <div className='headerClass'>
               <Col md="4" xs="9">
                 <h5 className="font-size-15 mb-1">{ChatBoxUsername}</h5>
                 <p className="text-muted mb-0">
@@ -41,7 +45,39 @@ const ChatWindow = () => {
                   {Chat_Box_User_Status}
                 </p>
               </Col>
-            </Row>
+              
+              <div className='divChatStatus'>
+                <div>
+                <h1>Bot status: </h1>
+                <h1 className={
+                      chatStatus === true
+                        ? 'mdi mdi-circle text-success align-middle me-2'
+                        :'mdi mdi-circle text-warning align-middle me-1'
+                    }>{booleanName[chatStatus]}</h1>
+                </div>
+                {chatStatus === false ?
+                  <Button
+                  color="primary"
+                  onClick={() => {setChatStatus(true)}}
+                  className="btn1 border_rounded"
+                >
+                  <span className="d-none d-sm-inline-block me-2">Ativar</span>{' '}
+                  <i className="mdi mdi-send" />
+                </Button>
+                  :
+                  <Button
+                  color="primary"
+                  onClick={() => {setChatStatus(false)}}
+                  className="btn1 border_rounded"
+                >
+                  <span className="d-none d-sm-inline-block me-2">Desativar</span>{' '}
+                  <i className="mdi mdi-send" />
+                </Button>
+                }
+
+
+              </div>
+            </div>
           )}
         </div>
         <div>
@@ -56,37 +92,38 @@ const ChatWindow = () => {
                     <span className="title">Today</span>
                   </div>
                 </li>
-
                 {messages &&
                   messages.length > 0 &&
                   messages.map((message) => {
-
-                    return (
-                      <li
-                        key={'test_k' + message.id}
-                        className={
-                          message.sender === currentUser.name ||
-                            message.sender === 'Bot' || message.sender === 'ChatBot'
-                            ? 'right'
-                            : 'left'
-                        }
-                      >
-                        <div className="conversation-list">
-                          <div className="ctext-wrap">
-                            <div className="conversation-name">
-                              {message.sender}
+                    if (message.phoneNumber === currentPhoneNumber) {
+                      return (
+                        <li
+                          key={'test_k' + message.id}
+                          className={
+                            message.sender === currentUser.name ||
+                              message.sender === 'ChatBot'
+                              ? 'right'
+                              : 'left'
+                          }
+                        >
+                          <div className="conversation-list">
+                            <div className="ctext-wrap">
+                              <div className="conversation-name">
+                                {message.sender}
+                              </div>
+                              <p>{message.body}</p>
+                              <p className="chat-time mb-0">
+                                {message.time}{' '}
+                                <i className="bx bx-check-double align-middle me-1"></i>
+                              </p>
                             </div>
-                            <p>{message.body}</p>
-                            <p className="chat-time mb-0">
-                              {message.time}{' '}
-                              <i className="bx bx-check-double align-middle me-1"></i>
-                            </p>
                           </div>
-                        </div>
-                      </li>)
+                        </li>
+                      );
+                    } else {
+                      return null;
+                    }
                   })}
-
-
               </PerfectScrollbar>
             </ul>
           </div>

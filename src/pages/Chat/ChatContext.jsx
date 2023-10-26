@@ -4,7 +4,7 @@ import instagramIcon from "../../assets/images/chat/instagramIcon.png";
 import facebookIcon from "../../assets/images/chat/MenssagerIcon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from 'socket.io-client';
-import { isEmpty, last, set } from "lodash";
+import { isEmpty } from "lodash";
 import { toast, ToastContainer } from 'react-toastify';
 import {
   addMessage as onAddMessage,
@@ -12,12 +12,16 @@ import {
   getChats as onGetChats,
   updateChat as onUpdateChat,
 } from "/src/store/actions";
-import { createSelector } from 'reselect';
 import { LOCALHOST_API_BASE_URL } from '../../constants/apiUrls';
-import { current } from '@reduxjs/toolkit';
 const ChatContext = createContext();
 
 const ChatProvider = ({ children }) => {
+
+  const booleanName = {
+    true: "Ativado",
+    false: "Desativado",
+  };
+
   const [messageBox, setMessageBox] = useState(null);
   const [currentPhoneNumber, setCurrentPhoneNumber] = useState(null);
   const [currentUser, setCurrentUser] = useState({
@@ -30,13 +34,10 @@ const ChatProvider = ({ children }) => {
   const [Chat_Box_User_Status, setChatBoxUserStatus] = useState(false);
   const [currentMessage, setCurrentMessage] = useState("");
   const [isToastActive, setIsToastActive] = useState(false);
+  const [chatStatus, setChatStatus] = useState(false);
   const [messages, setMessages] = useState("");
-  const [lastMessage, setLastMessage] = useState("");
   const dispatch = useDispatch();
-
-  const socket_url = import.meta.env.VITE_GCR_SOCKET_URL
-
-  const socket = io(socket_url, {
+  const socket = io(LOCALHOST_API_BASE_URL, {
     reconnection: false,
     reconnectionAttempts: 10,
     reconnectionDelay: 2000,
@@ -47,19 +48,14 @@ const ChatProvider = ({ children }) => {
     instagram: instagramIcon,
     messenger: facebookIcon,
   }
-
-
-
   const { chats, error } = useSelector(state => ({
     chats: state.chat.chats,
     error: state.chat.error
   }));
-
-
   useEffect(() => {
     dispatch(onGetChats());
 
-
+    if (currentPhoneNumber) { set }
   }, [dispatch]);
 
 
@@ -83,24 +79,14 @@ const ChatProvider = ({ children }) => {
       handleMessage(data)
     });
 
+    socket.on('my response', (data) => {
+      console.log('my_response:', data);
+    })
   }, []);
 
-
   useEffect(() => {
-    console.log('lastMessage atualizado:', lastMessage);
-    console.log('currentPhoneNumber :', currentPhoneNumber);
-    if (currentPhoneNumber && lastMessage) {
-      if (lastMessage.phoneNumber === currentPhoneNumber) {
-        var actualChat = chats.find(chat => chat.phoneNumber === currentPhoneNumber);
-        setMessages([...actualChat.messagePot]);
-        actualChat.unreadMessages = 0;
-        dispatch(onUpdateChat(actualChat));
-      }
-
-
-
-    }
-  }, [lastMessage])
+    console.log('currentPhoneNumber atualizado:', currentPhoneNumber);
+  }, [currentPhoneNumber]);
 
 
   const displayErrorToast = (message) => {
@@ -125,18 +111,23 @@ const ChatProvider = ({ children }) => {
     }
   }, [error]);
 
-
-  const handleMessage = (message) => {
-
-    dispatch(onAddChat(message));
-    setLastMessage(message);
+  const handleMessage = (chat) => {
+    dispatch(onAddChat(chat));
   }
+
+  const updateChatStatus = (chat) => {
+    setChatStatus(chat.isBotActive)
+    
+  }
+
 
   const userChatOpen = (chat) => {
     setChatBoxUsername(chat.name);
-    setChatBoxUserStatus(chat.status)
+    console.log(chat.name);
+    setChatBoxUserStatus(chat.status);
+    console.log(chat.status);
     setCurrentPhoneNumber(chat.phoneNumber);
-
+    console.log(chat.phoneNumber);
 
     if (chat.unreadMessages && chat.unreadMessages > 0) {
 
@@ -144,9 +135,8 @@ const ChatProvider = ({ children }) => {
 
       dispatch(onUpdateChat(chat))
     }
-
+    console.log(chat.messagePot);
     setMessages(chat.messagePot);
-    console.log(messages);
   };
 
   const addMessage = (messageData) => {
@@ -207,6 +197,9 @@ const ChatProvider = ({ children }) => {
     onKeyPress,
     social_icons,
     messages,
+    chatStatus,
+    setChatStatus,
+    booleanName
   };
 
 
