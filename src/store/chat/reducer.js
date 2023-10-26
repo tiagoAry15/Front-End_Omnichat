@@ -24,6 +24,7 @@ const INIT_STATE = {
   messages: [],
   error: [],
   loading: true,
+  
 }
 
 const Calendar = (state = INIT_STATE, action) => {

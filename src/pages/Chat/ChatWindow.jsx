@@ -11,7 +11,7 @@ const ChatWindow = () => {
     ChatBoxUsername,
     Chat_Box_User_Status,
     currentUser,
-    messages,
+    chats,
     currentMessage,
     onKeyPress,
     setCurrentMessage,
@@ -57,36 +57,38 @@ const ChatWindow = () => {
                   </div>
                 </li>
 
-                {messages &&
-                  messages.length > 0 &&
-                  messages.map((message) => {
-
-                    return (
-                      <li
-                        key={'test_k' + message.id}
-                        className={
-                          message.sender === currentUser.name ||
-                            message.sender === 'Bot' || message.sender === 'ChatBot'
-                            ? 'right'
-                            : 'left'
-                        }
-                      >
-                        <div className="conversation-list">
-                          <div className="ctext-wrap">
-                            <div className="conversation-name">
-                              {message.sender}
+                {chats && chats.map((chat) => {
+                  if (chat.phoneNumber === currentPhoneNumber) {
+                    return chat.messagePot.map((message) => {
+                      return (
+                        <li
+                          key={'test_k' + message.id}
+                          className={
+                            message.sender === currentUser.name ||
+                              message.sender === 'Bot' ||
+                              message.sender === 'ChatBot'
+                              ? 'right'
+                              : 'left'
+                          }
+                        >
+                          <div className="conversation-list">
+                            <div className="ctext-wrap">
+                              <div className="conversation-name">
+                                {message.sender}
+                              </div>
+                              <p>{message.body}</p>
+                              <p className="chat-time mb-0">
+                                {message.time}{' '}
+                                <i className="bx bx-check-double align-middle me-1"></i>
+                              </p>
                             </div>
-                            <p>{message.body}</p>
-                            <p className="chat-time mb-0">
-                              {message.time}{' '}
-                              <i className="bx bx-check-double align-middle me-1"></i>
-                            </p>
                           </div>
-                        </div>
-                      </li>)
-                  })}
-
-
+                        </li>
+                      );
+                    });
+                  }
+                  return null; // Retornando null para os chats que não correspondem
+                })}
               </PerfectScrollbar>
             </ul>
           </div>
