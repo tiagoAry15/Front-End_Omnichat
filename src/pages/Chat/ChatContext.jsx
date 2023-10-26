@@ -4,17 +4,14 @@ import instagramIcon from "../../assets/images/chat/instagramIcon.png";
 import facebookIcon from "../../assets/images/chat/MenssagerIcon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from 'socket.io-client';
-import { isEmpty, last, set } from "lodash";
-import { toast, ToastContainer } from 'react-toastify';
+import { isEmpty } from "lodash";
+import { toast } from 'react-toastify';
 import {
   addMessage as onAddMessage,
   addChat as onAddChat,
   getChats as onGetChats,
   updateChat as onUpdateChat,
 } from "/src/store/actions";
-import { createSelector } from 'reselect';
-import { LOCALHOST_API_BASE_URL } from '../../constants/apiUrls';
-import { current } from '@reduxjs/toolkit';
 const ChatContext = createContext();
 
 const ChatProvider = ({ children }) => {
@@ -31,7 +28,7 @@ const ChatProvider = ({ children }) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [isToastActive, setIsToastActive] = useState(false);
   const [messages, setMessages] = useState("");
-  const [lastMessage, setLastMessage] = useState("");
+
   const dispatch = useDispatch();
 
   const socket_url = import.meta.env.VITE_GCR_SOCKET_URL
@@ -39,7 +36,7 @@ const ChatProvider = ({ children }) => {
   const socket = io(socket_url, {
     reconnection: false,
     reconnectionAttempts: 10,
-    reconnectionDelay: 2000,
+    reconnectionDelay: 5000,
   });
 
   const social_icons = {
@@ -50,14 +47,16 @@ const ChatProvider = ({ children }) => {
 
 
 
-  const { chats, error } = useSelector(state => ({
+  const { chats, error, isLoading, message } = useSelector(state => ({
     chats: state.chat.chats,
-    error: state.chat.error
+    error: state.chat.error,
+    isLoading: state.chat.loading
   }));
 
 
   useEffect(() => {
-    dispatch(onGetChats());
+
+    dispatch(onGetChats())
 
 
   }, [dispatch]);
@@ -86,21 +85,6 @@ const ChatProvider = ({ children }) => {
   }, []);
 
 
-  useEffect(() => {
-    console.log('lastMessage atualizado:', lastMessage);
-    console.log('currentPhoneNumber :', currentPhoneNumber);
-    if (currentPhoneNumber && lastMessage) {
-      if (lastMessage.phoneNumber === currentPhoneNumber) {
-        var actualChat = chats.find(chat => chat.phoneNumber === currentPhoneNumber);
-        setMessages([...actualChat.messagePot]);
-        actualChat.unreadMessages = 0;
-        dispatch(onUpdateChat(actualChat));
-      }
-
-
-
-    }
-  }, [lastMessage])
 
 
   const displayErrorToast = (message) => {
@@ -129,7 +113,8 @@ const ChatProvider = ({ children }) => {
   const handleMessage = (message) => {
 
     dispatch(onAddChat(message));
-    setLastMessage(message);
+
+
   }
 
   const userChatOpen = (chat) => {
@@ -207,6 +192,7 @@ const ChatProvider = ({ children }) => {
     onKeyPress,
     social_icons,
     messages,
+    isLoading
   };
 
 

@@ -37,6 +37,7 @@ export const updateChat = async (chatData) => {
     try {
        
         if (!chatData) throw new Error("Dados de chat inválidos");
+        console.log('chatData', chatData)
         const response = await ChatsAPI.put(`/update_conversation`, chatData);
         return chatData;
     } catch (error) {

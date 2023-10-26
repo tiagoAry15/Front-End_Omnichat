@@ -26,8 +26,8 @@ const ChatItemList = (props) => {
               chat.status === t("Active")
                 ? "mdi mdi-circle text-success font-size-10"
                 : chat.status === "intermediate"
-                ? "mdi mdi-circle text-warning font-size-10"
-                : "mdi mdi-circle font-size-10"
+                  ? "mdi mdi-circle text-warning font-size-10"
+                  : "mdi mdi-circle font-size-10"
             }
           />
         </div>
@@ -47,29 +47,30 @@ const ChatItemList = (props) => {
           </div>
         )}
 
-  <div className="flex-grow-1 overflow-hidden">
-  <div className="d-flex justify-content-between">
-    <h5 className="text-truncate font-size-14 mb-1">
-      {chat.name} {chat.phoneNummber}
-    </h5>
-    {chat.messagePot && chat.messagePot.length > 0 && (
-      <div className="font-size-11">{chat.messagePot[chat.messagePot.length - 1].time}</div>
-    )}
-  </div>
+        <div className="flex-grow-1 overflow-hidden">
+          <div className="d-flex justify-content-between">
+            <h5 className="text-truncate font-size-14 mb-1">
+              {chat.name} {chat.phoneNummber}
+            </h5>
+            {chat.messagePot && chat.messagePot.length > 0 && (
 
-  {chat.messagePot && chat.messagePot.length > 0 && (
-    <div className="d-flex justify-content-between">
-      <p className="text-truncate mb-0">
-        {chat.messagePot[chat.messagePot.length - 1].sender}: {chat.messagePot[chat.messagePot.length - 1].body}
-      </p>
-      {!chat.unreadMessages || chat.unreadMessages != 0 && (
-        <div className="unread-message-count">
-          {chat.unreadMessages}
+              <div className="font-size-11">{chat.messagePot[chat.messagePot.length - 1].time}</div>
+            )}
+          </div>
+
+          {chat.messagePot && chat.messagePot.length > 0 && (
+            <div className="d-flex justify-content-between">
+              <p className="text-truncate mb-0">
+                {chat.messagePot[chat.messagePot.length - 1].sender}: {chat.messagePot[chat.messagePot.length - 1].body}
+              </p>
+              {!chat.unreadMessages || chat.unreadMessages != 0 && (
+                <div className="unread-message-count">
+                  {chat.unreadMessages}
+                </div>
+              )}
+            </div>
+          )}
         </div>
-      )}
-    </div>
-  )}
-</div>
 
       </div>
     </Link>

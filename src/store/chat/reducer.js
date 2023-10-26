@@ -23,7 +23,7 @@ const INIT_STATE = {
   contacts: [],
   messages: [],
   error: [],
-  loading: false,
+  loading: true,
 }
 
 const Calendar = (state = INIT_STATE, action) => {
@@ -158,7 +158,7 @@ const Calendar = (state = INIT_STATE, action) => {
         error: action.payload
       };
     default:
-      return {...state, loading: false}
+      return {...state}
   }
 }
 
