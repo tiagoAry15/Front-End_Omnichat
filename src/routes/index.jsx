@@ -13,6 +13,7 @@ import Login from "../pages/Authentication/Login";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
 import ForgetPwd from "../pages/Authentication/ForgetPassword";
+import Menu from "../pages/Menu/Menu";
 
 // //  // Inner Authentication
 /*
@@ -57,6 +58,7 @@ const authProtectedRoutes = [
 
   //   // //profile
   { path: "/profile", component: UserProfile },
+  { path: "/menu", component: Menu },
 
   //   //Charts
   /*

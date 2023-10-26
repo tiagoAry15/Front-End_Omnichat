@@ -148,6 +148,13 @@ const SidebarContent = props => {
               </Link>
             </li>
 
+            <li>
+              <Link to="/menu">
+                <i className="bx bx-restaurant"></i>
+                <span>{props.t("Cardápio")}</span>
+              </Link>
+            </li>
+
             {/* <li>
               <Link to="/apps-filemanager" >
                 <i className="bx bx-file"></i>
