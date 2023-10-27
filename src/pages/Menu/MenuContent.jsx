@@ -15,14 +15,16 @@ const MenuContent = () => {
     const { menu, saveMenu, isEditing, setIsEditing } = useContext(MenuContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [pendingAction, setPendingAction] = useState(null);
-
+    const [actualMenu, setActualMenu] = useState(menu);
     const performAction = (action) => {
         switch (action) {
             case 'save':
                 saveMenu();
                 break;
             case 'cancel':
+                setActualMenu(JSON.parse(JSON.stringify(menu)));
                 setIsEditing(false);
+
                 break;
             default:
                 break;
@@ -58,6 +60,7 @@ const MenuContent = () => {
                         onClick={() => {
                             if (!isEditing) {
                                 setIsEditing(true);
+                                setActualMenu(JSON.parse(JSON.stringify(menu)));
                                 return;
                             } else {
                                 setPendingAction('cancel');
@@ -71,17 +74,17 @@ const MenuContent = () => {
 
                 </div>
                 <Form>
-                    {Object.keys(menu).map((item, index) => {
-                        if (Array.isArray(menu[item])) {
+                    {Object.keys(actualMenu).map((item, index) => {
+                        if (Array.isArray(actualMenu[item])) {
                             return (
-                                <MenuType key={index} Name={item} items={menu[item]} />
+                                <MenuType key={index} Name={item} items={actualMenu[item]} setActualMenu={setActualMenu} />
                             );
                         }
                         return null; // Retorne null se não for um array
                     })}
                     <ToastContainer />
                     <div className="d-flex justify-content-between align-items-center">
-                        <span>Versão {menu.Versao}</span>
+                        <span>Versão {actualMenu.Versao}</span>
                         <Button type='submit'
                             onClick={() => {
                                 setPendingAction('save');

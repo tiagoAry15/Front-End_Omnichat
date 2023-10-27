@@ -1,13 +1,16 @@
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Table, Card, CardTitle, CardBody, Input, Button, } from "reactstrap";
 import PropTypes from 'prop-types';
 import { MenuContext } from "./MenuContext";
 const MenuType = (props) => {
 
-    const { Name } = props.Name;
-    const [items, setItems] = useState(props.items); // 1. Adicione um estado para gerenciar os itens da tabela.
+    const { Name, setActualMenu } = props.Name;
+    const [localItems, setLocalItems] = useState(props.items); // 1. Adicione um estado para gerenciar os itens da tabela.
     const { isEditing, addNewItem, removeItem } = useContext(MenuContext);
+    useEffect(() => {
+        setLocalItems(props.items);
+    }, [props.items]);
 
 
     // ... rest of the cod
@@ -33,7 +36,7 @@ const MenuType = (props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {items.map((item) => {
+                        {localItems.map((item) => {
                             return (
                                 <tr key={item.id}>
                                     <td>
@@ -46,7 +49,7 @@ const MenuType = (props) => {
                                     <td>
                                         <Input required disabled={!isEditing} type="number" placeholder={`R$ ${item.preco}`} />
                                     </td>
-                                    {isEditing && <td><Button close onClick={() => removeItem(setItems, item.id)} /></td>} {/* Coluna para o botão quando estiver no modo de edição */}
+                                    {isEditing && <td><Button close onClick={() => removeItem(setLocalItems, item.id)} /></td>} {/* Coluna para o botão quando estiver no modo de edição */}
                                 </tr>
                             )
 
@@ -54,7 +57,7 @@ const MenuType = (props) => {
                     </tbody>
                 </Table>
                 {isEditing && (
-                    <Button onClick={() => addNewItem(setItems, items)} > +</Button>
+                    <Button onClick={() => addNewItem(setLocalItems, localItems)} > +</Button>
                 )
                 }
             </CardBody >
