@@ -1,14 +1,16 @@
 
-import React, { } from 'react';
-import { Table, Card, CardTitle, CardBody, Input } from "reactstrap";
+import React, { useContext, useState } from 'react';
+import { Table, Card, CardTitle, CardBody, Input, Button, } from "reactstrap";
 import PropTypes from 'prop-types';
+import { MenuContext } from "./MenuContext";
 const MenuType = (props) => {
 
-    const { Name, items, isEditing } = props;
+    const { Name } = props.Name;
+    const [items, setItems] = useState(props.items); // 1. Adicione um estado para gerenciar os itens da tabela.
+    const { isEditing, addNewItem, removeItem } = useContext(MenuContext);
+
 
     // ... rest of the cod
-
-
     return (
         <Card>
             <CardTitle>
@@ -27,6 +29,7 @@ const MenuType = (props) => {
                             <th>
                                 Preço
                             </th>
+                            {isEditing && <th>Ações</th>} {/* Coluna para o botão quando estiver no modo de edição */}
                         </tr>
                     </thead>
                     <tbody>
@@ -41,16 +44,21 @@ const MenuType = (props) => {
                                         <Input disabled={!isEditing} name="tamanho" placeholder={item.tamanho} />
                                     </td>
                                     <td>
-                                        <Input disabled={!isEditing} type="number" placeholder={`R$ ${item.preco}`} />
+                                        <Input required disabled={!isEditing} type="number" placeholder={`R$ ${item.preco}`} />
                                     </td>
+                                    {isEditing && <td><Button close onClick={() => removeItem(setItems, item.id)} /></td>} {/* Coluna para o botão quando estiver no modo de edição */}
                                 </tr>
                             )
 
                         })}
                     </tbody>
                 </Table>
-            </CardBody>
-        </Card>
+                {isEditing && (
+                    <Button onClick={() => addNewItem(setItems, items)} > +</Button>
+                )
+                }
+            </CardBody >
+        </Card >
     )
 
 }
@@ -60,5 +68,5 @@ export default MenuType;
 MenuType.propTypes = {
     Name: PropTypes.string.isRequired,
     items: PropTypes.array.isRequired,
-    isEditing: PropTypes.bool.isRequired,
+
 };

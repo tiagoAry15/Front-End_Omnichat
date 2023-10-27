@@ -1,31 +1,37 @@
 {
   "Pizzas": [
     {
+      "id": 1,
       "nome": "Calabresa",
       "tamanho": "Grande",
       "preco": 17.50
     },
     {
+      "id": 2,
       "nome": "Frango",
       "tamanho": "Grande",
       "preco": 18.90
     },
     {
+      "id": 3,
       "nome": "Portuguesa",
       "tamanho": "Grande",
       "preco": 13.99
     },
     {
+      "id": 4,
       "nome": "Margherita",
       "tamanho": "Média",
       "preco": 15.50
     },
     {
+      "id": 5,
       "nome": "Quatro Queijos",
       "tamanho": "Grande",
       "preco": 16.90
     },
     {
+      "id": 6,
       "nome": "Pepperoni",
       "tamanho": "Grande",
       "preco": 19.99
@@ -33,21 +39,24 @@
   ],
   "Bebidas": [
     {
+      "id": 7,
       "nome": "Coca-cola",
       "tamanho": "300ml",
       "preco": 5.99
     },
     {
+      "id": 8,
       "nome": "Guaraná",
       "tamanho": "300ml",
       "preco": 4.99
     },
     {
+      "id": 9,
       "nome": "Suco de laranja",
       "tamanho": "500ml",
       "preco": 6.50
     }
   ],
   "HorárioDeFuncionamento": "17h às 22h",
-   "Versao": "26-oct-2023"
+  "Versao": "26-oct-2023"
 }
