@@ -10,8 +10,21 @@ const MenuType = (props) => {
     const { isEditing, addNewItem, removeItem } = useContext(MenuContext);
     useEffect(() => {
         setLocalItems(props.items);
+        console.log("itens atualizado")
     }, [props.items]);
 
+    const handleInputChange = (event, itemId, field) => {
+        const updatedItems = localItems.map(item => {
+            if (item.id === itemId) {
+                return {
+                    ...item,
+                    [field]: event.target.value
+                };
+            }
+            return item;
+        });
+        setLocalItems(updatedItems);
+    }
 
     // ... rest of the cod
     return (
@@ -40,14 +53,14 @@ const MenuType = (props) => {
                             return (
                                 <tr key={item.id}>
                                     <td>
-                                        <Input disabled={!isEditing} placeholder={item.nome} />
+                                        <Input disabled={!isEditing} value={item.nome} onChange={(e) => handleInputChange(e, item.id, 'nome')} />
 
                                     </td>
                                     <td>
-                                        <Input disabled={!isEditing} name="tamanho" placeholder={item.tamanho} />
+                                        <Input disabled={!isEditing} name="tamanho" value={item.tamanho} onChange={(e) => handleInputChange(e, item.id, 'tamanho')} />
                                     </td>
                                     <td>
-                                        <Input required disabled={!isEditing} type="number" placeholder={`R$ ${item.preco}`} />
+                                        <Input disabled={!isEditing} type="number" placeholder='R$' value={item.preco} onChange={(e) => handleInputChange(e, item.id, 'preco')} />
                                     </td>
                                     {isEditing && <td><Button close onClick={() => removeItem(setLocalItems, item.id)} /></td>} {/* Coluna para o botão quando estiver no modo de edição */}
                                 </tr>
