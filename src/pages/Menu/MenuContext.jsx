@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import cardapio from './cardapio.json'
-import { useEffect } from 'react';
+    ;
 // Create a new context
 const MenuContext = createContext();
 

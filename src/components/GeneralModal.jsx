@@ -14,7 +14,7 @@ const GeneralModal = (props) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={onConfirm}>Confirmar</Button>
-                    <Button color="setIsModalOpensecondary" onClick={toggle}>Cancelar</Button>
+                    <Button color="secondary" onClick={toggle}>Cancelar</Button>
                 </ModalFooter>
             </Modal>
         </div>

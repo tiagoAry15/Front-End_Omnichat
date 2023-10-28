@@ -23,12 +23,11 @@ const MenuContent = () => {
                 break;
             case 'cancel':
                 setActualMenu(JSON.parse(JSON.stringify(menu)));
-                setIsEditing(false);
-
                 break;
             default:
                 break;
         }
+        setIsEditing(false);
     };
 
     const toggleModal = (action) => {
@@ -65,7 +64,7 @@ const MenuContent = () => {
         <div className="page-content">
             <Container fluid={true}>
                 <Breadcrumbs title='Omnichat' breadcrumbItem={t("Cardápio")} />
-                <div className="d-flex justify-content-between align-items-center">
+                <div className="customContainer">
                     <h5>Horário de funcionamento: {menu.HorárioDeFuncionamento}</h5>
                     <Button
                         onClick={() => {
@@ -79,8 +78,9 @@ const MenuContent = () => {
                             }
                         }}
                         className='btn btn-primary'>
-                        <i className="tabler tabler-edit"></i>
                         {isEditing ? "Cancelar" : "Editar"}
+                        <i className="bx bx-edit-alt" style={{ marginLeft: "5px" }}></i>
+
                     </Button>
 
                 </div>
@@ -97,15 +97,15 @@ const MenuContent = () => {
                         return null; // Retorne null se não for um array
                     })}
                     <ToastContainer />
-                    <div className="d-flex justify-content-between align-items-center">
+                    <div className="customContainer">
                         <span>Versão {actualMenu.Versao}</span>
                         <Button
                             onClick={() => {
                                 setPendingAction('save');
                                 setIsModalOpen(true);
                             }}
-                            className='btn btn-primary' disabled={!isEditing}>
-                            <i className="tabler tabler-edit"></i>
+                            className='btn btn-primary ' disabled={!isEditing}>
+                            <i className="bx bx-save" style={{ marginRight: "5px" }} />
                             Salvar
                         </Button>
                     </div>

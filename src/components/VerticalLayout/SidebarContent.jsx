@@ -150,7 +150,7 @@ const SidebarContent = props => {
 
             <li>
               <Link to="/menu">
-                <i className="bx bx-restaurant"></i>
+                <i className="bx bx-food-menu"></i>
                 <span>{props.t("Cardápio")}</span>
               </Link>
             </li>
