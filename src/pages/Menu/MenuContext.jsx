@@ -10,19 +10,12 @@ const MenuProvider = ({ children }) => {
     const [isEditing, setIsEditing] = useState(false);
 
 
-    const addNewItem = (setItems, items) => {
-        const newItem = {
-            id: items.length + 1, // gerando um ID único com base na data atual
-            nome: "",
-            tamanho: "",
-            preco: ""
-        };
-        setItems(prevItems => [...prevItems, newItem]);
+
+    const saveMenu = (newMenu) => {
+        console.log('newMenu', newMenu)
+        setMenu(newMenu)
+        console.log('saved')
     }
-    const removeItem = (setItems, id) => {
-        setItems(prevItems => prevItems.filter(item => item.id !== id));
-    }
-    const saveMenu = () => { console.log('saved') }
 
     const menuContextValue =
     {
@@ -30,8 +23,6 @@ const MenuProvider = ({ children }) => {
         setMenu,
         isEditing,
         setIsEditing,
-        addNewItem,
-        removeItem,
         saveMenu
     };
 

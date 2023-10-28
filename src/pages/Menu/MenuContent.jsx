@@ -19,7 +19,7 @@ const MenuContent = () => {
     const performAction = (action) => {
         switch (action) {
             case 'save':
-                saveMenu();
+                saveMenu(actualMenu);
                 break;
             case 'cancel':
                 setActualMenu(JSON.parse(JSON.stringify(menu)));
@@ -39,6 +39,9 @@ const MenuContent = () => {
         setIsModalOpen(!isModalOpen);
     };
 
+    const handleConfirm = () => {
+        toggleModal(pendingAction);
+    };
     const getModalMessage = () => {
         switch (pendingAction) {
             case 'save':
@@ -49,6 +52,14 @@ const MenuContent = () => {
                 return '';
         }
     };
+
+    const handleMenuChange = (menuName, items) => {
+        setActualMenu(prev => ({
+            ...prev,
+            [menuName]: items
+        }));
+    }
+
 
     return (
         <div className="page-content">
@@ -77,7 +88,10 @@ const MenuContent = () => {
                     {Object.keys(actualMenu).map((item, index) => {
                         if (Array.isArray(actualMenu[item])) {
                             return (
-                                <MenuType key={index} Name={item} items={actualMenu[item]} setActualMenu={setActualMenu} />
+                                <MenuType key={index}
+                                    Name={item}
+                                    items={actualMenu[item]}
+                                    onItemsChange={handleMenuChange} />
                             );
                         }
                         return null; // Retorne null se não for um array
@@ -85,7 +99,7 @@ const MenuContent = () => {
                     <ToastContainer />
                     <div className="d-flex justify-content-between align-items-center">
                         <span>Versão {actualMenu.Versao}</span>
-                        <Button type='submit'
+                        <Button
                             onClick={() => {
                                 setPendingAction('save');
                                 setIsModalOpen(true);
@@ -100,8 +114,9 @@ const MenuContent = () => {
             </Container>
             <GeneralModal
                 isOpen={isModalOpen}
-                toggle={() => toggleModal(pendingAction)}
+                toggle={() => setIsModalOpen(!isModalOpen)}
                 message={getModalMessage()}
+                onConfirm={handleConfirm}
             />
         </div>
     );

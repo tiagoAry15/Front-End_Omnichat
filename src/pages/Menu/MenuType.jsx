@@ -5,13 +5,16 @@ import PropTypes from 'prop-types';
 import { MenuContext } from "./MenuContext";
 const MenuType = (props) => {
 
-    const { Name, setActualMenu } = props.Name;
+    const { Name } = props.Name;
     const [localItems, setLocalItems] = useState(props.items); // 1. Adicione um estado para gerenciar os itens da tabela.
-    const { isEditing, addNewItem, removeItem } = useContext(MenuContext);
+    const { isEditing } = useContext(MenuContext);
+
+
     useEffect(() => {
-        setLocalItems(props.items);
-        console.log("itens atualizado")
-    }, [props.items]);
+        console.log("item local atualizado")
+        props.onItemsChange(props.Name, localItems);
+    }, [localItems]);
+
 
     const handleInputChange = (event, itemId, field) => {
         const updatedItems = localItems.map(item => {
@@ -24,6 +27,20 @@ const MenuType = (props) => {
             return item;
         });
         setLocalItems(updatedItems);
+
+    }
+
+    const addNewItem = (items) => {
+        const newItem = {
+            id: items.length + 1, // gerando um ID único com base na data atual
+            nome: "",
+            tamanho: "",
+            preco: ""
+        };
+        setLocalItems(prevItems => [...prevItems, newItem]);
+    }
+    const removeItem = (id) => {
+        setLocalItems(prevItems => prevItems.filter(item => item.id !== id));
     }
 
     // ... rest of the cod
@@ -36,33 +53,42 @@ const MenuType = (props) => {
                 <Table>
                     <thead>
                         <tr>
-                            <th>
-                                Opção
-                            </th>
-                            <th>
-                                tamanho
-                            </th>
-                            <th>
-                                Preço
-                            </th>
-                            {isEditing && <th>Ações</th>} {/* Coluna para o botão quando estiver no modo de edição */}
+                            <th>Opção</th>
+                            <th>tamanho</th>
+                            <th>Preço</th>
+                            {isEditing && <th>Ações</th>}
                         </tr>
                     </thead>
+
                     <tbody>
                         {localItems.map((item) => {
                             return (
                                 <tr key={item.id}>
                                     <td>
-                                        <Input disabled={!isEditing} value={item.nome} onChange={(e) => handleInputChange(e, item.id, 'nome')} />
-
+                                        <Input
+                                            disabled={!isEditing}
+                                            value={item.nome}
+                                            onChange={(e) => handleInputChange(e, item.id, 'nome')} />
                                     </td>
                                     <td>
-                                        <Input disabled={!isEditing} name="tamanho" value={item.tamanho} onChange={(e) => handleInputChange(e, item.id, 'tamanho')} />
+                                        <Input
+                                            disabled={!isEditing}
+                                            name="tamanho" value={item.tamanho}
+                                            onChange={(e) => handleInputChange(e, item.id, 'tamanho')} />
                                     </td>
                                     <td>
-                                        <Input disabled={!isEditing} type="number" placeholder='R$' value={item.preco} onChange={(e) => handleInputChange(e, item.id, 'preco')} />
+                                        <Input
+                                            disabled={!isEditing}
+                                            type="number"
+                                            placeholder='R$'
+                                            value={item.preco}
+                                            onChange={(e) => handleInputChange(e, item.id, 'preco')} />
                                     </td>
-                                    {isEditing && <td><Button close onClick={() => removeItem(setLocalItems, item.id)} /></td>} {/* Coluna para o botão quando estiver no modo de edição */}
+                                    {isEditing ?
+                                        <td>
+                                            <Button close onClick={() => removeItem(item.id)} />
+                                        </td>
+                                        : null}
                                 </tr>
                             )
 
@@ -70,7 +96,7 @@ const MenuType = (props) => {
                     </tbody>
                 </Table>
                 {isEditing && (
-                    <Button onClick={() => addNewItem(setLocalItems, localItems)} > +</Button>
+                    <Button onClick={() => addNewItem(localItems)} >+</Button>
                 )
                 }
             </CardBody >
