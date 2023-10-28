@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { MenuContext } from "./MenuContext";
 const MenuType = (props) => {
 
-    const { Name } = props.Name;
+    const Name = props.Name;
     const [localItems, setLocalItems] = useState(props.items); // 1. Adicione um estado para gerenciar os itens da tabela.
     const { isEditing } = useContext(MenuContext);
 
@@ -46,10 +46,12 @@ const MenuType = (props) => {
     // ... rest of the cod
     return (
         <Card>
-            <CardTitle>
-                <h1>{Name}</h1>
-            </CardTitle>
             <CardBody>
+                <CardTitle>
+                    <h1>{Name}</h1>
+                </CardTitle>
+            </CardBody>
+            <CardBody style={{ justifyContent: 'center', alignItems: 'center' }}>
                 <Table>
                     <thead>
                         <tr>
@@ -61,7 +63,7 @@ const MenuType = (props) => {
                     </thead>
 
                     <tbody>
-                        {localItems.map((item) => {
+                        {props.items.map((item) => {
                             return (
                                 <tr key={item.id}>
                                     <td>
