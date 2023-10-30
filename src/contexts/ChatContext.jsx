@@ -16,12 +16,6 @@ const ChatContext = createContext();
 
 
 const ChatProvider = ({ children }) => {
-
-  const booleanName = {
-    true: "Ativado",
-    false: "Desativado",
-  };
-
   const [messageBox, setMessageBox] = useState(null);
   const [currentPhoneNumber, setCurrentPhoneNumber] = useState(null);
   const [currentUser, setCurrentUser] = useState({
@@ -51,11 +45,13 @@ const ChatProvider = ({ children }) => {
     error: state.chat.error,
     isLoading: state.chat.loading
   }));
+
+
   useEffect(() => {
 
     dispatch(onGetChats())
 
-    if (currentPhoneNumber) { set }
+
   }, [dispatch]);
 
 
@@ -103,11 +99,9 @@ const ChatProvider = ({ children }) => {
   }
   const userChatOpen = (chat) => {
     setChatBoxUsername(chat.name);
-    console.log(chat.name);
-    setChatBoxUserStatus(chat.status);
-    console.log(chat.status);
+    setChatBoxUserStatus(chat.status)
     setCurrentPhoneNumber(chat.phoneNumber);
-    console.log(chat.phoneNumber);
+
 
     if (chat.unreadMessages && chat.unreadMessages > 0) {
 
@@ -115,8 +109,9 @@ const ChatProvider = ({ children }) => {
 
       dispatch(onUpdateChat(chat))
     }
-    console.log(chat.messagePot);
+
     setMessages(chat.messagePot);
+    console.log(messages);
   };
 
   const addMessage = (messageData) => {
