@@ -17,15 +17,18 @@ const ChatWindow = () => {
     setCurrentMessage,
     setMessageBox,
     addMessage,
+    booleanName,
+    chatStatus,
+    setChatStatus
   } = useContext(ChatContext);
 
 
   return (
     <div className="w-100 user-chat">
       <Card className="border_rounded">
-        <div className="p-4 border-bottom ">
+        <div className="p-4 border-bottom" id='divHeader'>
           {currentPhoneNumber && (
-            <Row>
+            <div className='headerClass'>
               <Col md="4" xs="9">
                 <h5 className="font-size-15 mb-1">{ChatBoxUsername}</h5>
                 <p className="text-muted mb-0">

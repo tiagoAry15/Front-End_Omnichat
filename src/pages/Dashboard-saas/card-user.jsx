@@ -15,6 +15,12 @@ import avatar1 from "../../assets/images/users/Icone_Usuario.png"
 
 function CardUser(props) {
   const [settingsMenu, setSettingsMenu] = useState(false)
+  const [seletedMonth, setSeletedMonth] = useState("Mensal");
+
+  const onChangeMonth = (value) => {
+    setSeletedMonth(value);
+    dispatch(getEarningChartsData(value));
+  };
   //Setting Menu
 
 
@@ -36,12 +42,13 @@ function CardUser(props) {
                     </div>
                     <div className="flex-grow-1 align-self-center">
                       <div className="text-muted">
-                        <p className="mb-2">Welcome to Your Dashboard</p>
-                        <h5 className="mb-1">User</h5>
-                        <p className="mb-0">Situation: Decadente</p>
+                        <p className="mb-2">Bem vindo</p>
+                        <h5 className="mb-1">Usuário</h5>
+                        <p className="mb-0">Situação: Decadente</p>
                       </div>
                     </div>
                   </div>
+
                 </Col>
 
                 <Col lg="4" className="align-self-center">
@@ -50,7 +57,7 @@ function CardUser(props) {
                       <Col xs="4">
                         <div>
                           <p className="text-muted text-truncate mb-2">
-                            Total Projects
+                            Pedidos total(diario)
                           </p>
                           <h5 className="mb-0">48</h5>
                         </div>
@@ -75,8 +82,31 @@ function CardUser(props) {
                   </div>
                 </Col>
 
-                <Col lg="4" className="d-none d-lg-block">
+
+                <Col lg="4" className="d-none  d-lg-block">
+
+        
+
                   <div className="clearfix mt-4 mt-lg-0">
+                  <div className="float-end ms-4">
+                    <div className="input-group input-group-sm">
+                      <select
+                        className="form-select form-select-sm"
+                        value={seletedMonth}
+                        onChange={(e) => {
+                          onChangeMonth(e.target.value);
+                        }}
+                      >
+                        <option value="Mensal">Mensal</option>
+                        <option value="3Meses">3 Meses</option>
+                        <option value="6Meses">6 Meses</option>
+                        <option value="Anual">Anual</option>
+                      </select>
+                      {/* <div className="input-group-append"> */}
+                      {/* <label className="input-group-text">Month</label> */}
+                      {/* </div> */}
+                    </div>
+                  </div>
                     <Dropdown
                       isOpen={settingsMenu}
                       toggle={() => {
@@ -94,7 +124,11 @@ function CardUser(props) {
                       </DropdownMenu>
                     </Dropdown>
                   </div>
+
+                  
+
                 </Col>
+
               </Row>
             </CardBody>
           </Card>

@@ -30,26 +30,26 @@ const DashboardSaas = (props) => {
   const reports = [
     {
       icon: "bx bx-copy-alt",
-      title: "Orders",
-      value: "1,452",
-      badgeValue: "+ 0.2%",
+      title: "Pedidos",
+      value: "48",
+      badgeValue: "+ 2%",
       color: "success",
       desc: "From previous period",
     },
     {
       icon: "bx bx-archive-in",
-      title: "Revenue",
-      value: "$ 28,452",
-      badgeValue: "+ 0.2%",
+      title: "Receita",
+      value: "R$ 1440",
+      badgeValue: "+ 2%",
       color: "success",
       desc: "From previous period",
     },
     {
-      icon: "bx bx-purchase-tag-alt",
-      title: "Average Price",
-      value: "$ 16.2",
-      badgeValue: "0%",
-      color: "warning",
+      icon: "bx bx-time",
+      title: "Tempo Medio(minuto)",
+      value: "25minutos",
+      badgeValue: "1%",
+      color: "success",
       desc: "From previous period",
     },
   ];
@@ -94,78 +94,15 @@ const DashboardSaas = (props) => {
                 <MiniWidget reports={reports} />
               </Row>
             </Col>
-            <TotalSellingProduct />
+            <SalesAnalytics dataColors='["--bs-success", "--bs-danger", "--bs-primary"]' />
           </Row>
 
           <Row>
 
-            <Earning dataColors='["--bs-primary"]' />
-
-
-            <SalesAnalytics dataColors='["--bs-primary", "--bs-success", "--bs-danger"]' />
           </Row>
           <Row>
-            <Col xl="8">
-              
-              <Card>
-                  <CardBody>
-                    <div className="d-sm-flex flex-wrap">
-                      <h4 className="card-title mb-4">Email Sent</h4>
-                      <div className="ms-auto">
-                        <ul className="nav nav-pills">
-                          <li className="nav-item">
-                            <Link
-                              to="#"
-                              className={classNames(
-                                { active: periodType === "weekly" },
-                                "nav-link"
-                              )}
-                              onClick={() => {
-                                onChangeChartPeriod("weekly");
-                              }}
-                              id="one_month"
-                            >
-                              Week
-                            </Link>{" "}
-                          </li>
-                          <li className="nav-item">
-                            <Link
-                              to="#"
-                              className={classNames(
-                                { active: periodType === "monthly" },
-                                "nav-link"
-                              )}
-                              onClick={() => {
-                                onChangeChartPeriod("monthly");
-                              }}
-                              id="one_month"
-                            >
-                              Month
-                            </Link>
-                          </li>
-                          <li className="nav-item">
-                            <Link
-                              to="#"
-                              className={classNames(
-                                { active: periodType === "yearly" },
-                                "nav-link"
-                              )}
-                              onClick={() => {
-                                onChangeChartPeriod("yearly");
-                              }}
-                              id="one_month"
-                            >
-                              Year
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    {/* <div className="clearfix"></div> */}
-                    <StackedColumnChart periodData={periodData} dataColors='["--bs-primary", "--bs-warning", "--bs-success"]'/>
-                  </CardBody>
-              </Card>
-            </Col>
+
+          <Earning dataColors='["--bs-primary"]' />
             <Col xl="4">
               <SocialSource />
             </Col>

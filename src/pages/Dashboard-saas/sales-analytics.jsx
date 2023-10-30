@@ -5,9 +5,9 @@ import getChartColorsArray from "../../components/Common/ChartsDynamicColor";
 
 const SalesAnalytics = ({ dataColors }) => {
   const apexsaleschartColors = getChartColorsArray(dataColors);
-  const series = [56, 38, 26];
+  const series = [22, 16, 11];
   const options = {
-    labels: ["Series A", "Series B", "Series C"],
+    labels: ["WhatsApp", "Instagram", "Messenger"],
     colors: apexsaleschartColors,
     legend: { show: !1 },
     plotOptions: {
@@ -24,7 +24,7 @@ const SalesAnalytics = ({ dataColors }) => {
       <Col xl="4">
         <Card>
           <CardBody>
-            <h4 className="card-title mb-4">Sales Analytics</h4>
+            <h4 className="card-title mb-4">Pedidos por rede social</h4>
 
             <div>
               <div id="donut-chart">
@@ -43,28 +43,25 @@ const SalesAnalytics = ({ dataColors }) => {
                 <Col xs="4">
                   <div className="mt-4">
                     <p className="mb-2 text-truncate">
-                      <i className="mdi mdi-circle text-primary me-1" /> Product
-                      A
+                      <i className="mdi mdi-circle text-success me-1" />WhatsApp  
                     </p>
-                    <h5>$ 2,132</h5>
+                    <h5>22 Pedidos</h5>
                   </div>
                 </Col>
                 <Col xs="4">
                   <div className="mt-4">
                     <p className="mb-2 text-truncate">
-                      <i className="mdi mdi-circle text-success me-1" /> Product
-                      B
+                      <i className="mdi mdi-circle text-danger me-1" /> Instagram
                     </p>
-                    <h5>$ 1,763</h5>
+                    <h5>16 Pedidos</h5>
                   </div>
                 </Col>
                 <Col xs="4">
                   <div className="mt-4">
                     <p className="mb-2 text-truncate">
-                      <i className="mdi mdi-circle text-danger me-1" /> Product
-                      C
+                      <i className="mdi mdi-circle text-primary me-1" /> Messenger
                     </p>
-                    <h5>$ 973</h5>
+                    <h5>10 Pedidos</h5>
                   </div>
                 </Col>
               </Row>

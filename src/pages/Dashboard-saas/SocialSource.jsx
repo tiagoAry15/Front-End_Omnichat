@@ -5,22 +5,24 @@ import { Link } from "react-router-dom"
 const SocialSource = () => {
   const socials = [
     {
-      title: "Facebook",
-      bgColor: "bg-primary",
-      iconClass: "mdi-facebook",
-      description: "125",
+      title: "Calabresa",
+            description: "20",
     },
     {
-      title: "Twitter",
-      bgColor: "bg-info",
-      iconClass: "mdi-twitter",
-      description: "112",
+      title: "Quatro Queijos",
+           description: "10",
     },
     {
-      title: "Instagram",
-      bgColor: "bg-pink",
-      iconClass: "mdi-instagram",
-      description: "104",
+      title: "Frango com Catupiry",
+      description: "8",
+    },
+    {
+      title: "Portuguesa",
+      description: "7",
+    },
+    {
+      title: "Pizza de chocolate",
+      description: "3",
     },
   ]
 
@@ -28,17 +30,14 @@ const SocialSource = () => {
     <React.Fragment>
       <Card>
         <CardBody>
-          <CardTitle className="mb-4">Social Source</CardTitle>
+          <CardTitle className="mb-4">Top 5 Pedidos</CardTitle>
           <div className="text-center">
             <div className="avatar-sm mx-auto mb-4">
-              <span className="avatar-title rounded-circle bg-primary bg-soft font-size-24">
-                <i className="mdi mdi-facebook text-primary"></i>
-              </span>
             </div>
             <p className="font-16 text-muted mb-2"></p>
             <h5>
               <Link to="#" className="text-dark">
-                Facebook - <span className="text-muted font-16">125 sales</span>{" "}
+                Calabresa - <span className="text-muted font-16">20 Pedidos</span>{" "}
               </Link>
             </h5>
             <p className="text-muted">
@@ -53,22 +52,8 @@ const SocialSource = () => {
             {socials.map((social, key) => (
               <Col xs="4" key={"_li_" + key}>
                 <div className="social-source text-center mt-3">
-                  <div className="avatar-xs mx-auto mb-3">
-
-                    <span
-                      className={
-                        "avatar-title rounded-circle " +
-                        social.bgColor +
-                        " font-size-16"
-                      }
-                    >
-                      <i
-                        className={"mdi " + social.iconClass + " text-white"}
-                      ></i>
-                    </span>
-                  </div>
                   <h5 className="font-size-15">{social.title}</h5>
-                  <p className="text-muted mb-0">{social.description} sales</p>
+                  <p className="text-muted mb-0">{social.description} Pedidos</p>
                 </div>
               </Col>
             ))}
