@@ -12,7 +12,9 @@ import {
   getChats as onGetChats,
   updateChat as onUpdateChat,
 } from "/src/store/actions";
+import { SocketContext } from "./SocketContext";
 const ChatContext = createContext();
+
 
 const ChatProvider = ({ children }) => {
   const [messageBox, setMessageBox] = useState(null);
@@ -28,16 +30,9 @@ const ChatProvider = ({ children }) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [isToastActive, setIsToastActive] = useState(false);
   const [messages, setMessages] = useState("");
-
+  const { socket } = useContext(SocketContext);
   const dispatch = useDispatch();
 
-  const socket_url = import.meta.env.VITE_GCR_SOCKET_URL
-
-  const socket = io(socket_url, {
-    reconnection: false,
-    reconnectionAttempts: 10,
-    reconnectionDelay: 5000,
-  });
 
   const social_icons = {
     whatsapp: whatsappIcon,
@@ -45,7 +40,14 @@ const ChatProvider = ({ children }) => {
     messenger: facebookIcon,
   }
 
+  useEffect(() => {
 
+    socket.on('message', (data) => {
+      console.log('message_received:', data);
+      handleMessage(data)
+    });
+
+  }, []);
 
   const { chats, error, isLoading, message } = useSelector(state => ({
     chats: state.chat.chats,

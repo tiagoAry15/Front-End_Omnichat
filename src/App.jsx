@@ -3,7 +3,7 @@ import React from "react"
 //import { Analytics } from '@vercel/analytics/react';
 import { Switch, BrowserRouter as Router } from "react-router-dom"
 import { connect } from "react-redux"
-
+import { SocketProvider } from "./contexts/SocketContext";
 import { authProtectedRoutes, publicRoutes } from "./routes"
 
 import Authmiddleware from "./routes/route"
@@ -38,31 +38,33 @@ const App = props => {
   const Layout = getLayout()
   return (
     <React.Fragment>
-      <Router>
-        <Switch>
-          {publicRoutes.map((route, idx) => (
-            <Authmiddleware
-              path={route.path}
-              layout={NonAuthLayout}
-              component={route.component}
-              key={idx}
-              isAuthProtected={false}
-              exact
-            />
-          ))}
+      <SocketProvider>
+        <Router>
+          <Switch>
+            {publicRoutes.map((route, idx) => (
+              <Authmiddleware
+                path={route.path}
+                layout={NonAuthLayout}
+                component={route.component}
+                key={idx}
+                isAuthProtected={false}
+                exact
+              />
+            ))}
 
-          {authProtectedRoutes.map((route, idx) => (
-            <Authmiddleware
-              path={route.path}
-              layout={Layout}
-              component={route.component}
-              key={idx}
-              isAuthProtected={true}
-              exact
-            />
-          ))}
-        </Switch>
-      </Router>
+            {authProtectedRoutes.map((route, idx) => (
+              <Authmiddleware
+                path={route.path}
+                layout={Layout}
+                component={route.component}
+                key={idx}
+                isAuthProtected={true}
+                exact
+              />
+            ))}
+          </Switch>
+        </Router>
+      </SocketProvider>
     </React.Fragment>
   )
 }

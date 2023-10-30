@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Col, Row, Card } from 'reactstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { ChatContext } from "./ChatContext";
+import { ChatContext } from "../../contexts/ChatContext";
 
 const ChatWindow = () => {
 

@@ -2,7 +2,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Table, Card, CardTitle, CardBody, Input, Button, } from "reactstrap";
 import PropTypes from 'prop-types';
-import { MenuContext } from "./MenuContext";
+import { MenuContext } from "../../contexts/MenuContext";
 const MenuType = (props) => {
 
     const Name = props.Name;
