@@ -1,6 +1,6 @@
 import React from "react";
 import MenuContent from "./MenuContent";
-import { MenuProvider } from "./MenuContext";
+import { MenuProvider } from "../../contexts/MenuContext";
 
 
 

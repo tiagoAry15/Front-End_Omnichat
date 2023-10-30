@@ -3,7 +3,7 @@ import React from "react"
 //import { Analytics } from '@vercel/analytics/react';
 import { Switch, BrowserRouter as Router } from "react-router-dom"
 import { connect } from "react-redux"
-import { SocketProvider } from "./contexts/SocketContext";
+import { SocketProvider } from '/src/contexts/SocketContext.jsx';
 import { authProtectedRoutes, publicRoutes } from "./routes"
 
 import Authmiddleware from "./routes/route"

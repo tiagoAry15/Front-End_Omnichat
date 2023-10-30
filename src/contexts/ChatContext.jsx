@@ -1,11 +1,10 @@
-import React, { createContext, useState, useEffect } from 'react';
-import whatsappIcon from "../../assets/images/chat/whatsappIcon.png";
-import instagramIcon from "../../assets/images/chat/instagramIcon.png";
-import facebookIcon from "../../assets/images/chat/MenssagerIcon.png";
+import React, { createContext, useState, useEffect, useContext } from 'react';
+import whatsappIcon from "../assets/images/chat/whatsappIcon.png";
+import instagramIcon from "../assets/images/chat/instagramIcon.png";
+import facebookIcon from "../assets/images/chat/MenssagerIcon.png";
 import { useDispatch, useSelector } from "react-redux";
-import { io } from 'socket.io-client';
 import { isEmpty } from "lodash";
-import { toast } from 'react-toastify';
+
 import {
   addMessage as onAddMessage,
   addChat as onAddChat,
@@ -28,9 +27,9 @@ const ChatProvider = ({ children }) => {
   const [ChatBoxUsername, setChatBoxUsername] = useState("");
   const [Chat_Box_User_Status, setChatBoxUserStatus] = useState(false);
   const [currentMessage, setCurrentMessage] = useState("");
-  const [isToastActive, setIsToastActive] = useState(false);
+
   const [messages, setMessages] = useState("");
-  const { socket } = useContext(SocketContext);
+  const { socket, displayErrorToast } = useContext(SocketContext);
   const dispatch = useDispatch();
 
 
@@ -40,14 +39,6 @@ const ChatProvider = ({ children }) => {
     messenger: facebookIcon,
   }
 
-  useEffect(() => {
-
-    socket.on('message', (data) => {
-      console.log('message_received:', data);
-      handleMessage(data)
-    });
-
-  }, []);
 
   const { chats, error, isLoading, message } = useSelector(state => ({
     chats: state.chat.chats,
@@ -70,40 +61,27 @@ const ChatProvider = ({ children }) => {
 
 
   useEffect(() => {
+    if (socket) {
 
-    socket.on('connect', () => {
-      console.log('connected');
-    });
+      const handleMessageReceive = (data) => {
+        console.log('message_received:', data);
+        handleMessage(data);
+      };
+      socket.on('message', handleMessageReceive);
 
-    socket.on('connect_error', (error) => {
-      console.error("Error connecting to socket.io server:", error);
-    });
-
-    socket.on('message', (data) => {
-      console.log('message_received:', data);
-      handleMessage(data)
-    });
-
-  }, []);
-
-
-
-
-  const displayErrorToast = (message) => {
-    if (!isToastActive) {
-      setIsToastActive(true);
-      toast.error(message, {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        onClose: () => setIsToastActive(false) // Atualiza o estado quando o toast é fechado
-      });
+      // Clean up
+      return () => {
+        socket.off('message', handleMessageReceive);
+      };
     }
-  };
+  }, [socket]);
+
+
+
+
+
+
+
 
   useEffect(() => {
     if (error && error.message) {
@@ -186,8 +164,6 @@ const ChatProvider = ({ children }) => {
     setChatBoxUserStatus,
     currentMessage,
     setCurrentMessage,
-    isToastActive,
-    setIsToastActive,
     chats,
     handleMessage,
     userChatOpen,

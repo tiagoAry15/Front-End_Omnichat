@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './Menu.css';
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import MenuType from './MenuType';
-import { MenuContext } from "./MenuContext";
+import { MenuContext } from "../../contexts/MenuContext";
 
 const MenuContent = () => {
     const { t } = useTranslation(); // usando o hook useTranslation para obter a função t
