@@ -3,7 +3,7 @@ import axios from 'axios';
 const apiUrl = import.meta.env.VITE_GCP_URL;
 
 const ordersAPI = axios.create({
-    baseURL: apiUrl 
+    baseURL: apiUrl
 });
 
 export const getOrders = async () => {

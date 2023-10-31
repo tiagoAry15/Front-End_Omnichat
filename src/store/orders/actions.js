@@ -42,17 +42,22 @@ export const addOrderFail = error => ({
   payload: error,
 })
 
-export const updateOrder = orderData => ({
+export const updateOrder = orderData => (
+  console.warn('ativado', orderData),
+  {
   type: PUT_UPDATE_ORDER,
   orderData,
 })
 
-export const updateOrderSuccess = order => ({
+export const updateOrderSuccess = order => (
+  console.log('funcionou', order),
+  {
   type: PUT_UPDATE_ORDER_SUCCESS,
   payload: order,
 })
 
-export const updateOrderFail = error => ({
+export const updateOrderFail = error => (
+  {
   type: PUT_UPDATE_ORDER_FAIL,
   payload: error,
 })

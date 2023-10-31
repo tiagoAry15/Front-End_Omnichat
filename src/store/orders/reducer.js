@@ -4,7 +4,9 @@ import {
   POST_ADD_ORDER_SUCCESS,
   POST_ADD_ORDER_FAIL,
   PUT_UPDATE_ORDER_SUCCESS,
-  PUT_UPDATE_ORDER_FAIL
+  PUT_UPDATE_ORDER_FAIL,
+  DELETE_ORDER_SUCCESS,
+  DELETE_ORDER_FAIL
 } from "./actionTypes"
 
 const INIT_STATE = {
@@ -60,7 +62,23 @@ const OrderReducer = (state = INIT_STATE, action) => {
         error: action.payload,
         loading: false,
       }
+      
+    case DELETE_ORDER_SUCCESS:
+      const orderIdToDelete = action.payload;
+      const updatedOrders = state.orders.filter(order => order.id !== orderIdToDelete);
 
+      return {
+        ...state,
+        orders: updatedOrders,
+        loading: false,
+      }
+    
+    case DELETE_ORDER_FAIL:
+      return{
+        ...state,
+        error: action.payload,
+        loading: false,
+      }
     default:
       return {...state, loading: false}
   }
