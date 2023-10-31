@@ -12,7 +12,7 @@ export const getOrders = async () => {
             'Access-Control-Allow-Origin': '*' // Defina a origem correta
         };
 
-        const response = await ordersAPI.get(`/read_all_orders`);
+        const response = await ordersAPI.get(`/order_handler/read`);
         return response.data ? response.data : [];
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao obter pedidos";
@@ -24,7 +24,7 @@ export const getOrders = async () => {
 export const addOrder = async (orderData) => {
     try {
         if (!orderData) throw new Error("Dados de pedido inválidos");
-        const response = await ordersAPI.post(`/create_order`, orderData);
+        const response = await ordersAPI.post(`/orderHandler/create`, orderData);
         return response.data;
     } catch (error) {
         console.error("Erro ao adicionar pedido", error);
@@ -36,7 +36,8 @@ export const addOrder = async (orderData) => {
 export const updateOrder = async (orderData) => {
     try {
         if (!orderData) throw new Error("Dados de pedido inválidos");
-        const response = await ordersAPI.put(`/update_order`, orderData);
+        const headers = { "unique_id": orderData.orderId};
+        const response = await ordersAPI.put(`/orderHandler/update`, orderData, headers);
         return response.data;
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao atualizar pedidos";
@@ -48,7 +49,8 @@ export const updateOrder = async (orderData) => {
 export const deleteOrder = async (orderId) => {
     try {
         if (!orderId) throw new Error("ID de pedido inválido");
-        const response = await ordersAPI.delete(`/delete_order/${orderId}`);
+         const headers = { "unique_id": orderId};
+        const response = await ordersAPI.delete(`/orderHandler/delete`, headers);
         return response.data;
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao deletar pedido";

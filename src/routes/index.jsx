@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 
 import Orders from "../pages/Orders/Orders";
 
-import createOrder from "../pages/OrderScreen/createOrder";
+import createOrder from "../pages/Orders/createOrder";
 import DashboardSaas from "../pages/Dashboard-saas/index";
 import Chat from "../pages/Chat/Chat";
 
@@ -51,7 +51,7 @@ import ReCharts from "../pages/Charts/ReCharts";
 
 const authProtectedRoutes = [
   { path: "/", component: () => <Redirect to="/chat" /> },
-  { path: "/dashboard", component: () => <Redirect to="/chat" /> },
+
 
   //chat
   { path: "/chat", component: Chat },
@@ -59,7 +59,7 @@ const authProtectedRoutes = [
 
   { path: "/orders", component: Orders },
   { path: "/createorders", component: createOrder },
-  { path: "/dashboard-saas", component: DashboardSaas },
+  { path: "/dashboard", component: DashboardSaas },
 
   //   // //profile
   { path: "/profile", component: UserProfile },

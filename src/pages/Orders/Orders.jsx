@@ -1,8 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Container } from "reactstrap";
+import React, { useEffect, useState } from 'react';
+import {
+  Button,
+  Container,
+  Accordion,
+  AccordionBody,
+  AccordionHeader,
+  AccordionItem,
+  Input,
+  Form,
+  Label,
+  FormGroup,
+} from "reactstrap";
 import './Orders.css'
 import { toast, ToastContainer } from 'react-toastify';
-import { useDispatch, useSelector } from "react-redux";
+import { withTranslation } from "react-i18next";
 import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
 //Import Breadcrumb
@@ -10,34 +21,37 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 import PlatformIcon from './PopUpIcon';
 
-import {
-  getOrders as onGetOrders,
-  addOrder as onAddOrder,
-  updateOrder as onUpdateOrder,
-  deleteOrder as onDeleteOrder,
-
-} from "../../store/orders/actions";
-
-
-
+import { getOrders, deleteOrder, updateOrder } from '../../store/orders/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Orders = () => {
   const { t } = useTranslation();
   const [deletingOrderId, setDeletingOrderId] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({});
-  const orders = useSelector(state => state.orders.orders);
+  const [open, setOpen] = useState('');
   const dispatch = useDispatch();
 
   useEffect(() => {
-
-    dispatch(onGetOrders())
-
-
+    dispatch(getOrders());
   }, [dispatch]);
+
+
+  const orders = useSelector((state) => state.orders.orders)
 
   useEffect(() => {
     console.log(orders)
-  }, [orders]);
+  }, [orders])
+  const [orderToUpdate, setOrderToUpdate] = useState({
+    address: '',
+    communication: '',
+    customerName: '',
+    observation: '',
+    pizzaName: '',
+  });
+
+
+
 
   const handleSelectChange = (event, id) => {
     setSelectedOptions({
@@ -52,13 +66,13 @@ const Orders = () => {
 
   const handleDeleteOrder = (orderId) => {
     setDeletingOrderId(orderId);
-    /*
-        setTimeout(() => {
-          setOrders((prevOrders) => prevOrders.filter((order) => order.id !== orderId));
-          setDeletingOrderId(null);
-        }, 900);
-        */
+
+    setTimeout(() => {
+      dispatch(deleteOrder(orderId));
+      setDeletingOrderId(null);
+    }, 900);
   };
+
 
   const handleDelete = (id) => {
     toast.warn(
@@ -82,96 +96,142 @@ const Orders = () => {
     );
   };
 
-  /*
-  const [orders, setOrders] = useState([
-    {
-      id: 1,
-      customer: 'João',
-      pizza: 'Calabresa',
-      observation: 'Sem cebola',
-      status: 'Em preparação',
-      address: 'Rua Elizeu 1428',
-      platform: 'Messenger',
-      communication: 'joao@example.com'
-    },
-    {
-      id: 2,
-      customer: 'Maria',
-      pizza: 'Meia Marguerita Meia calabresa',
-      observation: 'Adicionar azeitonas',
-      status: 'Pronta para entrega',
-      address: 'Avenida Principal 789',
-      platform: 'Instagram',
-      communication: '999123456'
-    },
-    {
-      id: 3,
-      customer: 'Carlos',
-      pizza: 'Quatro Queijos',
-      observation: 'Com borda recheada de cheddar',
-      status: 'A caminho',
-      address: 'Rua das Flores 10',
-      platform: 'WhatsApp',
-      communication: '999987654'
-    },
-    {
-      id: 4,
-      customer: 'Ana',
-      pizza: 'Frango com Catupiry',
-      observation: 'Adicionar milho',
-      status: 'Entregue',
-      address: 'Rua dos Pássaros 25',
-      platform: 'Messenger',
-      communication: 'ana@example.com'
-    },
-    {
-      id: 5,
-      customer: 'Pedro',
-      pizza: 'Portuguesa e uma Coca Cola de 2 Litros',
-      observation: 'Sem cebola',
-      status: 'Entregue',
-      address: 'Rua das Palmeiras 512',
-      platform: 'WhatsApp',
-      communication: '9988776655'
+
+
+  const toggle = (id) => {
+    if (open === id) {
+      setOpen();
+    } else {
+      setOpen(id);
     }
-  ]);
+  };
 
 
-*/
+
+
+
+
+  const submitEditOrder = event => {
+    event.preventDefault()
+    const orderData = JSON.stringify(orderToUpdate);
+    dispatch(updateOrder(orderData))
+  }
+  const changeItem = event => {
+    setOrderToUpdate({
+      ...orderToUpdate,
+      [event.target.name]: event.target.value
+    })
+  }
 
   document.title = "Omnichat";
   return (
+
     <div className="page-content">
       <Container fluid={true}>
-        <Breadcrumbs title='Omnichat' breadcrumbItem={t("OrderScreen")} />
+        <Breadcrumbs title='Omnichat' breadcrumbItem={t("Pedidos")} />
         <div style={styles.container} className='right'>
-          {Array.isArray(orders) && orders.map(order => (
-            <div key={order.id} style={styles.card} className={`order-item ${deletingOrderId === order.id ? 'up' : ''}`}>
+          {orders.map((order, index) => (
+            <div key={index} style={styles.card} className={`order-item ${deletingOrderId === index ? 'up' : ''}`}>
               <div style={styles.container_between}>
-                <h3 style={styles.customer}>{order.customerName}</h3>
+                <h3 style={styles.customerName}>{index + 1}: {order.customerName}</h3>
                 <PlatformIcon platform={order.platform} communication={order.communication} />
               </div>
               <p style={styles.pizza}>{order.pizza}</p>
-              <p className="observation-field">{order.observation !== "None" ? order.observation : "Sem observações"}</p>
+              <p className="observation-field"><p><strong>Detalhes do pedido:</strong></p>{order.pizzaName} <p><br></br><strong>Observação:</strong></p>{order.observation}</p>
               <div style={styles.container_between}>
                 <select
-                  value={order.status || ''}
-                  onChange={(event) => handleSelectChange(event, order.id)}
-                  className={selectedOptions[order.id] ? `selected-${selectedOptions[order.id].toLowerCase()}` : 'select'}
+                  value={selectedOptions[index] || ''}
+                  onChange={(event) => handleSelectChange(event, index)}
+                  className={selectedOptions[index] ? `selected-${selectedOptions[index].toLowerCase()}` : 'select'}
                 >
                   <option value="">Selecione</option>
                   <option value="Em preparação">Em preparação</option>
                   <option value="Pronto para entrega">Pronto para entrega</option>
                   <option value="A caminho">A caminho</option>
                   <option value="Entregue" >Entregue </option>
-                  <option value="Cancelado" >Cancelado </option>
                 </select>
                 <i className="bx bx-map map_icon" onClick={() => handleCopy(order.address)}></i>
               </div>
-              <Button color='danger' className='mt-3 d-grid width btn' onClick={() => handleDelete(order.id)}>
-                Encerrar atendimento
-              </Button>
+
+
+              <Accordion flush open={open} toggle={toggle}>
+                <AccordionItem>
+                  <AccordionHeader targetId={index} className='btn-update'>
+                    <strong>Atualizar pedido</strong>
+                  </AccordionHeader>
+                  <AccordionBody accordionId={index}>
+                    <Form
+                      onSubmit={submitEditOrder}
+                    >
+                      <FormGroup>
+                        <Label>
+                          Nome
+                        </Label>
+                        <Input
+                          type="text"
+                          name="customerName"
+                          placeholder={order.customerName}
+                          value={orderToUpdate.customerName}
+                          onChange={changeItem}
+
+
+                        />
+                        <Label>
+                          Pizza
+                        </Label>
+                        <Input
+                          type="text"
+                          name="pizzaName"
+                          placeholder={order.pizzaName}
+                          value={orderToUpdate.pizzaName}
+                          onChange={changeItem}
+
+                        />
+                        <Label>
+                          Comunicação
+                        </Label>
+                        <Input
+                          type="text"
+                          name="communication"
+                          placeholder={order.communication}
+                          value={orderToUpdate.communication}
+                          onChange={changeItem}
+                        />
+                        <Label>
+                          Observação
+                        </Label>
+                        <Input
+                          type="text"
+                          name="observation"
+                          placeholder={order.observation}
+                          value={orderToUpdate.observation}
+                          onChange={changeItem}
+                        />
+                        <Label>
+                          Endereço
+                        </Label>
+                        <Input
+                          type="text"
+                          name="address"
+                          placeholder={order.address}
+                          value={orderToUpdate.address}
+                          onChange={changeItem}
+                        />
+
+                      </FormGroup>
+                      <Button color='success'>
+                        Atualizar pedido!
+                      </Button>
+                      <Button color='danger' className='mt-3 d-grid width btn' onClick={() => handleDelete(index)}>
+                        Encerrar atendimento
+                      </Button>
+                    </Form>
+
+                  </AccordionBody>
+                </AccordionItem>
+              </Accordion>
             </div>
+
           ))}
           <ToastContainer />
         </div>
@@ -205,7 +265,7 @@ const styles = {
     width: '300px',
     height: '100%'
   },
-  customer: {
+  customerName: {
     fontSize: '18px',
     fontWeight: 'bold',
     marginBottom: '10px',
@@ -216,4 +276,6 @@ const styles = {
 
 };
 
-export default Orders;
+
+
+export default withTranslation()(Orders);;

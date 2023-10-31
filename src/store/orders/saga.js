@@ -23,12 +23,11 @@ import { getOrders, addOrder, updateOrder, deleteOrder } from './api';
 
 function* onGetOrders() {
   try {
-    console.log('Call API...');
-    const response = yield call(fetch, 'https://us-central1-pizzadobill-rpin.cloudfunctions.net/read_all_orders');
-    console.log('API CHAMADA COM SUCESSO');
-    const data = yield response.json();
-    console.log('API DATA: ', data);
-    yield put(getOrdersSuccess(data))
+
+    const response = yield call(getOrders);
+   
+    console.log('Response:', response);
+    yield put(getOrdersSuccess(response))
   } catch (error) {
     console.error('Erro ao chamar a API:', error);
     yield put(getOrdersFail(error));
