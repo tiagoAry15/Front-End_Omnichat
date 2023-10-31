@@ -1,10 +1,11 @@
-import React, { useEffect, useState} from "react";
-import { Container,
+import React, { useEffect, useState } from "react";
+import {
+  Container,
   Row,
   Col,
   Card,
   CardBody,
-   } from "reactstrap";
+} from "reactstrap";
 
 import { Link } from "react-router-dom";
 
@@ -22,8 +23,8 @@ import CardUser from "./card-user";
 import MiniWidget from "./mini-widget";
 import Earning from "./earning";
 import SalesAnalytics from "./sales-analytics";
-import TotalSellingProduct from "./total-selling-product";
 import SocialSource from "./SocialSource";
+
 
 
 const DashboardSaas = (props) => {
@@ -102,7 +103,7 @@ const DashboardSaas = (props) => {
           </Row>
           <Row>
 
-          <Earning dataColors='["--bs-primary"]' />
+            <Earning dataColors='["--bs-primary"]' />
             <Col xl="4">
               <SocialSource />
             </Col>

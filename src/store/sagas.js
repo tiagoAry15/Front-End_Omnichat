@@ -11,7 +11,7 @@ import contactsSaga from "./contacts/saga";
 import ordersSaga from "./orders/saga";
 import dashboardSaasSaga from "./dashboard-saas/saga";
 import dashboardSaga from "./dashboard/saga";
-
+import menuSaga from "./menu/saga";
 export default function* rootSaga() {
   yield all([
     //public
@@ -23,6 +23,7 @@ export default function* rootSaga() {
     fork(chatSaga),
     fork(contactsSaga),
     fork(ordersSaga),
+    fork(menuSaga),
     fork(dashboardSaasSaga),
     fork(dashboardSaga),
   ])

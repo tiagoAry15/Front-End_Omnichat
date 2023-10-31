@@ -30,18 +30,18 @@ const PlatformIcon = ({ platform, communication }) => {
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-    
-      <img className="img-register-menssager"   onClick={handleCopy}
+
+      <img className="img-register-menssager" onClick={handleCopy}
         src={
-            platform === "WhatsApp" 
-                ? WhatsAppIcon
-                : platform === "Messenger"
-                    ? MessagerIcon
-                    : platform === "Instagram"
-                      ? InstagramIcon
-                      : null
-        } 
-    alt="Ícone da Plataforma" />
+          platform === "WhatsApp" || platform === "Whatsapp"
+            ? WhatsAppIcon
+            : platform === "Messenger" || platform === "Facebook"
+              ? MessagerIcon
+              : platform === "Instagram"
+                ? InstagramIcon
+                : null
+        }
+        alt="Ícone da Plataforma" />
 
       {showPopup && (
         <div className="communication-popup">

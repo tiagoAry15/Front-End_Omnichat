@@ -8,3 +8,38 @@ padding-bottom: 1% ;
 .AddButton {
     border-radius: 100%;
 }
+.loadingContainer {
+    display: flex;
+    flex-direction: column; /* Isso garante que o spinner e o h1 sejam empilhados verticalmente */
+    align-items: center; /* Alinha horizontalmente ao centro */
+    justify-content: center; /* Alinha verticalmente ao centro */
+    
+    /* Para garantir que o container ocupe toda a altura e largura da viewport */
+    position: fixed;
+    top: 0;
+    left: 15%;
+    right: 0;
+    bottom: 5%;
+    
+    /* Caso queira que o fundo seja um pouco escurecido ou de uma cor específica */
+    /* Isso dará um fundo levemente escurecido. Ajuste conforme necessário */
+
+    /* Se você quer um pequeno espaçamento entre o spinner e o texto */
+    gap: 1rem;
+}
+
+/* Estilizações adicionais para o h1, se necessário */
+.loadingContainer h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+.errorContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: red;
+    /* Outras estilizações conforme necessário */
+}

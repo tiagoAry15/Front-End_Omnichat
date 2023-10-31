@@ -40,7 +40,7 @@ const ChatProvider = ({ children }) => {
   }
 
 
-  const { chats, error, isLoading, message } = useSelector(state => ({
+  const { chats, error, isLoading } = useSelector(state => ({
     chats: state.chat.chats,
     error: state.chat.error,
     isLoading: state.chat.loading

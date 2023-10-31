@@ -12,7 +12,7 @@ export const getOrders = async () => {
             'Access-Control-Allow-Origin': '*' // Defina a origem correta
         };
 
-        const response = await ordersAPI.get(`/get_all_orders`, { headers });
+        const response = await ordersAPI.get(`/read_all_orders`);
         return response.data ? response.data : [];
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao obter pedidos";

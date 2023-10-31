@@ -28,7 +28,7 @@ const ChatWindow = () => {
       <Card className="border_rounded">
         <div className="p-4 border-bottom" id='divHeader'>
           {currentPhoneNumber && (
-            <div className='headerClass'>
+            <Row className='headerClass'>
               <Col md="4" xs="9">
                 <h5 className="font-size-15 mb-1">{ChatBoxUsername}</h5>
                 <p className="text-muted mb-0">

@@ -1,22 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Container } from "reactstrap";
-import './OrderScreen.css'
+import './Orders.css'
 import { toast, ToastContainer } from 'react-toastify';
-
+import { useDispatch, useSelector } from "react-redux";
 import 'react-toastify/dist/ReactToastify.css';
 import { useTranslation } from 'react-i18next';
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 
 import PlatformIcon from './PopUpIcon';
-import PerfectScrollbar from "react-perfect-scrollbar";
+
+import {
+  getOrders as onGetOrders,
+  addOrder as onAddOrder,
+  updateOrder as onUpdateOrder,
+  deleteOrder as onDeleteOrder,
+
+} from "../../store/orders/actions";
 
 
 
-const OrderScreen = () => {
+
+const Orders = () => {
   const { t } = useTranslation();
   const [deletingOrderId, setDeletingOrderId] = useState(null);
   const [selectedOptions, setSelectedOptions] = useState({});
+  const orders = useSelector(state => state.orders.orders);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+
+    dispatch(onGetOrders())
+
+
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log(orders)
+  }, [orders]);
 
   const handleSelectChange = (event, id) => {
     setSelectedOptions({
@@ -31,11 +52,12 @@ const OrderScreen = () => {
 
   const handleDeleteOrder = (orderId) => {
     setDeletingOrderId(orderId);
-
-    setTimeout(() => {
-      setOrders((prevOrders) => prevOrders.filter((order) => order.id !== orderId));
-      setDeletingOrderId(null);
-    }, 900);
+    /*
+        setTimeout(() => {
+          setOrders((prevOrders) => prevOrders.filter((order) => order.id !== orderId));
+          setDeletingOrderId(null);
+        }, 900);
+        */
   };
 
   const handleDelete = (id) => {
@@ -60,6 +82,7 @@ const OrderScreen = () => {
     );
   };
 
+  /*
   const [orders, setOrders] = useState([
     {
       id: 1,
@@ -114,7 +137,7 @@ const OrderScreen = () => {
   ]);
 
 
-
+*/
 
   document.title = "Omnichat";
   return (
@@ -122,17 +145,17 @@ const OrderScreen = () => {
       <Container fluid={true}>
         <Breadcrumbs title='Omnichat' breadcrumbItem={t("OrderScreen")} />
         <div style={styles.container} className='right'>
-          {orders.map(order => (
+          {Array.isArray(orders) && orders.map(order => (
             <div key={order.id} style={styles.card} className={`order-item ${deletingOrderId === order.id ? 'up' : ''}`}>
               <div style={styles.container_between}>
-                <h3 style={styles.customer}>{order.id}: {order.customer}</h3>
+                <h3 style={styles.customer}>{order.customerName}</h3>
                 <PlatformIcon platform={order.platform} communication={order.communication} />
               </div>
               <p style={styles.pizza}>{order.pizza}</p>
-              <p className="observation-field">{order.observation}</p>
+              <p className="observation-field">{order.observation !== "None" ? order.observation : "Sem observações"}</p>
               <div style={styles.container_between}>
                 <select
-                  value={selectedOptions[order.id] || ''}
+                  value={order.status || ''}
                   onChange={(event) => handleSelectChange(event, order.id)}
                   className={selectedOptions[order.id] ? `selected-${selectedOptions[order.id].toLowerCase()}` : 'select'}
                 >
@@ -141,6 +164,7 @@ const OrderScreen = () => {
                   <option value="Pronto para entrega">Pronto para entrega</option>
                   <option value="A caminho">A caminho</option>
                   <option value="Entregue" >Entregue </option>
+                  <option value="Cancelado" >Cancelado </option>
                 </select>
                 <i className="bx bx-map map_icon" onClick={() => handleCopy(order.address)}></i>
               </div>
@@ -192,4 +216,4 @@ const styles = {
 
 };
 
-export default OrderScreen;
+export default Orders;

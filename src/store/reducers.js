@@ -19,7 +19,7 @@ import orders from "./orders/reducer"
 
 import DashboardSaas from "./dashboard-saas/reducer";
 import Dashboard from "./dashboard/reducer";
-
+import menu from "./menu/reducer";
 const rootReducer = combineReducers({
 
   Layout,
@@ -30,6 +30,7 @@ const rootReducer = combineReducers({
   chat,
   contacts,
   orders,
+  menu,
   DashboardSaas,
   Dashboard,
 })

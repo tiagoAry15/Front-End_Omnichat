@@ -17,9 +17,9 @@ const ChatList = (props) => {
 
               <PerfectScrollbar style={{ height: "410px" }}>
                 {isLoading ? (
-                  <div className="loading-message" style={{ display: "flex" }}>
+                  <div className="loading-container" style={{ display: "flex" }}>
                     <Spinner style={{ width: '1rem', height: '1rem' }} />
-                    <p className="loading-message-text">carregando conversas</p>
+                    <p className="loading-container-text">carregando conversas</p>
                   </div>
                 )
                   : !chats ? (
