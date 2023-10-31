@@ -33,9 +33,9 @@ const PlatformIcon = ({ platform, communication }) => {
     
       <img className="img-register-menssager"   onClick={handleCopy}
         src={
-            platform === "WhatsApp" 
+            platform === "Whatsapp" 
                 ? WhatsAppIcon
-                : platform === "Messenger"
+                : platform === "Facebook"
                     ? MessagerIcon
                     : platform === "Instagram"
                       ? InstagramIcon

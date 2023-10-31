@@ -2,6 +2,7 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 
 import OrderScreen from "../pages/OrderScreen/OrderScreen";
+import createOrder from "../pages/OrderScreen/createOrder";
 import DashboardSaas from "../pages/Dashboard-saas/index";
 import Chat from "../pages/Chat/Chat";
 
@@ -54,6 +55,7 @@ const authProtectedRoutes = [
   { path: "/chat", component: Chat },
 
   { path: "/orders", component: OrderScreen },
+  { path: "/createorders", component: createOrder },
   { path: "/dashboard-saas", component: DashboardSaas },
 
   //   // //profile
