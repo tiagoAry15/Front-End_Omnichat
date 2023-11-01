@@ -156,66 +156,6 @@ const Register = props => {
                           <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
                         ) : null}
                       </div>
-                     
-
-                      <div className="mb-3">
-                        <div>
-                          <Label className="form-label">Whatsapp</Label>
-                          <img className="img-register" src={whatts}/>
-                        </div>
-                        <Input
-                          name="number"
-                          type="text"
-                          placeholder="Número"
-                          onChange={validation.handleChange} 
-                          onBlur={validation.handleBlur}
-                          value={validation.values.username || ""}
-                          invalid={
-                            validation.touched.username && validation.errors.username ? true : false
-                          }
-                        />
-                        {validation.touched.username && validation.errors.username ? (
-                          <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
-                        ) : null}
-                      </div>
-                      <div className="mb-3">
-                        <Label className="form-label">Menssager</Label>
-                        <img className="img-register-menssager" src={menssager}/>
-                        <Input
-                          id="email"
-                          name="email"
-                          className="form-control"
-                          placeholder="Email do Menssager"
-                          type="email"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.email || ""}
-                          invalid={
-                            validation.touched.email && validation.errors.email ? true : false
-                          }
-                        />
-                        {validation.touched.email && validation.errors.email ? (
-                          <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
-                        ) : null}
-                      </div>
-                      <div className="mb-3">
-                        <Label className="form-label">Senha do Menssager</Label>
-                        <img className="img-register-menssager" src={menssager}/>
-                        <Input
-                          name="password"
-                          type="password"
-                          placeholder="Senha"
-                          onChange={validation.handleChange}
-                          onBlur={validation.handleBlur}
-                          value={validation.values.password || ""}
-                          invalid={
-                            validation.touched.password && validation.errors.password ? true : false
-                          }
-                        />
-                        {validation.touched.password && validation.errors.password ? (
-                          <FormFeedback type="invalid">{validation.errors.password}</FormFeedback>
-                        ) : null}
-                      </div>
 
                       <div className="mt-3 d-grid">
                         <Button

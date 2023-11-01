@@ -17,9 +17,6 @@ const ChatWindow = () => {
     setCurrentMessage,
     setMessageBox,
     addMessage,
-    booleanName,
-    chatStatus,
-    setChatStatus
   } = useContext(ChatContext);
 
 

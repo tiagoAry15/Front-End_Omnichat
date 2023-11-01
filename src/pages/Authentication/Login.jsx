@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label, Button } from "reactstrap";
 
@@ -37,7 +37,9 @@ const Login = props => {
       password: Yup.string().required("Por favor insira sua Senha"),
     }),
     onSubmit: (values) => {
+      console.log(values, props.history)
       dispatch(loginUser(values, props.history));
+
     }
   });
 
@@ -45,6 +47,11 @@ const Login = props => {
     error: state.Login.error,
   }));
 
+  useEffect(() => {
+    if (error && error !== "") {
+      console.log(error)
+    }
+  }, [error]);
   return (
     <React.Fragment>
 
@@ -85,7 +92,8 @@ const Login = props => {
                         return false;
                       }}
                     >
-                      {error ? <Alert color="danger">{error}</Alert> : null}
+                      {error && error !== "" ? <Alert color="danger">{error.message}</Alert> : null}
+
 
                       <div className="mb-3">
                         <Label className="form-label">Email</Label>
@@ -160,8 +168,8 @@ const Login = props => {
                   </Link>{" "}
                 </p>
                 <p>
-                  © {new Date().getFullYear()} 
-                  <i className="mdi mdi-heart text-danger" /> 
+                  © {new Date().getFullYear()}
+                  <i className="mdi mdi-heart text-danger" />
                 </p>
               </div>
             </Col>

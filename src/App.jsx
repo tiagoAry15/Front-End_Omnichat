@@ -13,10 +13,10 @@ import HorizontalLayout from "./components/HorizontalLayout/"
 import NonAuthLayout from "./components/NonAuthLayout"
 
 import "./assets/scss/theme.scss"
+import { initFirebaseBackend } from './helpers/firebase_helper';
+import { firebaseConfig } from '../firebase_SDK';
 
-import fakeBackend from "/src/helpers/AuthType/fakeBackend";
-
-fakeBackend();
+initFirebaseBackend(firebaseConfig)
 
 
 

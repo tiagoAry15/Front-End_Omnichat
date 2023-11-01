@@ -4,7 +4,7 @@ import instagramIcon from "../assets/images/chat/instagramIcon.png";
 import facebookIcon from "../assets/images/chat/MenssagerIcon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { isEmpty } from "lodash";
-
+import { createSelector } from 'reselect';
 import {
   addMessage as onAddMessage,
   addChat as onAddChat,
@@ -32,6 +32,20 @@ const ChatProvider = ({ children }) => {
   const { socket, displayErrorToast } = useContext(SocketContext);
   const dispatch = useDispatch();
 
+  const selectChats = createSelector(
+    state => state.chat.chats,
+    chats => chats
+  );
+
+  const selectError = createSelector(
+    state => state.chat.error,
+    error => error
+  );
+
+  const selectIsLoading = createSelector(
+    state => state.chat.loading,
+    loading => loading
+  );
 
   const social_icons = {
     whatsapp: whatsappIcon,
@@ -39,12 +53,11 @@ const ChatProvider = ({ children }) => {
     messenger: facebookIcon,
   }
 
+  const chats = useSelector(selectChats);
+  const error = useSelector(selectError);
+  const isLoading = useSelector(selectIsLoading);
 
-  const { chats, error, isLoading } = useSelector(state => ({
-    chats: state.chat.chats,
-    error: state.chat.error,
-    isLoading: state.chat.loading
-  }));
+
 
 
   useEffect(() => {
@@ -75,11 +88,6 @@ const ChatProvider = ({ children }) => {
       };
     }
   }, [socket]);
-
-
-
-
-
 
 
 

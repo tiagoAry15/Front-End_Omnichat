@@ -27,7 +27,8 @@ const ProfileMenu = (props) => {
       console.log(import.meta.env.VITE_APP_DEFAULTAUTH);
       if (import.meta.env.VITE_APP_DEFAULTAUTH === "firebase") {
         const obj = JSON.parse(localStorage.getItem("authUser"));
-        setusername(obj.displayName);
+        const emailPart = obj.email.split('@')[0];
+        setusername(emailPart);
       } else if (
         import.meta.env.VITE_APP_DEFAULTAUTH === "fake" ||
         import.meta.env.VITE_APP_DEFAULTAUTH === "jwt"

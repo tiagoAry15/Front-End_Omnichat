@@ -43,8 +43,8 @@ function CardUser(props) {
                     <div className="flex-grow-1 align-self-center">
                       <div className="text-muted">
                         <p className="mb-2">Bem vindo</p>
-                        <h5 className="mb-1">Usuário</h5>
-                        <p className="mb-0">Situação: Decadente</p>
+                        <h5 className="mb-1">Davi Frota</h5>
+                        <p className="mb-0">Funcionário</p>
                       </div>
                     </div>
                   </div>
@@ -57,7 +57,7 @@ function CardUser(props) {
                       <Col xs="4">
                         <div>
                           <p className="text-muted text-truncate mb-2">
-                            Pedidos total(diario)
+                            Pedidos total
                           </p>
                           <h5 className="mb-0">48</h5>
                         </div>
@@ -85,28 +85,28 @@ function CardUser(props) {
 
                 <Col lg="4" className="d-none  d-lg-block">
 
-        
+
 
                   <div className="clearfix mt-4 mt-lg-0">
-                  <div className="float-end ms-4">
-                    <div className="input-group input-group-sm">
-                      <select
-                        className="form-select form-select-sm"
-                        value={seletedMonth}
-                        onChange={(e) => {
-                          onChangeMonth(e.target.value);
-                        }}
-                      >
-                        <option value="Mensal">Mensal</option>
-                        <option value="3Meses">3 Meses</option>
-                        <option value="6Meses">6 Meses</option>
-                        <option value="Anual">Anual</option>
-                      </select>
-                      {/* <div className="input-group-append"> */}
-                      {/* <label className="input-group-text">Month</label> */}
-                      {/* </div> */}
+                    <div className="float-end ms-4">
+                      <div className="input-group input-group-sm">
+                        <select
+                          className="form-select form-select-sm"
+                          value={seletedMonth}
+                          onChange={(e) => {
+                            onChangeMonth(e.target.value);
+                          }}
+                        >
+                          <option value="Mensal">Mensal</option>
+                          <option value="3Meses">3 Meses</option>
+                          <option value="6Meses">6 Meses</option>
+                          <option value="Anual">Anual</option>
+                        </select>
+                        {/* <div className="input-group-append"> */}
+                        {/* <label className="input-group-text">Month</label> */}
+                        {/* </div> */}
+                      </div>
                     </div>
-                  </div>
                     <Dropdown
                       isOpen={settingsMenu}
                       toggle={() => {
@@ -125,7 +125,7 @@ function CardUser(props) {
                     </Dropdown>
                   </div>
 
-                  
+
 
                 </Col>
 

@@ -1,7 +1,7 @@
 import axios from 'axios';
 let accessToken = null;
 
-const apiUrl = import.meta.env.VITE_GCP_URL;
+const apiUrl = import.meta.env.VITE_GCP_URL + '/conversation_handler';
 
 const ChatsAPI = axios.create({
     baseURL: apiUrl 
