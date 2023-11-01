@@ -26,4 +26,4 @@ dist-ssr
 
 .env
 yarn.lock
-firebase_SDK.js
+
