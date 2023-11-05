@@ -19,6 +19,7 @@ const MenuReducer = (state = INIT_STATE, action) => {
       return {
         ...state,
         menu: action.payload,
+        error: [],
         loading: false,
       }
 
