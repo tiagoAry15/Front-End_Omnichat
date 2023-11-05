@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = import.meta.env.VITE_GCR_MIDDLEWARE_URL;
+const apiUrl = import.meta.env.VITE_GCR_MIDDLEWARE_URL + '/speisekarte';
 const MenuAuthor = import.meta.env.VITE_MENU_AUTHOR;
 const menuAPI = axios.create({
     baseURL: apiUrl 
@@ -13,6 +13,7 @@ export const getMenu = async () => {
         };
 
         const response = await menuAPI.get(`/get_menu_by_author/${MenuAuthor}`);
+        console.log(response.data);
         return response.data ? response.data : [];
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao obter pedidos";

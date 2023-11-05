@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Container, Form, Spinner } from "reactstrap";
 import { ToastContainer } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
@@ -12,10 +12,17 @@ import { MenuContext } from "../../contexts/MenuContext";
 const MenuContent = () => {
     const { t } = useTranslation(); // usando o hook useTranslation para obter a função t
 
-    const { menu, saveMenu, isEditing, setIsEditing, loading, error, loadMenu } = useContext(MenuContext);
+    const { menu, loading, error, saveMenu, isEditing, setIsEditing, loadMenu } = useContext(MenuContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [pendingAction, setPendingAction] = useState(null);
-    const [actualMenu, setActualMenu] = useState(menu);
+
+    const [actualMenu, setActualMenu] = useState(null);
+
+    useEffect(() => {
+        if (menu) {
+            setActualMenu(JSON.parse(JSON.stringify(menu)));
+        }
+    }, [menu]);
     const performAction = (action) => {
         switch (action) {
             case 'save':
@@ -64,7 +71,7 @@ const MenuContent = () => {
         <div className="page-content">
             <Container fluid={true}>
                 <Breadcrumbs title='Omnichat' breadcrumbItem={t("Cardápio")} />
-                {loading ? (
+                {!loading ? (
                     <>
                         <div className="customContainer">
 
@@ -88,10 +95,10 @@ const MenuContent = () => {
 
                         </div>
                         <Form>
-                            {Object.keys(actualMenu).map((item, index) => {
+                            {actualMenu && Object.keys(actualMenu).map((item, index) => {
                                 if (Array.isArray(actualMenu[item])) {
                                     return (
-                                        <MenuType key={index}
+                                        <MenuType key={item}
                                             Name={item}
                                             items={actualMenu[item]}
                                             onItemsChange={handleMenuChange} />
@@ -101,7 +108,7 @@ const MenuContent = () => {
                             })}
                             <ToastContainer />
                             <div className="customContainer">
-                                <span>Versão {actualMenu.Versao}</span>
+                                <span>Versão {actualMenu && actualMenu.Versão}</span>
                                 <Button
                                     onClick={() => {
                                         setPendingAction('save');
@@ -114,8 +121,9 @@ const MenuContent = () => {
                             </div>
 
                         </Form>
-                    </>) : error ? (<div className="errorContainer">
+                    </>) : error && error.length > 0 ? (<div className="errorContainer">
                         <h3>Ocorreu um erro ao carregar o cardápio.</h3>
+                        <h1>{error}</h1>
                         <Button
                             onClick={() => {
                                 // Ao clicar no botão, tente obter o menu novamente.

@@ -12,28 +12,21 @@ import { useContext } from 'react';
 const MenuContext = createContext();
 
 const MenuProvider = ({ children }) => {
-
+    const menu = useSelector(state => state.menu.menu);
+    const error = useSelector(state => state.menu.error);
+    const loading = useSelector(state => state.menu.loading);
 
     const { displayErrorToast } = useContext(SocketContext);
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const dispatch = useDispatch();
 
-    const menu = useSelector(state => state.menu.menu);
-    const error = useSelector(state => state.menu.error);
-    const loading = useSelector(state => state.menu.loading);
+
     const MenuAuthor = import.meta.env.VITE_MENU_AUTHOR;
     useEffect(() => {
         loadMenu()
     }, [dispatch])
 
-
-    useEffect(() => {
-        if (error) {
-            console.log('error', error)
-            displayErrorToast(error.message)
-        }
-    }, [error])
 
     function loadMenu() {
         dispatch(onGetMenu())
@@ -51,8 +44,8 @@ const MenuProvider = ({ children }) => {
     {
         menu,
         loading,
-        isEditing,
         error,
+        isEditing,
         setIsEditing,
         isSaving,
         setIsSaving,

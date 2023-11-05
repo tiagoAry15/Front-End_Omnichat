@@ -66,6 +66,7 @@ const MenuType = (props) => {
                         {props.items.map((item) => {
                             return (
                                 <tr key={item.id}>
+                                    {item.id}
                                     <td>
                                         <Input
                                             disabled={!isEditing}
@@ -83,8 +84,8 @@ const MenuType = (props) => {
                                             disabled={!isEditing}
                                             type="number"
                                             placeholder='R$'
-                                            value={item.preco}
-                                            onChange={(e) => handleInputChange(e, item.id, 'preco')} />
+                                            value={item.preço}
+                                            onChange={(e) => handleInputChange(e, item.id, 'preço')} />
                                     </td>
                                     {isEditing ?
                                         <td>
