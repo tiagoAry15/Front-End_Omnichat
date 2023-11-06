@@ -6,11 +6,11 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import PlatformIcon from './PopUpIcon';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { OrderScreenContext } from './OrderScreenContext';
+import { OrderContext } from './OrderContext';
 import { useTranslation } from 'react-i18next';
 
 
-const OrderScreenContent = () => {
+const OrderContent = () => {
 
   const {
     deletingOrderId,
@@ -22,8 +22,10 @@ const OrderScreenContent = () => {
     handleDelete,
     toggle,
     submitEditOrder,
-    changeItem
-  } = useContext(OrderScreenContext);
+    changeItem,
+    orderToUpdate,
+    open,
+  } = useContext(OrderContext);
 
   const { t } = useTranslation();
 
@@ -32,7 +34,7 @@ const OrderScreenContent = () => {
 
     <div className="page-content">
       <Container fluid={true}>
-        <Breadcrumbs title='Omnichat' breadcrumbItem={t("OrderScreen")} />
+        <Breadcrumbs title='Omnichat' breadcrumbItem={t("Order")} />
         <div style={styles.container} className='right'>
           {orders.map((order, index) => (
             <div key={orderKeys[index]} style={styles.card} className={`order-item ${deletingOrderId === orderKeys[index] ? 'up' : ''}`}>
@@ -180,4 +182,4 @@ const styles = {
 
 };
 
-export default OrderScreenContent;
+export default OrderContent;

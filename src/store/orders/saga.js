@@ -44,9 +44,9 @@ function* onAddOrder({ order }) {
   }
 }
 
-function* onUpdateOrder({ order }) {
+function* onUpdateOrder({ orderData }) {
   try {
-    const response = yield call(updateOrder, order);
+    const response = yield call(updateOrder, orderData);
     yield put(updateOrderSuccess(response));
   } catch (error) {
     console.error(error)
