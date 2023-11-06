@@ -1,11 +1,13 @@
 import axios from 'axios';
-let accessToken = null;
 
 const apiUrl = import.meta.env.VITE_GCP_URL + '/conversation_handler';
+const middlewareApiUrl = import.meta.env.VITE_GCR_MIDDLEWARE_URL;
 
+import.meta.env.VITE_GCR_MIDDLEWARE_URL ;
 const ChatsAPI = axios.create({
     baseURL: apiUrl 
 });
+
 
 
 export const getChats = async () => {
@@ -50,11 +52,15 @@ export const updateChat = async (chatData) => {
 export const addMessage = async (messageData) => {
     try {
         if (!messageData) throw new Error("Dados de mensagem inválidos");
-        const response = await ChatsAPI.post(`/add_message`, messageData);
+         const MiddlewareChatsAPI = axios.create({
+            baseURL: middlewareApiUrl + '/conversations'
+        });
+        const response = await MiddlewareChatsAPI.post(`/send_message_to_user/${messageData.phoneNumber}`, messageData);
         console.log('adicionou mensagem ',response.data )
         return response.data;
     } catch (error) {
         console.error("Erro ao adicionar mensagem", error);
+        error.message = "Erro na comunicação com o servidor ao adicionar mensagem";
         throw error;
     }
 }

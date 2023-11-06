@@ -80,6 +80,7 @@ const ChatProvider = ({ children }) => {
         console.log('message_received:', data);
         handleMessage(data);
       };
+      socket.on('notification', () => { console.log('notification') });
       socket.on('message', handleMessageReceive);
 
       // Clean up
@@ -122,18 +123,18 @@ const ChatProvider = ({ children }) => {
     console.log(messages);
   };
 
-  const addMessage = (messageData) => {
+  const sendMessageToUser = () => {
 
     console.log(currentPhoneNumber);
 
     const message = {
 
-      phoneNumber: messageData.phoneNumber,
-      sender: messageData.sender,
-      body: messageData.body,
-      time: messageData.time,
+      phoneNumber: currentPhoneNumber,
+      sender: "Bot",
+      body: currentMessage,
     };
     try {
+      console.log(message)
       dispatch(onAddMessage(message));
       return message;
     } catch (err) {
@@ -178,7 +179,8 @@ const ChatProvider = ({ children }) => {
     onKeyPress,
     social_icons,
     messages,
-    isLoading
+    isLoading,
+    sendMessageToUser
   };
 
 

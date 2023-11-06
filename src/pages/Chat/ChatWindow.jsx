@@ -16,7 +16,7 @@ const ChatWindow = () => {
     onKeyPress,
     setCurrentMessage,
     setMessageBox,
-    addMessage,
+    sendMessageToUser,
   } = useContext(ChatContext);
 
 
@@ -51,39 +51,55 @@ const ChatWindow = () => {
                 style={{ height: '55vh' }}
                 containerRef={(ref) => setMessageBox(ref)}
               >
-                <li>
-                  <div className="chat-day-title">
-                    <span className="title">Today</span>
-                  </div>
-                </li>
+
 
                 {chats && chats.map((chat) => {
                   if (chat.phoneNumber === currentPhoneNumber) {
-                    return chat.messagePot.map((message) => {
-                      return (
-                        <li
-                          key={'test_k' + message.id}
-                          className={
-                            message.sender === currentUser.name ||
-                              message.sender === 'Bot' ||
-                              message.sender === 'ChatBot'
-                              ? 'right'
-                              : 'left'
-                          }
-                        >
-                          <div className="conversation-list">
-                            <div className="ctext-wrap">
-                              <div className="conversation-name">
-                                {message.sender}
-                              </div>
-                              <p>{message.body}</p>
-                              <p className="chat-time mb-0">
-                                {message.time}{' '}
-                                <i className="bx bx-check-double align-middle me-1"></i>
-                              </p>
+                    let lastDate = '';
+                    return chat.messagePot.map((message, index) => {
+                      let [msgDate, msgTime] = message.time.split(' ');
+                      const messageDate = new Date(msgDate).toDateString();
+
+                      let dateHeader = null;
+                      if (index === 0 || messageDate !== lastDate) {
+                        dateHeader = (
+                          <li key={'date_' + message.time}>
+                            <div className="chat-day-title">
+                              <span className="title">{messageDate}</span>
                             </div>
-                          </div>
-                        </li>
+                          </li>
+                        );
+                      }
+
+                      // Atualize a última data conhecida
+                      lastDate = messageDate;
+                      return (
+                        <>
+                          {dateHeader}
+                          <li
+                            key={'test_k' + message.id}
+                            className={
+                              message.sender === currentUser.name ||
+                                message.sender === 'Bot' ||
+                                message.sender === 'ChatBot'
+                                ? 'right'
+                                : 'left'
+                            }
+                          >
+                            <div className="conversation-list">
+                              <div className="ctext-wrap">
+                                <div className="conversation-name">
+                                  {message.sender}
+                                </div>
+                                <p>{message.body}</p>
+                                <p className="chat-time mb-0">
+                                  {msgTime}{' '}
+                                  <i className="bx bx-check-double align-middle me-1"></i>
+                                </p>
+                              </div>
+                            </div>
+                          </li>
+                        </>
                       );
                     });
                   }
@@ -109,8 +125,8 @@ const ChatWindow = () => {
               <Col className="col-auto">
                 <Button
                   color="primary"
-                  disabled={!currentPhoneNumber}
-                  onClick={() => addMessage(currentMessage)}
+                  disabled={!currentPhoneNumber || !currentMessage}
+                  onClick={() => sendMessageToUser()}
                   className="btn1 border_rounded"
                 >
                   <span className="d-none d-sm-inline-block me-2">Send</span>{' '}
