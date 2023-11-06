@@ -13,6 +13,19 @@ import {
   showRightSidebarAction
 } from "../../store/actions";
 
+import {
+  makeSelectIsPreloader,
+  makeSelectLayoutModeType,
+  makeSelectLeftSideBarThemeImage,
+  makeSelectLayoutWidth,
+  makeSelectLeftSideBarType,
+  makeSelectTopbarTheme,
+  makeSelectShowRightSidebar,
+  makeSelectLeftSideBarTheme,
+
+  // ... import other selectors as needed
+} from './selectors'; // Adjust the import path according to your file structure
+
 // Layout Related Components
 import Header from "./Header";
 import Sidebar from "./Sidebar";
@@ -24,26 +37,16 @@ import { useSelector, useDispatch } from "react-redux";
 
 const Layout = props => {
   const dispatch = useDispatch();
-  
-  const {
-    isPreloader,
-    leftSideBarThemeImage,
-    layoutWidth,
-    leftSideBarType,
-    topbarTheme,
-    showRightSidebar,
-    leftSideBarTheme,
-    layoutModeType
-  } = useSelector(state => ({
-    isPreloader: state.Layout.isPreloader,
-    layoutModeType : state.Layout.layoutModeType,
-    leftSideBarThemeImage: state.Layout.leftSideBarThemeImage,
-    leftSideBarType: state.Layout.leftSideBarType,
-    layoutWidth: state.Layout.layoutWidth,
-    topbarTheme: state.Layout.topbarTheme,
-    showRightSidebar: state.Layout.showRightSidebar,
-    leftSideBarTheme: state.Layout.leftSideBarTheme,
-  }));
+
+  const isPreloader = useSelector(makeSelectIsPreloader);
+  const layoutModeType = useSelector(makeSelectLayoutModeType);
+  const leftSideBarThemeImage = useSelector(makeSelectLeftSideBarThemeImage);
+  const layoutWidth = useSelector(makeSelectLayoutWidth);
+  const leftSideBarType = useSelector(makeSelectLeftSideBarType);
+  const topbarTheme = useSelector(makeSelectTopbarTheme);
+  const showRightSidebar = useSelector(makeSelectShowRightSidebar);
+  const leftSideBarTheme = useSelector(makeSelectLeftSideBarTheme);
+
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
