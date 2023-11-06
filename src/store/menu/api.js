@@ -38,6 +38,7 @@ export const updateMenu = async (menuData) => {
     try {
         if (!menuData) throw new Error("Dados de pedido inválidos");
         const response = await menuAPI.put(`/update_menu_by_author/${MenuAuthor}`, menuData);
+        
         return response.data;
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao atualizar pedidos";

@@ -15,7 +15,7 @@ const MenuContent = () => {
     const { menu, loading, error, saveMenu, isEditing, setIsEditing, loadMenu } = useContext(MenuContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [pendingAction, setPendingAction] = useState(null);
-
+    const [isResetting, setIsResetting] = useState(false);
     const [actualMenu, setActualMenu] = useState(null);
 
     useEffect(() => {
@@ -23,19 +23,29 @@ const MenuContent = () => {
             setActualMenu(JSON.parse(JSON.stringify(menu)));
         }
     }, [menu]);
+    const resetMenu = () => {
+
+        setIsResetting(true)
+        setActualMenu(JSON.parse(JSON.stringify(menu)));
+        setTimeout(() => setIsResetting(false), 0);
+        setIsEditing(false);
+    }
+
     const performAction = (action) => {
         switch (action) {
             case 'save':
                 saveMenu(actualMenu);
                 break;
             case 'cancel':
-                setActualMenu(JSON.parse(JSON.stringify(menu)));
+                resetMenu()
                 break;
             default:
                 break;
         }
-        setIsEditing(false);
+
+
     };
+
 
     const toggleModal = (action) => {
         if (action) {
@@ -60,6 +70,7 @@ const MenuContent = () => {
     };
 
     const handleMenuChange = (menuName, items) => {
+        console.log('atualizando menu global...')
         setActualMenu(prev => ({
             ...prev,
             [menuName]: items
@@ -101,7 +112,8 @@ const MenuContent = () => {
                                         <MenuType key={item}
                                             Name={item}
                                             items={actualMenu[item]}
-                                            onItemsChange={handleMenuChange} />
+                                            onItemsChange={handleMenuChange}
+                                            isResetting={isResetting} />
                                     );
                                 }
                                 return null; // Retorne null se não for um array

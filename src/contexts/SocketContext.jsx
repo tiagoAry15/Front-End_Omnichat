@@ -25,6 +25,21 @@ const SocketProvider = ({ children }) => {
             });
         }
     };
+    const displaySuccessToast = (message) => {
+        if (!isToastActive) {
+            setIsToastActive(true);
+            toast.success(message, {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                onClose: () => setIsToastActive(false) // Atualiza o estado quando o toast é fechado
+            });
+        }
+    }
     useEffect(() => {
 
         const socket = io(socket_url, {
@@ -68,7 +83,8 @@ const SocketProvider = ({ children }) => {
     {
         socket,
         setSocket,
-        displayErrorToast
+        displayErrorToast,
+        displaySuccessToast,
 
 
     };

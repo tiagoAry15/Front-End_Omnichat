@@ -29,18 +29,18 @@ function* onGetMenu() {
 }
 
 
-function* oncreateMenu({ Menu }) {
+function* oncreateMenu({ menuData }) {
   try {
-    const response = yield call(createMenu, Menu);
+    const response = yield call(createMenu, menuData);
     yield put(addMenuSuccess(response));
   } catch (error) {
     yield put(addMenuFail(error));
   }
 }
 
-function* onUpdateMenu({ Menu }) {
+function* onUpdateMenu({ menuData }) {
   try {
-    const response = yield call(updateMenu, Menu);
+    const response = yield call(updateMenu, menuData);
     yield put(updateMenuSuccess(response));
   } catch (error) {
     yield put(updateMenuFail(error));

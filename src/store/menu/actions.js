@@ -24,9 +24,9 @@ export const getMenuFail = error => ({
   payload: error,
 })
 
-export const addMenu = menu => ({
+export const addMenu = menuData => ({
   type: POST_ADD_MENU,
-  menu,
+  menuData,
 })
 
 export const addMenuSuccess = menu => ({
@@ -39,9 +39,9 @@ export const addMenuFail = error => ({
   payload: error,
 })
 
-export const updateMenu = menu => ({
+export const updateMenu = menuData => ({
   type: PUT_UPDATE_MENU,
-  menu,
+  menuData,
 })
 
 export const updateMenuSuccess = menu => ({
