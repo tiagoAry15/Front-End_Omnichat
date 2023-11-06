@@ -8,10 +8,7 @@ const ordersAPI = axios.create({
 
 export const getOrders = async () => {
     try {
-        const headers = {
-            'Access-Control-Allow-Origin': '*' // Defina a origem correta
-        };
-
+    
         const response = await ordersAPI.get(`/order_handler/read`);
         return response.data ? response.data : [];
     } catch (error) {
@@ -20,6 +17,17 @@ export const getOrders = async () => {
     }
 }
 
+export const getOrderById = async (orderId) => {
+    try {
+        if (!orderId) throw new Error("ID de pedido inválido");
+        const headers = { "unique_id": orderId};
+        const response = await ordersAPI.get(`/order_handler/read`, headers);
+        return response.data;
+    } catch (error) {
+        error.message = "Erro na comunicação com o servidor ao obter pedidos";
+        throw error;
+    }
+}
 // Adicionar um novo pedido
 export const addOrder = async (orderData) => {
     try {

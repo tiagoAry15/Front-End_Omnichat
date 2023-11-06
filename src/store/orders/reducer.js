@@ -1,6 +1,8 @@
 import {
   GET_ORDERS_SUCCESS,
   GET_ORDERS_FAIL,
+  GET_ORDER_BY_ID_SUCCESS,
+  GET_ORDER_BY_ID_FAIL,
   POST_ADD_ORDER_SUCCESS,
   POST_ADD_ORDER_FAIL,
   PUT_UPDATE_ORDER_SUCCESS,
@@ -25,6 +27,20 @@ const OrderReducer = (state = INIT_STATE, action) => {
       }
 
     case GET_ORDERS_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      }
+    
+    case GET_ORDER_BY_ID_SUCCESS:
+      return {
+        ...state,
+        orders: [...state.orders, action.payload],
+        loading: false,
+      }
+    
+    case GET_ORDER_BY_ID_FAIL:
       return {
         ...state,
         error: action.payload,

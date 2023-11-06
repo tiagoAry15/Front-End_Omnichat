@@ -2,6 +2,7 @@ import { takeEvery, put, call, takeLatest } from "redux-saga/effects";
 
 import {
   GET_ORDERS,
+  GET_ORDER_BY_ID,
   POST_ADD_ORDER,
   PUT_UPDATE_ORDER,
   DELETE_ORDER,
@@ -10,6 +11,8 @@ import {
 import {
   getOrdersSuccess,
   getOrdersFail,
+  getOrderByIdSuccess,
+  getOrderByIdFail,
   addOrderSuccess,
   addOrderFail,
   updateOrderSuccess,
@@ -19,7 +22,7 @@ import {
 
 } from "./actions";
 
-import { getOrders, addOrder, updateOrder, deleteOrder } from './api';
+import { getOrders, getOrderById, addOrder, updateOrder, deleteOrder} from './api';
 
 function* onGetOrders() {
   try {
@@ -31,6 +34,15 @@ function* onGetOrders() {
   } catch (error) {
     console.error('Erro ao chamar a API:', error);
     yield put(getOrdersFail(error));
+  }
+}
+
+function* onGetOrderById({ orderId }) {
+  try {
+    const response = yield call(getOrderById, orderId);
+    yield put(getOrderByIdSuccess(response));
+  } catch (error) {
+    yield put(getOrderByIdFail(error));
   }
 }
 
@@ -65,6 +77,7 @@ function* onDeleteOrder({ orderId }) {
 
 
 function* orderSaga() {
+  yield takeEvery(GET_ORDER_BY_ID, onGetOrderById);
   yield takeLatest(GET_ORDERS, onGetOrders);
   yield takeEvery(POST_ADD_ORDER, onAddOrder);
   yield takeEvery(PUT_UPDATE_ORDER, onUpdateOrder);

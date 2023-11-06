@@ -1,8 +1,16 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrders, deleteOrder, updateOrder } from '../../store/orders/actions';
+
+
+import {
+  getOrders as onGetOrders,
+  getOrderById as onGetOrderById,
+  deleteOrder as onDeleteOrder,
+  updateOrder as onUpdateOrder,
+} from '../store/orders/actions';
 import { toast } from 'react-toastify';
+import { SocketContext } from "./SocketContext";
 const OrderContext = createContext();
 const OrderProvider = ({ children }) => {
 
@@ -11,10 +19,10 @@ const OrderProvider = ({ children }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [open, setOpen] = useState('');
   const dispatch = useDispatch();
-
+  const { socket, displayErrorToast, displaySuccessToast } = useContext(SocketContext);
   const result = useSelector((state) => state.orders)
   useEffect(() => {
-    dispatch(getOrders());
+    dispatch(onGetOrders());
   }, [dispatch]);
   const [orderToUpdate, setOrderToUpdate] = useState({
 
@@ -24,6 +32,26 @@ const OrderProvider = ({ children }) => {
     observation: '',
     pizzaName: '',
   });
+
+
+  useEffect(() => {
+    if (socket) {
+
+      const handleOrderReceive = (orderId) => {
+        displaySuccessToast(t('orderReceived'));
+        dispatch(onGetOrderById(orderId));
+      };
+
+      socket.on('order', handleOrderReceive);
+
+      // Clean up
+      return () => {
+        socket.off('order', handleOrderReceive);
+      };
+    }
+  }, [socket]);
+
+
 
   if (!result || !result.orders) {
     return null;
@@ -39,6 +67,7 @@ const OrderProvider = ({ children }) => {
     });
   };
 
+
   const handleCopy = (address) => {
     navigator.clipboard.writeText(address)
   };
@@ -47,7 +76,7 @@ const OrderProvider = ({ children }) => {
     setDeletingOrderId(orderId);
 
     setTimeout(() => {
-      dispatch(deleteOrder(orderId));
+      dispatch(onDeleteOrder(orderId));
       setDeletingOrderId(null);
     }, 900);
   };
@@ -87,8 +116,9 @@ const OrderProvider = ({ children }) => {
   const submitEditOrder = event => {
     event.preventDefault()
     const orderData = JSON.stringify(orderToUpdate);
-    dispatch(updateOrder(orderData))
+    dispatch(onUpdateOrder(orderData))
   }
+
   const changeItem = event => {
     setOrderToUpdate({
       ...orderToUpdate,

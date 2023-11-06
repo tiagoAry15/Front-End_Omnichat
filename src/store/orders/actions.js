@@ -2,6 +2,9 @@ import {
   GET_ORDERS,
   GET_ORDERS_SUCCESS,
   GET_ORDERS_FAIL,
+  GET_ORDER_BY_ID,
+  GET_ORDER_BY_ID_SUCCESS,
+  GET_ORDER_BY_ID_FAIL,
   POST_ADD_ORDER,
   POST_ADD_ORDER_SUCCESS,
   POST_ADD_ORDER_FAIL,
@@ -24,6 +27,21 @@ export const getOrdersSuccess = orders => ({
 
 export const getOrdersFail = error => ({
   type: GET_ORDERS_FAIL,
+  payload: error,
+})
+
+export const getOrderById = orderId => ({
+  type: GET_ORDER_BY_ID,
+  orderId,
+})
+
+export const getOrderByIdSuccess = order => ({
+  type: GET_ORDER_BY_ID_SUCCESS,
+  payload: order,
+})
+
+export const getOrderByIdFail = error => ({
+  type: GET_ORDER_BY_ID_FAIL,
   payload: error,
 })
 

@@ -3,7 +3,7 @@ import './Orders.css'
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import OrderContent from './OrderContent'; // Use import padrão
-import { OrderProvider } from './OrderContext';
+import { OrderProvider } from '../../contexts/OrderContext';
 
 const Orders = () => {
   return (

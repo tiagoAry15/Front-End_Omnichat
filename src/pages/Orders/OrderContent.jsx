@@ -6,7 +6,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import PlatformIcon from './PopUpIcon';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { OrderContext } from './OrderContext';
+import { OrderContext } from '../../contexts/OrderContext';
 import { useTranslation } from 'react-i18next';
 
 
