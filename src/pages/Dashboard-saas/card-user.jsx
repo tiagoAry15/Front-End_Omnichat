@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useSelector } from "react-redux"
 import {
   Row,
   Col,
@@ -16,7 +17,7 @@ import avatar1 from "../../assets/images/users/Icone_Usuario.png"
 function CardUser(props) {
   const [settingsMenu, setSettingsMenu] = useState(false)
   const [seletedMonth, setSeletedMonth] = useState("Mensal");
-
+  const user = useSelector((state) => state.Login.user);
   const onChangeMonth = (value) => {
     setSeletedMonth(value);
     dispatch(getEarningChartsData(value));
@@ -43,8 +44,8 @@ function CardUser(props) {
                     <div className="flex-grow-1 align-self-center">
                       <div className="text-muted">
                         <p className="mb-2">Bem vindo</p>
-                        <h5 className="mb-1">Davi Frota</h5>
-                        <p className="mb-0">Funcionário</p>
+                        <h6 className="mb-1">{user['email']}</h6>
+
                       </div>
                     </div>
                   </div>

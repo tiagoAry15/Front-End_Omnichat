@@ -30,8 +30,8 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 import Menssager from "../../assets/images/chat/MenssagerIcon.png";
 import whatts from "../../assets/images/chat/whatsappIcon.png";
 import voltar from "../../assets/images/chat/return.png";
-
-
+import avatar from "../../assets/images/users/Icone_Usuario.png";
+import emailIcon from "../../assets/images/mail.png";
 // actions
 import { editProfile, resetProfileFlag } from "../../store/actions";
 
@@ -54,8 +54,8 @@ const UserProfile = (props) => {
     if (localStorage.getItem("authUser")) {
       const obj = JSON.parse(localStorage.getItem("authUser"));
       if (import.meta.env.VITE_APP_DEFAULTAUTH === "firebase") {
-        console.log("hh", import.meta.env.VITE_APP_DEFAULTAUTH)
-        setname(obj.displayName);
+
+        setname(obj.email.split("@")[0]);
         setemail(obj.email);
         setidx(obj.uid);
       } else if (
@@ -79,6 +79,7 @@ const UserProfile = (props) => {
     initialValues: {
       username: name || '',
       idx: idx || '',
+      email: email || '',
     },
     validationSchema: Yup.object({
       username: Yup.string().required("Por favor coloque seu nome de Usuário"),
@@ -92,7 +93,7 @@ const UserProfile = (props) => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          
+
           <Breadcrumb title="Omnichat" breadcrumbItem={props.t("Profile")} />
 
           <Row>
@@ -135,10 +136,10 @@ const UserProfile = (props) => {
                   return false;
                 }}
               >
-                <div style={{display:'flex', flexDirection:'row'}}>
+                <div style={styles.centralize_container}>
                   <div className="form-profile">
                     <Label className="form-label">{props.t("Username")}</Label>
-                    <img className="img-register" src={avatar}/>
+                    <img className="img-register" src={avatar} />
                     <Input
                       name="username"
                       // value={name}
@@ -157,62 +158,30 @@ const UserProfile = (props) => {
                     ) : null}
                     <Input name="idx" value={idx} type="hidden" />
                   </div>
+
+                </div>
+                <div style={styles.centralize_container}>
                   <div className="form-profile">
-                    <Label className="form-label">{props.t("WhatsappNumber")}</Label>
-                    <img className="img-register" src={whatts}/>
+                    <Label className="form-label">{props.t("Email")}</Label>
+                    <img className="img-register-menssager" src={emailIcon} />
                     <Input
-                      name="number"
+                      name="email"
                       className="form-control"
-                      placeholder={props.t("WhatsappNumber")}
-                      type="text"
+                      placeholder={props.t("Email")}
+                      type="email"
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
-                      value={validation.values.username || ""}
+                      value={validation.values.email || ""}
                       invalid={
-                        validation.touched.username && validation.errors.username ? true : false
+                        validation.touched.email && validation.errors.email ? true : false
                       }
                     />
-                    {validation.touched.username && validation.errors.username ? (
-                      <FormFeedback type="invalid">{validation.errors.username}</FormFeedback>
+                    {validation.touched.email && validation.errors.email ? (
+                      <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
                     ) : null}
                     <Input name="idx" value={idx} type="hidden" />
                   </div>
-                </div>
-                <div style={{display:'flex', flexDirection:'row'}}>
-                  <div className="form-profile">
-                    <Label className="form-label">{props.t("EmailMenssager")}</Label>
-                    <img className="img-register-menssager" src={Menssager}/>
-                    <Input
-                     name="email"
-                     className="form-control"
-                     placeholder={props.t("EmailMenssager")}
-                     type="email"
-                     onChange={validation.handleChange}
-                     onBlur={validation.handleBlur}
-                     value={validation.values.email || ""}
-                     invalid={
-                       validation.touched.email && validation.errors.email ? true : false
-                     }
-                   />
-                   {validation.touched.email && validation.errors.email ? (
-                     <FormFeedback type="invalid">{validation.errors.email}</FormFeedback>
-                   ) : null}
-                    <Input name="idx" value={idx} type="hidden" />
-                  </div>
-                  <div className="form-profile">
-                    <Label className="form-label">{props.t("PasswordMenssager")}</Label>
-                    <img className="img-register-menssager" src={Menssager}/>
-                    <Input
-                      name="password"
-                      className="form-control"
-                      placeholder={props.t("PasswordMenssager")}
-                      type="text"
-                      onChange={validation.handleChange}
-                      onBlur={validation.handleBlur}
-                      value={validation.values.username || ""}
-                    />
-                    <Input name="idx" value={idx} type="hidden" />
-                  </div>
+
                 </div>
                 <div className="text-center mt-4">
                   <Button className="btn-auth" type="submit" color="danger">
@@ -227,5 +196,40 @@ const UserProfile = (props) => {
     </React.Fragment>
   );
 };
+
+const styles = {
+  centralize_container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  container_between: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: '8px',
+    margin: '10px',
+    padding: '20px',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '300px',
+    height: '100%'
+  },
+  customerName: {
+    fontSize: '18px',
+    fontWeight: 'bold',
+    marginBottom: '10px',
+  },
+  pizza: {
+    fontSize: '16px',
+  },
+
+};
+
 
 export default withRouter(withTranslation()(UserProfile));

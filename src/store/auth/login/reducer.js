@@ -9,6 +9,7 @@ import {
 const initialState = {
   error: "",
   loading: false,
+  user: JSON.parse(localStorage.getItem("authUser")),
 }
 
 const login = (state = initialState, action) => {
