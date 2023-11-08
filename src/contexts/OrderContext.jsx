@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -139,7 +139,6 @@ const OrderProvider = ({ children }) => {
         orderToUpdate,
         handleSelectChange,
         handleCopy,
-        handleDelete,
         toggle,
         submitEditOrder,
         changeItem,

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = import.meta.env.VITE_GCP_URL + '/conversation_handler';
+const apiUrl = import.meta.env.VITE_GCF_URL + '/conversation_handler';
 const middlewareApiUrl = import.meta.env.VITE_GCR_MIDDLEWARE_URL;
 
 import.meta.env.VITE_GCR_MIDDLEWARE_URL ;

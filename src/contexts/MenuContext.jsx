@@ -41,7 +41,7 @@ const MenuProvider = ({ children }) => {
         return messages.join('\n');
     };
 
-    function loadMenu() {
+    const loadMenu = () => {
         dispatch(onGetMenu())
     }
     const saveMenu = (newMenu) => {

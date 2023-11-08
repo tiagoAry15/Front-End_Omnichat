@@ -82,60 +82,14 @@ const MenuContent = () => {
         <div className="page-content">
             <Container fluid={true}>
                 <Breadcrumbs title='Omnichat' breadcrumbItem={t("Cardápio")} />
-                {!loading ? (
-                    <>
-                        <div className="customContainer">
-
-                            <h5>Horário de funcionamento: {menu.HorárioDeFuncionamento}</h5>
-                            <Button
-                                onClick={() => {
-                                    if (!isEditing) {
-                                        setIsEditing(true);
-                                        setActualMenu(JSON.parse(JSON.stringify(menu)));
-                                        return;
-                                    } else {
-                                        setPendingAction('cancel');
-                                        setIsModalOpen(true);
-                                    }
-                                }}
-                                className='btn btn-primary'>
-                                {isEditing ? "Cancelar" : "Editar"}
-                                <i className="bx bx-edit-alt" style={{ marginLeft: "5px" }}></i>
-
-                            </Button>
-
-                        </div>
-                        <Form>
-                            {actualMenu && Object.keys(actualMenu).map((item, index) => {
-                                if (Array.isArray(actualMenu[item])) {
-                                    return (
-                                        <MenuType key={item}
-                                            Name={item}
-                                            items={actualMenu[item]}
-                                            onItemsChange={handleMenuChange}
-                                            isResetting={isResetting} />
-                                    );
-                                }
-                                return null; // Retorne null se não for um array
-                            })}
-                            <ToastContainer />
-                            <div className="customContainer">
-                                <span>Versão {actualMenu && actualMenu.Versão}</span>
-                                <Button
-                                    onClick={() => {
-                                        setPendingAction('save');
-                                        setIsModalOpen(true);
-                                    }}
-                                    className='btn btn-primary ' disabled={!isEditing}>
-                                    <i className="bx bx-save" style={{ marginRight: "5px" }} />
-                                    Salvar
-                                </Button>
-                            </div>
-
-                        </Form>
-                    </>) : error && error.length > 0 ? (<div className="errorContainer">
-                        <h3>Ocorreu um erro ao carregar o cardápio.</h3>
-                        <h1>{error}</h1>
+                {loading == true ? (
+                    <div className="loadingContainer">
+                        <Spinner style={{ width: '6rem', height: '6rem', }} />
+                        <h3>Carregando cardápio...</h3>
+                    </div>
+                ) : error.message ? (
+                    <div className="errorContainer">
+                        <h3>{error.message}</h3>
                         <Button
                             onClick={() => {
                                 // Ao clicar no botão, tente obter o menu novamente.
@@ -144,12 +98,59 @@ const MenuContent = () => {
                             className="btn btn-danger">
                             Tentar novamente
                         </Button>
-                    </div>) : (
-                    <div className="loadingContainer">
-                        <Spinner style={{ width: '6rem', height: '6rem', }} />
-                        <h3>Carregando cardápio...</h3>
+                    </div>
+                ) : (<>
+                    <div className="customContainer">
 
-                    </div>)}
+                        <h5>Horário de funcionamento: {menu.HorárioDeFuncionamento}</h5>
+                        <Button
+                            onClick={() => {
+                                if (!isEditing) {
+                                    setIsEditing(true);
+                                    setActualMenu(JSON.parse(JSON.stringify(menu)));
+                                    return;
+                                } else {
+                                    setPendingAction('cancel');
+                                    setIsModalOpen(true);
+                                }
+                            }}
+                            className='btn btn-primary'>
+                            {isEditing ? "Cancelar" : "Editar"}
+                            <i className="bx bx-edit-alt" style={{ marginLeft: "5px" }}></i>
+
+                        </Button>
+
+                    </div>
+                    <Form>
+                        {actualMenu && Object.keys(actualMenu).map((item, index) => {
+                            if (Array.isArray(actualMenu[item])) {
+                                return (
+                                    <MenuType key={item}
+                                        Name={item}
+                                        items={actualMenu[item]}
+                                        onItemsChange={handleMenuChange}
+                                        isResetting={isResetting} />
+                                );
+                            }
+                            return null; // Retorne null se não for um array
+                        })}
+                        <ToastContainer />
+                        <div className="customContainer">
+                            <span>Versão {actualMenu && actualMenu.Versão}</span>
+                            <Button
+                                onClick={() => {
+                                    setPendingAction('save');
+                                    setIsModalOpen(true);
+                                }}
+                                className='btn btn-primary ' disabled={!isEditing}>
+                                <i className="bx bx-save" style={{ marginRight: "5px" }} />
+                                Salvar
+                            </Button>
+                        </div>
+
+                    </Form>
+                </>
+                )}
             </Container>
             <GeneralModal
                 isOpen={isModalOpen}

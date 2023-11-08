@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiUrl = import.meta.env.VITE_GCP_URL;
+const apiUrl = import.meta.env.VITE_GCF_URL;
 
 const ordersAPI = axios.create({
     baseURL: apiUrl
