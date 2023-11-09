@@ -22,14 +22,18 @@ export const getChats = async () => {
 }
 
 // Adicionar um novo chat
-export const addChat = async (chatData) => {
+export const addChat = async (phoneNumber) => {
     try {
-        if (!chatData) throw new Error("Dados de chat inválidos");
+        if (!phoneNumber) throw new Error("Número de telefone inválido");
+        
         const response = await ChatsAPI.get(`/get_all_conversations`);
-        var new_chat = response.data.filter(chat => chat.phoneNumber == chatData.phoneNumber)
-        return new_chat == [] ? []: new_chat[0];
+        var new_chat = response.data.filter(chat => chat.phoneNumber == phoneNumber);
+        
+        if (new_chat.length === 0) throw new Error("Nenhum chat encontrado com o número fornecido");
+        
+        return new_chat[0];
     } catch (error) {
-        console.error("Erro ao adicionar chat", error);
+        console.error("Erro ao adicionar chat: ", error);
         throw error;
     }
 }

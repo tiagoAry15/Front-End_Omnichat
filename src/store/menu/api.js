@@ -16,7 +16,7 @@ export const getMenu = async () => {
         console.log(response.data);
         return response.data ? response.data : [];
     } catch (error) {
-        error.message = "Erro na comunicação com o servidor ao obter pedidos";
+        error.message = "Erro na comunicação com o servidor ao obter cardápio";
         throw error;
     }
 }

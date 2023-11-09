@@ -56,9 +56,9 @@ function* onGetChats() {
   }
 }
 
-function* onAddChats({ chat }) {
+function* onAddChats({ phoneNumber }) {
   try {
-    const response = yield call(addChat, chat);
+    const response = yield call(addChat, phoneNumber);
    
     yield put(addChatSuccess(response));
   } catch (error) {

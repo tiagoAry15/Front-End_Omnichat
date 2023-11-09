@@ -100,11 +100,11 @@ const ChatProvider = ({ children }) => {
 
 
 
-  const handleMessage = (message) => {
-
-    dispatch(onAddChat(message));
-    if (message.phoneNumber === currentPhoneNumber) {
-      dispatch(onUpdateChat({ phoneNumber: message.phoneNumber, unreadMessages: 0 }));
+  const handleMessage = (data) => {
+    console.log(data)
+    dispatch(onAddChat(data.phoneNumber));
+    if (data.phoneNumber === currentPhoneNumber) {
+      dispatch(onUpdateChat({ phoneNumber: data.phoneNumber, unreadMessages: 0 }));
     }
   }
   const userChatOpen = (chat) => {

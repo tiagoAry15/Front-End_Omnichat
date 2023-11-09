@@ -27,6 +27,20 @@ const OrderContent = () => {
     open,
   } = useContext(OrderContext);
 
+  const buildOrderItemsText = orderItems => {
+    let orderItemsText = '';
+    let flavorsText = '';
+    orderItems.forEach((item) => {
+      if (item.flavors.length > 1) {
+        flavorsText = `(${item.flavors.join('/')})`;
+      }
+      else if (item.flavors.length === 1) {
+        flavorsText = `${item.flavors[0]}`;
+      }
+      orderItemsText += `${item.quantity} X ${flavorsText} ${item.size}\n`;
+    })
+    return orderItemsText;
+  }
   const { t } = useTranslation();
 
   document.title = "Omnichat";
@@ -43,7 +57,7 @@ const OrderContent = () => {
                 <PlatformIcon platform={order.platform} communication={order.communication} />
               </div>
               <p style={styles.pizza}>{order.pizza}</p>
-              <p className="observation-field"><p><strong>Detalhes do pedido:</strong></p>{order.pizzaName} <p><br></br><strong>Observação:</strong></p>{order.observation}</p>
+              <p className="observation-field"><p><strong>Detalhes do pedido:</strong>{buildOrderItemsText(order.orderItems)}<strong>Observação:</strong></p>{order.observation}</p>
               <div style={styles.container_between}>
                 <select
                   value={selectedOptions[orderKeys[index]] || ''}

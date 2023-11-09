@@ -25,9 +25,11 @@ const MenuProvider = ({ children }) => {
 
     const MenuAuthor = import.meta.env.VITE_MENU_AUTHOR;
     useEffect(() => {
-        loadMenu()
-    }, [dispatch])
+        // apenas carrega se o menu estiver vazio
+        loadMenu();
 
+        // Outras possíveis dependências podem ser adicionadas se necessário
+    }, []);
     const formatErrorMessage = (errors) => {
         let messages = [];
 
@@ -43,6 +45,7 @@ const MenuProvider = ({ children }) => {
 
     const loadMenu = () => {
         dispatch(onGetMenu())
+        console.log('carregar menu')
     }
     const saveMenu = (newMenu) => {
         console.log('newMenu', newMenu)
