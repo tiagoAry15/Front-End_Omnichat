@@ -57,7 +57,8 @@ const OrderContent = () => {
                 <PlatformIcon platform={order.platform} communication={order.communication} />
               </div>
               <p style={styles.pizza}>{order.pizza}</p>
-              <p className="observation-field"><p><strong>Detalhes do pedido:</strong>{buildOrderItemsText(order.orderItems)}<strong>Observação:</strong></p>{order.observation}</p>
+              <p className="observation-field">
+                <p><strong>Detalhes do pedido:</strong>{buildOrderItemsText(order.orderItems)}<strong>Observação:</strong></p>{order.observation}</p>
               <div style={styles.container_between}>
                 <select
                   value={selectedOptions[orderKeys[index]] || ''}

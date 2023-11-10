@@ -3,8 +3,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb";
 import ProfileMenu from "../../components/CommonForBoth/TopbarDropdown/ProfileMenu";
 import React, { Suspense } from "react";
 import ChatWindow from "./ChatWindow";
-
-const ChatList = React.lazy(() => import('./ChatList'));
+import ChatList from "./ChatList";
 
 const ChatContent = ({ t }) => {
 
@@ -32,9 +31,9 @@ const ChatContent = ({ t }) => {
                                             </div>
                                         </div>
                                     </div>
-                                    <Suspense fallback={<div>Loading...</div>}>
-                                        <ChatList t={t} />
-                                    </Suspense>
+
+                                    <ChatList t={t} />
+
                                 </div>
                             </div>
                             <ChatWindow t={t} />
