@@ -43,12 +43,12 @@ const OrderContent = (props) => {
   }
   const { t } = useTranslation();
 
-  document.title = "Omnichat";
+  document.title = t("pedidos-title-page");
   return (
 
     <div className="page-content">
       <Container fluid={true}>
-        <Breadcrumbs title='Omnichat' breadcrumbItem={t("Order")} />
+        <Breadcrumbs title='Omnichat' breadcrumbItem={t("OrderScreen")} />
         <div className='right orderContainer'>
           {orders.map((order, index) => (
             <Card style={{ width: '18rem'}}>
@@ -59,20 +59,21 @@ const OrderContent = (props) => {
                 <PlatformIcon platform={order.platform} communication={order.communication} />
               </div>
               </CardTitle>
+              <CardText>
               <p className='pizza'>{order.pizza}</p>
               <p className="observation-field"><p>
-                <strong>Detalhes do pedido:</strong>{buildOrderItemsText(order.orderItems)}<strong>Observação:</strong></p>{order.observation}</p>
+                <strong>{props.t("detalhesDoPedidoCard")}</strong>{buildOrderItemsText(order.orderItems)}<strong>{props.t("observacaoCard")}:</strong></p>{order.observation}</p>
               <div className='container_between'>
                 <select
                   value={selectedOptions[orderKeys[index]] || ''}
                   onChange={(event) => handleSelectChange(event, orderKeys[index])}
                   className={selectedOptions[orderKeys[index]] ? `selected-${selectedOptions[orderKeys[index]].toLowerCase()}` : 'select'}
                 >
-                  <option value="">Selecione</option>
-                  <option value="Em preparação">Em preparação</option>
-                  <option value="Pronto para entrega">Pronto para entrega</option>
-                  <option value="A caminho">A caminho</option>
-                  <option value="Entregue" >Entregue </option>
+                  <option value="">{props.t("selecione")}</option>
+                  <option value="Em preparação">{props.t("Preparation")}</option>
+                  <option value="Pronto para entrega">{props.t("Ready")}</option>
+                  <option value="A caminho">{props.t("EnRoute")}</option>
+                  <option value="Entregue" >{props.t("Delivered")} </option>
                 </select>
                 <i className="bx bx-map map_icon" onClick={() => handleCopy(order.address)}></i>
               </div>
@@ -81,7 +82,7 @@ const OrderContent = (props) => {
               <Accordion flush open={open} toggle={toggle}>
                 <AccordionItem>
                   <AccordionHeader targetId={orderKeys[index]} className='btn-update'>
-                    <strong>Atualizar pedido</strong>
+                    <strong>{props.t("updateOrderbtn")}</strong>
                   </AccordionHeader>
                   <AccordionBody accordionId={orderKeys[index]}>
                     <Form
@@ -89,7 +90,7 @@ const OrderContent = (props) => {
                     >
                       <FormGroup>
                         <Label>
-                          Nome
+                          {props.t("nomeLabel")}
                         </Label>
                         <Input
                           type="text"
@@ -112,7 +113,7 @@ const OrderContent = (props) => {
 
                         />
                         <Label>
-                          Comunicação
+                          {props.t("comunicacaoLabel")}
                         </Label>
                         <Input
                           type="text"
@@ -122,7 +123,7 @@ const OrderContent = (props) => {
                           onChange={changeItem}
                         />
                         <Label>
-                          Observação
+                          {props.t("observacaoLabel")}
                         </Label>
                         <Input
                           type="text"
@@ -132,7 +133,7 @@ const OrderContent = (props) => {
                           onChange={changeItem}
                         />
                         <Label>
-                          Endereço
+                          {props.t("enderecoLabel")}
                         </Label>
                         <Input
                           type="text"
@@ -144,16 +145,17 @@ const OrderContent = (props) => {
 
                       </FormGroup>
                       <Button color='success'>
-                        Atualizar pedido!
+                        {props.t("updateOrder")}
                       </Button>
                       <Button color='danger' className='mt-3 d-grid width btn' onClick={() => handleDelete(orderKeys[index])}>
-                        Encerrar atendimento
+                      {props.t("endSession")}
                       </Button>
                     </Form>
 
                   </AccordionBody>
                 </AccordionItem>
               </Accordion>
+              </CardText>
             </CardBody>
           </Card>
           ))}
