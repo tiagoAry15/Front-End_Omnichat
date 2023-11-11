@@ -74,9 +74,7 @@ const ChatProvider = ({ children }) => {
   }, [ReduxChats]);
 
 
-  useEffect(() => {
-    // Agora isso deve mostrar o estado atualizado
-  }, [chats]);
+
 
   useEffect(() => {
     if (!isEmpty(messages)) scrollToBottom();

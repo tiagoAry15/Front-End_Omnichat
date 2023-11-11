@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState, useContext } from 'react';
+import React, { createContext, useEffect, useState, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -20,7 +20,7 @@ const OrderProvider = ({ children }) => {
   const [open, setOpen] = useState('');
   const dispatch = useDispatch();
   const { socket, displayErrorToast, displaySuccessToast } = useContext(SocketContext);
-  const result = useSelector((state) => state.orders)
+  const ReduxOrders = useSelector((state) => state.orders.orders)
   useEffect(() => {
     dispatch(onGetOrders());
   }, [dispatch]);
@@ -33,13 +33,14 @@ const OrderProvider = ({ children }) => {
     pizzaName: '',
   });
 
+  const [orders, setOrders] = useState(ReduxOrders)
 
   useEffect(() => {
     if (socket) {
 
-      const handleOrderReceive = (orderId) => {
+      const handleOrderReceive = (order) => {
         displaySuccessToast(t('orderReceived'));
-        dispatch(onGetOrderById(orderId));
+        addNewOrder(order)
       };
 
       socket.on('order', handleOrderReceive);
@@ -49,16 +50,20 @@ const OrderProvider = ({ children }) => {
         socket.off('order', handleOrderReceive);
       };
     }
-  }, [socket]);
+  }, [orders, socket]);
 
 
+  useEffect(() => { setOrders(ReduxOrders) }, [ReduxOrders])
 
-  if (!result || !result.orders) {
+  const addNewOrder = order => {
+    setOrders(prevOrders => [...prevOrders, order]);
+  };
+
+  if (!orders) {
     return null;
   }
 
-  const orderKeys = Object.keys(result.orders);
-  const orders = orderKeys.map((key) => result.orders[key]);
+  const orderKeys = Object.keys(orders);
 
   const handleSelectChange = (event, id) => {
     setSelectedOptions({
@@ -126,24 +131,23 @@ const OrderProvider = ({ children }) => {
     })
   }
 
+  const orderContextValue = useMemo(() => ({
+    handleDelete,
+    handleDeleteOrder,
+    deletingOrderId,
+    selectedOptions,
+    open,
+    orders,
+    orderKeys,
+    orderToUpdate,
+    handleSelectChange,
+    handleCopy,
+    toggle,
+    submitEditOrder,
+    changeItem,
+  }), [orders]);
   return (
-    <OrderContext.Provider
-      value={{
-        handleDelete,
-        handleDeleteOrder,
-        deletingOrderId,
-        selectedOptions,
-        open,
-        orders,
-        orderKeys,
-        orderToUpdate,
-        handleSelectChange,
-        handleCopy,
-        toggle,
-        submitEditOrder,
-        changeItem,
-      }}
-    >
+    <OrderContext.Provider value={orderContextValue}>
       {children}
     </OrderContext.Provider>
   );
