@@ -6,17 +6,18 @@ import { ChatContext } from "../../contexts/ChatContext";
 
 const ChatWindow = () => {
 
+  let lastDate = null;
   const {
     currentPhoneNumber,
     ChatBoxUsername,
     Chat_Box_User_Status,
     currentUser,
-    chats,
     currentMessage,
     onKeyPress,
     setCurrentMessage,
     setMessageBox,
     sendMessageToUser,
+    messages,
   } = useContext(ChatContext);
 
 
@@ -51,60 +52,57 @@ const ChatWindow = () => {
                 style={{ height: '55vh' }}
                 containerRef={(ref) => setMessageBox(ref)}
               >
+                {messages && messages.map((message, index) => {
 
 
-                {chats && chats.map((chat) => {
-                  if (chat.phoneNumber === currentPhoneNumber) {
-                    let lastDate = '';
-                    return chat.messagePot.map((message, index) => {
-                      let [msgDate, msgTime] = message.time.split(' ');
-                      const messageDate = new Date(msgDate).toDateString();
+                  let [msgDate, msgTime] = message.timestamp.split(' ');
+                  const messageDate = new Date(msgDate).toDateString();
 
-                      let dateHeader = null;
-                      if (index === 0 || messageDate !== lastDate) {
-                        dateHeader = (
-                          <li key={'date_' + message.time}>
-                            <div className="chat-day-title">
-                              <span className="title">{messageDate}</span>
-                            </div>
-                          </li>
-                        );
-                      }
-
-                      // Atualize a última data conhecida
-                      lastDate = messageDate;
-                      return (
-                        <>
-                          {dateHeader}
-                          <li
-                            key={'test_k' + message.id}
-                            className={
-                              message.sender === currentUser.name ||
-                                message.sender === 'Bot' ||
-                                message.sender === 'ChatBot'
-                                ? 'right'
-                                : 'left'
-                            }
-                          >
-                            <div className="conversation-list">
-                              <div className="ctext-wrap">
-                                <div className="conversation-name">
-                                  {message.sender}
-                                </div>
-                                <p>{message.body}</p>
-                                <p className="chat-time mb-0">
-                                  {msgTime}{' '}
-                                  <i className="bx bx-check-double align-middle me-1"></i>
-                                </p>
-                              </div>
-                            </div>
-                          </li>
-                        </>
-                      );
-                    });
+                  let dateHeader = null;
+                  if (index === 0 || messageDate !== lastDate) {
+                    dateHeader = (
+                      <li key={'date_' + index + message.id}>
+                        <div className="chat-day-title">
+                          <span className="title">{messageDate}</span>
+                        </div>
+                      </li>
+                    );
+                    lastDate = messageDate;
                   }
-                  return null; // Retornando null para os chats que não correspondem
+
+                  // Atualize a última data conhecida
+
+                  return (
+                    <>
+                      {dateHeader}
+                      <li
+                        key={'test_k' + message.id}
+                        className={
+                          message.sender === currentUser.name ||
+                            message.sender === 'Bot' ||
+                            message.sender === 'ChatBot'
+                            ? 'right'
+                            : 'left'
+                        }
+                      >
+                        <div className="conversation-list">
+                          <div className="ctext-wrap">
+                            <div className="conversation-name">
+                              {message.sender}
+                            </div>
+                            <p>{message.body}</p>
+                            <p className="chat-time mb-0">
+                              {msgTime}{' '}
+                              <i className="bx bx-check-double align-middle me-1"></i>
+                            </p>
+                          </div>
+                        </div>
+                      </li>
+                    </>
+                  );
                 })}
+
+
               </PerfectScrollbar>
             </ul>
           </div>

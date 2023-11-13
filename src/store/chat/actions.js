@@ -113,9 +113,9 @@ export const addMessageFail = error => ({
   payload: error,
 })
 
-export const addChat = (phoneNumber) => ({
+export const addChat = (newChat) => ({
   type: POST_ADD_CHAT,
-  phoneNumber,
+  newChat,
 })
 
 

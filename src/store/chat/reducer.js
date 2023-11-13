@@ -30,7 +30,7 @@ const INIT_STATE = {
 const Calendar = (state = INIT_STATE, action) => {
   switch (action.type) {
     case GET_CHATS_SUCCESS:
-      console.log('action.payload: ', action.payload)
+  
       return {
         ...state,
         chats: action.payload,
@@ -103,7 +103,7 @@ const Calendar = (state = INIT_STATE, action) => {
           }
         }
       }
-      console.log('chat novo')
+
       return {
         ...state,
         chats: [...state.chats , action.payload]

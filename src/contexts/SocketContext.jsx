@@ -1,8 +1,13 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { toast } from 'react-toastify';
-;
-// Create a new context
+import { createSelector } from 'reselect';
+import { useDispatch, useSelector } from "react-redux";
+import {
+    getChats as onGetChats,
+    getOrders as onGetOrders,
+} from "/src/store/actions";
+
 const SocketContext = createContext();
 
 const SocketProvider = ({ children }) => {
@@ -10,6 +15,29 @@ const SocketProvider = ({ children }) => {
     const [socket, setSocket] = useState(null)
     const socket_url = import.meta.env.VITE_GCR_SOCKET_URL
     const [isToastActive, setIsToastActive] = useState(false);
+    const dispatch = useDispatch();
+    const selectChats = createSelector(
+        state => state.chat.chats,
+        chats => chats
+    );
+
+    const selectOrders = createSelector(
+        state => state.orders.orders,
+        orders => orders
+    );
+    const chats = useSelector(selectChats);
+    const orders = useSelector(selectOrders);
+
+    useEffect(() => {
+
+        console.log('carregando chat')
+
+        dispatch(onGetChats())
+        dispatch(onGetOrders())
+    }, []);
+
+
+
     const displayErrorToast = (message) => {
         if (!isToastActive) {
             setIsToastActive(true);
@@ -53,34 +81,23 @@ const SocketProvider = ({ children }) => {
         setSocket(socket);
 
         socket.on("connect", () => {
-            console.log("recovered?", socket.recovered);
 
-            setTimeout(() => {
-                if (socket.io.engine) {
-                    // close the low-level connection and trigger a reconnection
-                    socket.io.engine.close();
-                }
-            }, 10000);
+
         });
-
         socket.on('connect_error', (error) => {
             displayErrorToast("Erro ao conectar com o servidor socket", error);
         });
 
         return () => {
-            socket.off('connect', () => {
-                console.log('connected');
-            });
-
-            socket.off('connect_error', (error) => {
-                displayErrorToast("Error connecting to socket.io server:", error);
-            });
+            socket.off('connect');
+            socket.off('connect_error');
         };
     }, []);
 
 
     const socketContextValue =
     {
+        chats,
         socket,
         setSocket,
         displayErrorToast,

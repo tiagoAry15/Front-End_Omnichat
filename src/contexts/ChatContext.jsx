@@ -1,9 +1,9 @@
-import React, { createContext, useState, useEffect, useContext, useMemo } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 import whatsappIcon from "../assets/images/chat/whatsappIcon.png";
 import instagramIcon from "../assets/images/chat/instagramIcon.png";
 import facebookIcon from "../assets/images/chat/MenssagerIcon.png";
 import { useDispatch, useSelector } from "react-redux";
-import { isEmpty, set } from "lodash";
+import _ from "lodash";
 import { createSelector } from 'reselect';
 import {
   addMessage as onAddMessage,
@@ -27,16 +27,12 @@ const ChatProvider = ({ children }) => {
   const [ChatBoxUsername, setChatBoxUsername] = useState("");
   const [Chat_Box_User_Status, setChatBoxUserStatus] = useState(false);
   const [currentMessage, setCurrentMessage] = useState("");
-
+  const [messagesBuffer, setMessagesBuffer] = useState([]);
 
   const [messages, setMessages] = useState("");
-  const { socket, displayErrorToast } = useContext(SocketContext);
+  const { chats, socket, displayErrorToast } = useContext(SocketContext);
   const dispatch = useDispatch();
 
-  const selectChats = createSelector(
-    state => state.chat.chats,
-    chats => chats
-  );
 
   const selectError = createSelector(
     state => state.chat.error,
@@ -54,51 +50,48 @@ const ChatProvider = ({ children }) => {
     messenger: facebookIcon,
   }
 
-  const ReduxChats = useSelector(selectChats);
   const error = useSelector(selectError);
   const isLoading = useSelector(selectIsLoading);
 
-  const [chats, setChats] = useState(ReduxChats);
-
-
-
-  useEffect(() => {
-
-    console.log('carregando chat')
-    dispatch(onGetChats())
-
-  }, [dispatch]);
-
-  useEffect(() => {
-    setChats(ReduxChats);
-  }, [ReduxChats]);
-
-
+  const processMessages = () => {
+    // Processa as mensagens acumuladas no buffer
+    messagesBuffer.forEach(message => {
+      handleMessageReceive(message)
+    });
+    setMessagesBuffer([]); // Limpa o buffer
+  };
+  const debouncedProcessMessages = _.debounce(processMessages, 500);
 
 
   useEffect(() => {
-    if (!isEmpty(messages)) scrollToBottom();
+    if (!_.isEmpty(messages)) scrollToBottom();
   }, [chats]);
 
 
-
+  const handleMessageReceive = (data) => {
+    console.log('message_received:', data);
+    socket.emit('message_ack', { id: data.id })
+    handleMessage(data.message);
+  };
 
   useEffect(() => {
     if (socket) {
 
-      const handleMessageReceive = (data) => {
-        console.log('message_received:', data);
-        handleMessage(data.message);
-      };
 
-      socket.on('message', handleMessageReceive);
+
+      if (socket) {
+        socket.on('message', (data) => {
+          setMessagesBuffer(prevMessages => [...prevMessages, data]);
+          debouncedProcessMessages();
+        });
+      }
 
       // Clean up
       return () => {
-        socket.off('message', handleMessageReceive);
+        socket.off('message');
       };
     }
-  }, [chats, socket]);
+  }, [chats, messages, socket, debouncedProcessMessages]);
 
 
 
@@ -120,6 +113,7 @@ const ChatProvider = ({ children }) => {
     }
     if (data.phoneNumber === currentPhoneNumber) {
       dispatch(onUpdateChat({ phoneNumber: data.phoneNumber, unreadMessages: 0 }));
+      setMessages([...messages, data]);
     }
   }
 
@@ -127,8 +121,8 @@ const ChatProvider = ({ children }) => {
     console.log('mensagem nova')
     const updatedChat = { ...chats[chatIndex], messagePot: [...chats[chatIndex].messagePot, data] };
     updatedChat.unreadMessages = (updatedChat.unreadMessages || 0) + 1;
-    updatedChat.lasMessage_timestamp = data.timestamp;
-    setChats([...chats.slice(0, chatIndex), updatedChat, ...chats.slice(chatIndex + 1)]);
+    updatedChat.lastMessage_timestamp = data.timestamp;
+    dispatch(onAddChat(updatedChat));
   }
 
   const addNewChat = (data) => {
@@ -143,11 +137,12 @@ const ChatProvider = ({ children }) => {
       from: data.from,
     };
     console.log(newChat.from)
-    setChats([...chats, newChat]);
+    dispatch(onAddChat(newChat));
   }
 
 
   const userChatOpen = (chat) => {
+
     setChatBoxUsername(chat.name);
     setChatBoxUserStatus(chat.status)
     setCurrentPhoneNumber(chat.phoneNumber);
@@ -157,12 +152,13 @@ const ChatProvider = ({ children }) => {
 
       chat.unreadMessages = 0;
 
-      dispatch(onUpdateChat(chat))
+      dispatch(onUpdateChat({ phoneNumber: chat.phoneNumber, unreadMessages: 0 }))
     }
 
     setMessages(chat.messagePot);
     console.log(messages);
   };
+
 
   const sendMessageToUser = () => {
 
@@ -197,7 +193,7 @@ const ChatProvider = ({ children }) => {
     }
   };
 
-  const chatContextValue = useMemo(() => ({
+  const chatContextValue = {
     messageBox,
     setMessageBox,
     currentPhoneNumber,
@@ -222,8 +218,7 @@ const ChatProvider = ({ children }) => {
     messages,
     isLoading,
     sendMessageToUser
-  }), [chats]);
-
+  }
 
 
   return (

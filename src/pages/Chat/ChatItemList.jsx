@@ -16,7 +16,6 @@ const ChatItemList = (props) => {
     <Link
       to="#"
       onClick={() => {
-        console.log(chat)
         userChatOpen(chat);
       }}
     >

@@ -45,8 +45,7 @@ export const updateOrder = async (orderData) => {
     try {
         console.log('orderData', orderData);
         if (!orderData) throw new Error("Dados de pedido inválidos");
-        const headers = { "unique_id": orderData.orderId};
-        const response = await ordersAPI.put(`/order_handler/update`, orderData, headers);
+        const response = await ordersAPI.put(`/order_handler/update/${orderData.orderId}`, orderData);
         return response.data;
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao atualizar pedidos";
@@ -58,8 +57,7 @@ export const updateOrder = async (orderData) => {
 export const deleteOrder = async (orderId) => {
     try {
         if (!orderId) throw new Error("ID de pedido inválido");
-         const headers = { "unique_id": orderId};
-        const response = await ordersAPI.delete(`/order_handler/delete`, headers);
+        const response = await ordersAPI.delete(`/order_handler/delete/${orderId}`);
         return response.data;
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao deletar pedido";
