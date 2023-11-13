@@ -1,10 +1,9 @@
 import React, { createContext, useState, useEffect } from 'react';
-import cardapio from '../pages/Menu/cardapio.json'
+
 import { useDispatch, useSelector } from "react-redux";
 import { SocketContext } from "./SocketContext";
 import {
     getMenu as onGetMenu,
-    addMenu as onAddMenu,
     updateMenu as onUpdateMenu,
 } from "/src/store/actions";
 import { useContext } from 'react';
@@ -24,6 +23,7 @@ const MenuProvider = ({ children }) => {
 
 
     const MenuAuthor = import.meta.env.VITE_MENU_AUTHOR;
+
     useEffect(() => {
         // apenas carrega se o menu estiver vazio
         loadMenu();
