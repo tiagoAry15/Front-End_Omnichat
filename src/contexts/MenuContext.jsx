@@ -52,11 +52,8 @@ const MenuProvider = ({ children }) => {
         let menuValido = validateMenu(newMenu)
         if (menuValido.isValid) {
             setIsSaving(true)
-            if (newMenu.Autor === MenuAuthor) {
-                console.log("salvando menu")
-                dispatch(onUpdateMenu(newMenu))
-            }
-            else { dispatch(onAddMenu(newMenu)) }
+            console.log("salvando menu")
+            dispatch(onUpdateMenu(newMenu))
             setIsSaving(false)
             console.log('saved')
             displaySuccessToast('Menu salvo com sucesso!')

@@ -24,7 +24,7 @@ export const getMenu = async () => {
 // Adicionar um novo pedido
 export const createMenu = async (menuData) => {
     try {
-        if (!menuData) throw new Error("Dados de pedido inválidos");
+        if (!menuData) throw new Error("Dados do cardápio inválidos");
         const response = await menuAPI.post(`/create_menu`, menuData);
         return response.data;
     } catch (error) {
@@ -39,9 +39,9 @@ export const updateMenu = async (menuData) => {
         if (!menuData) throw new Error("Dados de pedido inválidos");
         const response = await menuAPI.put(`/update_menu_by_author/${MenuAuthor}`, menuData);
         
-        return response.data;
+        return response.data.speisekarte;
     } catch (error) {
-        error.message = "Erro na comunicação com o servidor ao atualizar pedidos";
+        error.message = "Erro na comunicação com o servidor ao atualizar cardápio";
         throw error;
     }
 }
