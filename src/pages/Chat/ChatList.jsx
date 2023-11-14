@@ -3,7 +3,7 @@ import { TabContent, TabPane, Spinner } from 'reactstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import ChatItemList from './ChatItemList';
 import { ChatContext } from "../../contexts/ChatContext";
-import PropTypes from 'prop-types';
+
 const ChatList = (props) => {
   const { activeTab, chats, currentPhoneNumber, userChatOpen, social_icons, isLoading } = useContext(ChatContext);
 

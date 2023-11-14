@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import whatsappIcon from "../assets/images/chat/whatsappIcon.png";
 import instagramIcon from "../assets/images/chat/instagramIcon.png";
 import facebookIcon from "../assets/images/chat/MenssagerIcon.png";
@@ -12,6 +12,7 @@ import {
   updateChat as onUpdateChat,
 } from "/src/store/actions";
 import { SocketContext } from "./SocketContext";
+
 const ChatContext = createContext();
 
 
@@ -27,8 +28,6 @@ const ChatProvider = ({ children }) => {
   const [ChatBoxUsername, setChatBoxUsername] = useState("");
   const [Chat_Box_User_Status, setChatBoxUserStatus] = useState(false);
   const [currentMessage, setCurrentMessage] = useState("");
-  const [messagesBuffer, setMessagesBuffer] = useState([]);
-
   const [messages, setMessages] = useState("");
   const { chats, socket, displayErrorToast } = useContext(SocketContext);
   const dispatch = useDispatch();
@@ -53,46 +52,40 @@ const ChatProvider = ({ children }) => {
   const error = useSelector(selectError);
   const isLoading = useSelector(selectIsLoading);
 
-  const processMessages = () => {
-    // Processa as mensagens acumuladas no buffer
-    messagesBuffer.forEach(message => {
-      handleMessageReceive(message)
-    });
-    setMessagesBuffer([]); // Limpa o buffer
-  };
-  const debouncedProcessMessages = _.debounce(processMessages, 500);
 
-
-  useEffect(() => {
-    if (!_.isEmpty(messages)) scrollToBottom();
-  }, [chats]);
-
-
-  const handleMessageReceive = (data) => {
-    console.log('message_received:', data);
-    socket.emit('message_ack', { id: data.id })
-    handleMessage(data.message);
-  };
 
   useEffect(() => {
     if (socket) {
 
+      socket.on('message', (data) => {
+        let message = data.message
+        socket.emit('message_ack', { id: data.id })
+        console.log('message_received', message)
+        handleMessage(message);
 
-
-      if (socket) {
-        socket.on('message', (data) => {
-          setMessagesBuffer(prevMessages => [...prevMessages, data]);
-          debouncedProcessMessages();
-        });
-      }
+      });
 
       // Clean up
       return () => {
         socket.off('message');
       };
     }
-  }, [chats, messages, socket, debouncedProcessMessages]);
+  }, [chats, messages, socket]);
 
+
+
+  useEffect(() => {
+    // Encontra a conversa com o phoneNumber correspondente
+    const currentChat = chats.find(chat => chat.phoneNumber === currentPhoneNumber);
+
+    // Se a conversa for encontrada e tiver um messagePot, atualiza o estado messages
+    if (currentChat && currentChat.messagePot) {
+      setMessages(currentChat.messagePot);
+    } else {
+      // Se não houver conversa correspondente ou se ela não tiver messagePot, limpa as mensagens
+      setMessages([]);
+    }
+  }, [chats, currentPhoneNumber]);
 
 
   useEffect(() => {
@@ -103,7 +96,7 @@ const ChatProvider = ({ children }) => {
 
 
 
-  const handleMessage = (data) => {
+  const handleMessage = useCallback((data) => {
     console.log(chats)
     const chatIndex = chats.findIndex((chat) => chat.phoneNumber === data.phoneNumber);
     if (chatIndex > -1) {
@@ -113,9 +106,15 @@ const ChatProvider = ({ children }) => {
     }
     if (data.phoneNumber === currentPhoneNumber) {
       dispatch(onUpdateChat({ phoneNumber: data.phoneNumber, unreadMessages: 0 }));
-      setMessages([...messages, data]);
+      setMessages(prevMessages => [...prevMessages, data]);
     }
-  }
+  }, [chats, messages, currentPhoneNumber])
+
+
+  useEffect(() => {
+    if (messages.length > 0) scrollToBottom();
+  }, [chats]);
+
 
   const addNewMessage = (data, chatIndex) => {
     console.log('mensagem nova')
@@ -135,8 +134,8 @@ const ChatProvider = ({ children }) => {
       status: "active",
       isImg: false,
       from: data.from,
+      lastMessage_timestamp: data.timestamp,
     };
-    console.log(newChat.from)
     dispatch(onAddChat(newChat));
   }
 
@@ -156,7 +155,7 @@ const ChatProvider = ({ children }) => {
     }
 
     setMessages(chat.messagePot);
-    console.log(messages);
+
   };
 
 

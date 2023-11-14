@@ -29,9 +29,6 @@ const SocketProvider = ({ children }) => {
     const orders = useSelector(selectOrders);
 
     useEffect(() => {
-
-        console.log('carregando chat')
-
         dispatch(onGetChats())
         dispatch(onGetOrders())
     }, []);
@@ -74,14 +71,17 @@ const SocketProvider = ({ children }) => {
             reconnection: true,
             reconnectionAttempts: 5,
             reconnectionDelay: 5000, // defaults to 1000
-            reconnectionDelayMax: 10000 // defaults to 5000
+            reconnectionDelayMax: 10000, // defaults to 5000
+            auth: {
+                offset: undefined,
+            },
         });
 
 
         setSocket(socket);
 
         socket.on("connect", () => {
-
+            displaySuccessToast("Conectado ao servidor socket");
 
         });
         socket.on('connect_error', (error) => {

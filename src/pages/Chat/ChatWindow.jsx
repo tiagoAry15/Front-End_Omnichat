@@ -76,7 +76,7 @@ const ChatWindow = () => {
                     <>
                       {dateHeader}
                       <li
-                        key={'test_k' + message.id}
+                        key={'test_k' + index}
                         className={
                           message.sender === currentUser.name ||
                             message.sender === 'Bot' ||

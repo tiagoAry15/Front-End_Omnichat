@@ -82,11 +82,26 @@ const Calendar = (state = INIT_STATE, action) => {
         error: action.payload,
       }
 
-    case POST_ADD_MESSAGE_SUCCESS:
+    case POST_ADD_MESSAGE_SUCCESS: {
+  // Cria uma cópia do array de chats
+  const updatedChats = state.chats.map(chat => {
+    // Encontra o chat correspondente e atualiza seu messagePot
+    if (chat.phoneNumber === action.payload.phoneNumber) {
       return {
-        ...state,
-        messages: [...state.messages, action.payload],
-      }
+        ...chat,
+        messagePot: [...chat.messagePot, action.payload]
+      };
+    }
+    return chat;
+  });
+
+  // Retorna o estado atualizado
+  return {
+    ...state,
+    chats: updatedChats
+  };
+}
+
     
     case POST_ADD_CHAT_SUCCESS: {
       
@@ -124,7 +139,6 @@ const Calendar = (state = INIT_STATE, action) => {
     
     case PUT_UPDATE_CHAT_SUCCESS: { 
       const updatedChat = action.payload
-      console.log('updatedChat: ', updatedChat)
       for (const chatId in state.chats) {
         if (state.chats.hasOwnProperty(chatId)) {
           if (state.chats[chatId].phoneNumber == updatedChat.phoneNumber) {

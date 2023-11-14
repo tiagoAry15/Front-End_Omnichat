@@ -57,7 +57,7 @@ export const addMessage = async (messageData) => {
     try {
         if (!messageData) throw new Error("Dados de mensagem inválidos");
          const MiddlewareChatsAPI = axios.create({
-            baseURL: middlewareApiUrl + '/conversations'
+            baseURL: middlewareApiUrl 
         });
         const response = await MiddlewareChatsAPI.post(`/send_message_to_user/${messageData.phoneNumber}`, messageData);
         console.log('adicionou mensagem ',response.data )
