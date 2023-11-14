@@ -1,5 +1,5 @@
 // OrderScreenContent.jsx
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Accordion, AccordionItem, AccordionHeader, AccordionBody, Card, CardBody, CardTitle, CardSubtitle, CardText,Container, Button, Input, Form, Label, FormGroup } from "reactstrap";
 import { ToastContainer } from 'react-toastify';
 import Breadcrumbs from "../../components/Common/Breadcrumb";
@@ -26,6 +26,8 @@ const OrderContent = (props) => {
     orderToUpdate,
     open,
   } = useContext(OrderContext);
+
+  const [flavorQuantities, setFlavorQuantities] = useState({});
 
   const buildOrderItemsText = orderItems => {
     let orderItemsText = '';
@@ -88,6 +90,24 @@ const OrderContent = (props) => {
                       onSubmit={submitEditOrder}
                     >
                       <FormGroup>
+                      {order.orderItems.map((item, itemIndex) => (
+                        <div key={itemIndex}>
+                          <Label>{item.flavors.join('/')}</Label>
+                          <Input 
+                            type="text"
+                            name={`flavorQuantity_${index}_${itemIndex}`}
+                            placeholder={`Altere o produto: ${item.flavors.join('/')}`}
+                            value={flavorQuantities[`${index}_${itemIndex}`] || ''}
+                            onChange={(event) => {
+                              const key = `${index}_${itemIndex}`;
+                              setFlavorQuantities(prevState => ({
+                                ...prevState,
+                                [key]: event.target.value,
+                              }));
+                            }}
+                          />
+                        </div>
+                      ))}
                         <Label>
                           Nome
                         </Label>
@@ -100,17 +120,7 @@ const OrderContent = (props) => {
 
 
                         />
-                        <Label>
-                          Pizza
-                        </Label>
-                        <Input
-                          type="text"
-                          name="pizzaName"
-                          placeholder={order.pizzaName}
-                          value={orderToUpdate.pizzaName}
-                          onChange={changeItem}
 
-                        />
                         <Label>
                           Comunicação
                         </Label>
