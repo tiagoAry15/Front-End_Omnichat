@@ -54,7 +54,7 @@ const ChatItemList = (props) => {
             </h5>
             {chat.messagePot && chat.messagePot.length > 0 && (
 
-              <div className="font-size-11">{chat.messagePot[chat.messagePot.length - 1].time}</div>
+              <div className="font-size-11">{chat.lastMessage_timestamp}</div>
             )}
           </div>
 

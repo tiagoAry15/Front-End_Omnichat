@@ -19,8 +19,7 @@ const OrderProvider = ({ children }) => {
   const [selectedOptions, setSelectedOptions] = useState({});
   const [open, setOpen] = useState('');
   const dispatch = useDispatch();
-  const { socket, displayErrorToast, displaySuccessToast } = useContext(SocketContext);
-  const ReduxOrders = useSelector((state) => state.orders.orders)
+  const { orders } = useContext(SocketContext);
   useEffect(() => {
     dispatch(onGetOrders());
   }, [dispatch]);
@@ -33,35 +32,7 @@ const OrderProvider = ({ children }) => {
     pizzaName: '',
   });
 
-  const [orders, setOrders] = useState(ReduxOrders)
 
-  useEffect(() => {
-    if (socket) {
-
-      const handleOrderReceive = (order) => {
-        displaySuccessToast(t('orderReceived'));
-        addNewOrder(order)
-      };
-
-      socket.on('order', handleOrderReceive);
-
-      // Clean up
-      return () => {
-        socket.off('order', handleOrderReceive);
-      };
-    }
-  }, [orders, socket]);
-
-
-  useEffect(() => { setOrders(ReduxOrders) }, [ReduxOrders])
-
-  const addNewOrder = order => {
-    setOrders(prevOrders => [...prevOrders, order]);
-  };
-
-  if (!orders) {
-    return null;
-  }
 
   const orderKeys = Object.keys(orders);
 
@@ -146,6 +117,7 @@ const OrderProvider = ({ children }) => {
     submitEditOrder,
     changeItem,
   }), [orders]);
+
   return (
     <OrderContext.Provider value={orderContextValue}>
       {children}
