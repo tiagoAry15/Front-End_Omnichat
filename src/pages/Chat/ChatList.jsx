@@ -3,7 +3,7 @@ import { TabContent, TabPane, Spinner } from 'reactstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import ChatItemList from './ChatItemList';
 import { ChatContext } from "../../contexts/ChatContext";
-
+import PropTypes from 'prop-types';
 const ChatList = (props) => {
   const { activeTab, chats, currentPhoneNumber, userChatOpen, social_icons, isLoading } = useContext(ChatContext);
 
@@ -14,7 +14,6 @@ const ChatList = (props) => {
           <div>
             <h5 className="font-size-14 mb-3">{props.t("Recent")}</h5>
             <ul className="list-unstyled chat-list" id="recent-list">
-
               <PerfectScrollbar style={{ height: "410px" }}>
                 {isLoading ? (
                   <div className="loading-container" style={{ display: "flex" }}>
@@ -29,14 +28,15 @@ const ChatList = (props) => {
                   ) : chats.length === 0 ? (
                     <p>{props.t("NoChats")}</p>
                   ) : (
-                    chats.map((chat) => (
+                    chats.map(chat => (
+
                       <li
                         key={chat.id + chat.phoneNumber}
                         className={`li-max-width ${currentPhoneNumber === chat.phoneNumber ? props.t("Active") : ""
                           }`}
                       >
 
-                        <ChatItemList chat={chat} userChatOpen={userChatOpen} t={props.t} from={social_icons[chat.from]} />
+                        <ChatItemList chat={chat} userChatOpen={userChatOpen} t={props.t} from={social_icons[chat.from[0]]} />
                       </li>
                     ))
                   )}

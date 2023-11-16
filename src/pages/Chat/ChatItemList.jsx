@@ -11,6 +11,7 @@ const ChatItemList = (props) => {
     instagram: instagramIcon,
     messenger: facebookIcon,
   }
+
   return (
     <Link
       to="#"

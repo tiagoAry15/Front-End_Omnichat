@@ -1,9 +1,9 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useMemo } from 'react';
 import whatsappIcon from "../assets/images/chat/whatsappIcon.png";
 import instagramIcon from "../assets/images/chat/instagramIcon.png";
 import facebookIcon from "../assets/images/chat/MenssagerIcon.png";
 import { useDispatch, useSelector } from "react-redux";
-import { isEmpty } from "lodash";
+import { isEmpty, set } from "lodash";
 import { createSelector } from 'reselect';
 import {
   addMessage as onAddMessage,
@@ -27,6 +27,7 @@ const ChatProvider = ({ children }) => {
   const [ChatBoxUsername, setChatBoxUsername] = useState("");
   const [Chat_Box_User_Status, setChatBoxUserStatus] = useState(false);
   const [currentMessage, setCurrentMessage] = useState("");
+
 
   const [messages, setMessages] = useState("");
   const { socket, displayErrorToast } = useContext(SocketContext);
@@ -53,24 +54,35 @@ const ChatProvider = ({ children }) => {
     messenger: facebookIcon,
   }
 
-  const chats = useSelector(selectChats);
+  const ReduxChats = useSelector(selectChats);
   const error = useSelector(selectError);
   const isLoading = useSelector(selectIsLoading);
 
+  const [chats, setChats] = useState(ReduxChats);
 
 
 
   useEffect(() => {
 
+    console.log('carregando chat')
     dispatch(onGetChats())
-
 
   }, [dispatch]);
 
+  useEffect(() => {
+    setChats(ReduxChats);
+  }, [ReduxChats]);
+
+
+  useEffect(() => {
+    // Agora isso deve mostrar o estado atualizado
+  }, [chats]);
 
   useEffect(() => {
     if (!isEmpty(messages)) scrollToBottom();
   }, [chats]);
+
+
 
 
   useEffect(() => {
@@ -78,9 +90,9 @@ const ChatProvider = ({ children }) => {
 
       const handleMessageReceive = (data) => {
         console.log('message_received:', data);
-        handleMessage(data);
+        handleMessage(data.message);
       };
-      socket.on('notification', () => { console.log('notification') });
+
       socket.on('message', handleMessageReceive);
 
       // Clean up
@@ -88,7 +100,7 @@ const ChatProvider = ({ children }) => {
         socket.off('message', handleMessageReceive);
       };
     }
-  }, [socket]);
+  }, [chats, socket]);
 
 
 
@@ -101,12 +113,42 @@ const ChatProvider = ({ children }) => {
 
 
   const handleMessage = (data) => {
-    console.log(data)
-    dispatch(onAddChat(data.phoneNumber));
+    console.log(chats)
+    const chatIndex = chats.findIndex((chat) => chat.phoneNumber === data.phoneNumber);
+    if (chatIndex > -1) {
+      addNewMessage(data, chatIndex);
+    } else {
+      addNewChat(data);
+    }
     if (data.phoneNumber === currentPhoneNumber) {
       dispatch(onUpdateChat({ phoneNumber: data.phoneNumber, unreadMessages: 0 }));
     }
   }
+
+  const addNewMessage = (data, chatIndex) => {
+    console.log('mensagem nova')
+    const updatedChat = { ...chats[chatIndex], messagePot: [...chats[chatIndex].messagePot, data] };
+    updatedChat.unreadMessages = (updatedChat.unreadMessages || 0) + 1;
+    updatedChat.lasMessage_timestamp = data.timestamp;
+    setChats([...chats.slice(0, chatIndex), updatedChat, ...chats.slice(chatIndex + 1)]);
+  }
+
+  const addNewChat = (data) => {
+    console.log('chat novo')
+    const newChat = {
+      phoneNumber: data.phoneNumber,
+      name: data.sender,
+      messagePot: [data],
+      unreadMessages: 1,
+      status: "active",
+      isImg: false,
+      from: data.from,
+    };
+    console.log(newChat.from)
+    setChats([...chats, newChat]);
+  }
+
+
   const userChatOpen = (chat) => {
     setChatBoxUsername(chat.name);
     setChatBoxUserStatus(chat.status)
@@ -152,12 +194,12 @@ const ChatProvider = ({ children }) => {
   const onKeyPress = e => {
     const { key, value } = e;
     if (key === "Enter") {
-      setcurrentMessage(value);
-      addMessage(currentPhoneNumber, currentUser.name, value);
+      // setcurrentMessage(value);
+      // addMessage(currentPhoneNumber, currentUser.name, value);
     }
   };
 
-  const chatContextValue = {
+  const chatContextValue = useMemo(() => ({
     messageBox,
     setMessageBox,
     currentPhoneNumber,
@@ -182,7 +224,7 @@ const ChatProvider = ({ children }) => {
     messages,
     isLoading,
     sendMessageToUser
-  };
+  }), [chats]);
 
 
 
