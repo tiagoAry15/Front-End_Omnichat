@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useCallback, useRef } from 'react';
+import React, { createContext, useState, useEffect, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { toast } from 'react-toastify';
 import { createSelector } from 'reselect';
@@ -11,11 +11,11 @@ import {
     addOrder as onAddOrder,
 
 } from "/src/store/actions";
-
+import { useTranslation } from 'react-i18next';
 const SocketContext = createContext();
 
 const SocketProvider = ({ children }) => {
-
+    const { t } = useTranslation();
     const [socket, setSocket] = useState(null)
     const socket_url = import.meta.env.VITE_GCR_SOCKET_URL
     const [isToastActive, setIsToastActive] = useState(false);
@@ -122,13 +122,17 @@ const SocketProvider = ({ children }) => {
     }
 
     const handleOrderReceive = (receivedOrder) => {
+        if (Array.isArray(receivedOrder) && receivedOrder.length > 0) {
+            receivedOrder = receivedOrder[0];
+        }
         console.log('order_received', receivedOrder)
-        displaySuccessToast(t('orderReceived'));
+        displaySuccessToast(t('novo pedido confirmado'));
         const orderIndex = orders.findIndex((order) => order.communication === receivedOrder.communication);
+        console.log(orderIndex)
         if (orderIndex > -1) {
-            dispatch(onAddOrder(receivedOrder))
-        } else {
             dispatch(onUpdateOrder(receivedOrder))
+        } else {
+            dispatch(onAddOrder(receivedOrder))
         }
     };
 
@@ -149,7 +153,6 @@ const SocketProvider = ({ children }) => {
 
     const addNewMessage = (data, chatIndex) => {
         console.log('mensagem nova')
-        console.log(chatsRef[chatIndex])
         const updatedChat = { ...chatsRef.current[chatIndex], messagePot: [...chatsRef.current[chatIndex].messagePot, data] };
         updatedChat.unreadMessages = (updatedChat.unreadMessages || 0) + 1;
         updatedChat.lastMessage_timestamp = data.timestamp;

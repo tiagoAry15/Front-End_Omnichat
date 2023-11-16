@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 
 import {

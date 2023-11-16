@@ -73,7 +73,7 @@ const ChatWindow = () => {
                   // Atualize a última data conhecida
 
                   return (
-                    <>
+                    <div key={'message_body ' + index}>
                       {dateHeader}
                       <li
                         key={'test_k' + index}
@@ -98,7 +98,7 @@ const ChatWindow = () => {
                           </div>
                         </div>
                       </li>
-                    </>
+                    </div>
                   );
                 })}
 

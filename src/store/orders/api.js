@@ -33,7 +33,11 @@ export const addOrder = async (orderData) => {
     try {
         if (!orderData) throw new Error("Dados de pedido inválidos");
         const response = await ordersAPI.post(`/order_handler/create`, orderData);
-        return response.data;
+        //let uid = JSON.stringify(response.data);
+        //let orderDict = {}
+        //orderDict[uid] = orderData;
+
+        return orderData;
     } catch (error) {
         console.error("Erro ao adicionar pedido", error);
         throw error;

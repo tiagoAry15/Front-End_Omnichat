@@ -54,12 +54,13 @@ const ChatProvider = ({ children }) => {
   useEffect(() => {
     // Encontra a conversa com o phoneNumber correspondente
     const currentChat = chats.find(chat => chat.phoneNumber === currentPhoneNumber);
-
-    if (currentChat && currentChat.unreadMessages && currentChat.unreadMessages > 0) {
-      dispatch(onUpdateChat({ phoneNumber: currentPhoneNumber, unreadMessages: 0 }));
+    if (currentChat) {
+      console.log(currentChat);
+      if (currentChat.unreadMessages && currentChat.unreadMessages > 0) {
+        dispatch(onUpdateChat({ phoneNumber: currentPhoneNumber, unreadMessages: 0 }));
+      }
+      setMessages(prevMessages => [...prevMessages, currentChat.messagePot[currentChat.messagePot.length - 1]]);
     }
-    setMessages(prevMessages => [...prevMessages, currentChat.messagePot[currentChat.messagePot.length - 1]]);
-
   }, [chats, currentPhoneNumber]);
 
 

@@ -30,15 +30,18 @@ const OrderContent = () => {
   const buildOrderItemsText = orderItems => {
     let orderItemsText = '';
     let flavorsText = '';
-    orderItems.forEach((item) => {
-      if (item.flavors.length > 1) {
-        flavorsText = `(${item.flavors.join('/')})`;
-      }
-      else if (item.flavors.length === 1) {
-        flavorsText = `${item.flavors[0]}`;
-      }
-      orderItemsText += `${item.quantity} X ${flavorsText} ${item.size}\n`;
-    })
+    console.log(orderItems);
+    if (orderItems.length !== 0) {
+      orderItems.forEach((item) => {
+        if (item.flavors.length > 1) {
+          flavorsText = `(${item.flavors.join('/')})`;
+        }
+        else if (item.flavors.length === 1) {
+          flavorsText = `${item.flavors[0]}`;
+        }
+        orderItemsText += `${item.quantity} X ${flavorsText} ${item.size}\n`;
+      })
+    }
     return orderItemsText;
   }
   const { t } = useTranslation();
@@ -51,6 +54,7 @@ const OrderContent = () => {
         <Breadcrumbs title='Omnichat' breadcrumbItem={t("Order")} />
         <div style={styles.container} className='right'>
           {orders.map((order, index) => (
+            console.log(order),
             <div key={orderKeys[index]} style={styles.card} className={`order-item ${deletingOrderId === orderKeys[index] ? 'up' : ''}`}>
               <div style={styles.container_between}>
                 <h3 style={styles.customerName}>{index + 1}: {order.customerName}</h3>
