@@ -14,7 +14,7 @@ import {
 const INIT_STATE = {
   orders: [],
   error: [],
-  loading: false,
+  loading: true,
 }
 
 const OrderReducer = (state = INIT_STATE, action) => {
@@ -96,7 +96,7 @@ const OrderReducer = (state = INIT_STATE, action) => {
         loading: false,
       }
     default:
-      return {...state, loading: false}
+      return {...state, loading: true}
   }
 }
 

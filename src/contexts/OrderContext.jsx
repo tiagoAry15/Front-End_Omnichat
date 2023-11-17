@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 
 import {
   getOrders as onGetOrders,
@@ -33,6 +33,18 @@ const OrderProvider = ({ children }) => {
   });
 
 
+  const selectError = createSelector(
+    state => state.chat.error,
+    error => error
+  );
+
+  const selectIsLoading = createSelector(
+    state => state.chat.loading,
+    loading => loading
+  );
+
+  const error = useSelector(selectError);
+  const loading = useSelector(selectIsLoading);
 
   const orderKeys = Object.keys(orders);
 
@@ -109,6 +121,8 @@ const OrderProvider = ({ children }) => {
     selectedOptions,
     open,
     orders,
+    error,
+    loading,
     orderKeys,
     orderToUpdate,
     handleSelectChange,

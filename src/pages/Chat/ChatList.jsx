@@ -20,26 +20,25 @@ const ChatList = (props) => {
                     <Spinner style={{ width: '1rem', height: '1rem' }} />
                     <p className="loading-container-text">carregando conversas</p>
                   </div>
-                )
-                  : !chats ? (
-                    <div className="error-message">
-                      <p className="error-message-text">An error occurred while loading chats</p>
-                    </div>
-                  ) : chats.length === 0 ? (
-                    <p>{props.t("NoChats")}</p>
-                  ) : (
-                    chats.map(chat => (
-
+                ) : !chats ? (
+                  <div className="error-message">
+                    <p className="error-message-text">An error occurred while loading chats</p>
+                  </div>
+                ) : chats.length === 0 ? (
+                  <p>{props.t("NoChats")}</p>
+                ) : (
+                  chats.map(chat => {
+                    const chat_from = Array.isArray(chat.from) ? chat.from[0] : chat.from;
+                    return (
                       <li
                         key={chat.id + chat.phoneNumber}
-                        className={`li-max-width ${currentPhoneNumber === chat.phoneNumber ? props.t("Active") : ""
-                          }`}
+                        className={`li-max-width ${currentPhoneNumber === chat.phoneNumber ? props.t("Active") : ""}`}
                       >
-
-                        <ChatItemList chat={chat} userChatOpen={userChatOpen} t={props.t} from={social_icons[chat.from[0]]} />
+                        <ChatItemList chat={chat} userChatOpen={userChatOpen} t={props.t} from={social_icons[chat_from]} />
                       </li>
-                    ))
-                  )}
+                    );
+                  })
+                )}
               </PerfectScrollbar>
             </ul>
           </div>
