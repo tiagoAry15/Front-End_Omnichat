@@ -28,7 +28,8 @@ const ChatList = (props) => {
                   <p>{props.t("NoChats")}</p>
                 ) : (
                   chats.map(chat => {
-                    const chat_from = Array.isArray(chat.from) ? chat.from[0] : chat.from;
+                    const chat_from = Array.isArray(chat.from) ? chat.from[0].toLowerCase() : chat.from.toLowerCase();
+
                     return (
                       <li
                         key={chat.id + chat.phoneNumber}
