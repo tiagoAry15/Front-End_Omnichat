@@ -73,6 +73,7 @@ const OrderReducer = (state = INIT_STATE, action) => {
       };
 
     case PUT_UPDATE_ORDER_FAIL:
+      console.error('Conteúdo de action.payload:', action.payload);
       return {
         ...state,
         error: action.payload,
@@ -81,8 +82,9 @@ const OrderReducer = (state = INIT_STATE, action) => {
       
     case DELETE_ORDER_SUCCESS:
       const orderIdToDelete = action.payload;
-      const updatedOrders = state.orders.filter(order => order.id !== orderIdToDelete);
-
+      console.log("Pedidos antes do delete:", state.orders)
+      const updatedOrders = state.orders.filter((order, index) => index != orderIdToDelete);
+      console.log("Pedidos pos-delete:", updatedOrders)
       return {
         ...state,
         orders: updatedOrders,
@@ -90,6 +92,7 @@ const OrderReducer = (state = INIT_STATE, action) => {
       }
     
     case DELETE_ORDER_FAIL:
+      console.error('Conteúdo de action.payload:', action.payload);
       return{
         ...state,
         error: action.payload,

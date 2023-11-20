@@ -62,14 +62,17 @@ function* onUpdateOrder({ orderData }) {
     yield put(updateOrderSuccess(response));
   } catch (error) {
     console.error(error)
+    console.error('Erro detalhado: ', error.response || error.mensage || error);
     yield put(updateOrderFail(error));
   }
 }
 
 function* onDeleteOrder({ orderId }) {
+  console.log('SAGA', orderId)
   try {
     const response = yield call(deleteOrder, orderId);
-    yield put(deleteOrderSuccess(response));
+    console.log("Saga delete response:",response)
+    yield put(deleteOrderSuccess(orderId));
   } catch (error) {
     yield put(deleteOrderFail(error));
   }

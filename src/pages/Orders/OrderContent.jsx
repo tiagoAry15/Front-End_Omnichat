@@ -27,7 +27,6 @@ const OrderContent = (props) => {
     open,
   } = useContext(OrderContext);
 
-  const [flavorQuantities, setFlavorQuantities] = useState({});
 
   const buildOrderItemsText = orderItems => {
     let orderItemsText = '';
@@ -44,7 +43,6 @@ const OrderContent = (props) => {
     return orderItemsText;
   }
   const { t } = useTranslation();
-
   document.title = t("pedidos-title-page");
   return (
 
@@ -63,7 +61,8 @@ const OrderContent = (props) => {
               </CardTitle>
               <CardText>
               <p className='pizza'>{order.pizza}</p>
-              <p className="observation-field"><p>
+              <p className="observation-field">
+                <p>
                 <strong>{props.t("detalhesDoPedidoCard")}</strong>{buildOrderItemsText(order.orderItems)}<strong>{props.t("observacaoCard")}:</strong></p>{order.observation}</p>
               <div className='container_between'>
                 <select
@@ -91,24 +90,23 @@ const OrderContent = (props) => {
                       onSubmit={submitEditOrder}
                     >
                       <FormGroup>
-                      {order.orderItems.map((item, itemIndex) => (
-                        <div key={itemIndex}>
-                          <Label>{item.flavors.join('/')}</Label>
-                          <Input 
-                            type="text"
-                            name={`flavorQuantity_${index}_${itemIndex}`}
-                            placeholder={`Altere o produto: ${item.flavors.join('/')}`}
-                            value={flavorQuantities[`${index}_${itemIndex}`] || ''}
-                            onChange={(event) => {
-                              const key = `${index}_${itemIndex}`;
-                              setFlavorQuantities(prevState => ({
-                                ...prevState,
-                                [key]: event.target.value,
-                              }));
-                            }}
-                          />
-                        </div>
-                      ))}
+                        
+                      {order.orderItems.map((orderItem, itemIndex) => (
+                      <div key={itemIndex}>
+                        {orderItem.flavors.map((flavor, flavorIndex) => (
+                          <div key={flavorIndex}>
+                            <Label>{flavor}</Label>
+                            <Input
+                              type="text"
+                              name={`flavorQuantity_${index}_${itemIndex}_${flavorIndex}`}
+                              placeholder={`Altere o produto: ${flavor}`}
+                              onChange={(event) => changeItem(event, itemIndex, flavorIndex)}
+                            />
+                          </div>
+                        ))}
+                      </div>
+))}
+
                         <Label>
                           {props.t("nomeLabel")}
                         </Label>
@@ -116,8 +114,7 @@ const OrderContent = (props) => {
                           type="text"
                           name="customerName"
                           placeholder={order.customerName}
-                          value={orderToUpdate.customerName}
-                          onChange={changeItem}
+                          onChange={(event) => changeItem(event, index)}
 
 
                         />
@@ -129,8 +126,7 @@ const OrderContent = (props) => {
                           type="text"
                           name="communication"
                           placeholder={order.communication}
-                          value={orderToUpdate.communication}
-                          onChange={changeItem}
+                          onChange={(event) => changeItem(event, index)}
                         />
                         <Label>
                           {props.t("observacaoLabel")}
@@ -139,8 +135,7 @@ const OrderContent = (props) => {
                           type="text"
                           name="observation"
                           placeholder={order.observation}
-                          value={orderToUpdate.observation}
-                          onChange={changeItem}
+                          onChange={(event) => changeItem(event, index)}
                         />
                         <Label>
                           {props.t("enderecoLabel")}
@@ -149,10 +144,8 @@ const OrderContent = (props) => {
                           type="text"
                           name="address"
                           placeholder={order.address}
-                          value={orderToUpdate.address}
-                          onChange={changeItem}
-                        />
-
+                          onChange={(event) => changeItem(event, index)}
+                        />     
                       </FormGroup>
                       <Button color='success'>
                         {props.t("updateOrder")}
