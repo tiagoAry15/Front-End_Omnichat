@@ -29,8 +29,8 @@
   "SidebarBg": "Papel de Parede da Barra Lateral",
   "Search": "Pesquisar...",
   "Menu": "Menu",
-  "Dashboards": "Dashboards",
-  "Dashboard": "Dashboard",
+  "Dashboards": "Painel",
+  "Dashboard": "Painel",
   "Default": "Padrão",
   "Compact": "Compacto",
   "Icon": "Icone",
@@ -187,7 +187,17 @@
   "Horizontal layout": "Horizontal layout",
   "Light Sidebar": "Light Sidebar",
   "Compact Sidebar": "Compact Sidebar",
-
-
+  "Detalhes do pedido": "Detalhes do pedido:",
+  "updateOrder": "Atualizar Pedido",
+  "updateOrderbtn": "Atualizar pedido",
+  "endSession": "Encerrar Atendimento",
+  "selecione": "Selecione",
+  "nomeLabel": "Nome",
+  "comunicacaoLabel": "Comunicaçao",
+  "observacaoLabel": "Observaçao",
+  "observacaoCard": "Observaçao",
+  "enderecoLabel": "Endereço",
+  "pedidos-title-page": "Pedidos | Omnichat",
+  "detalhesDoPedidoCard": "Detalhes do Pedido:",
   "WelcomeDashboard": "Bem Vindo ao seu Dashboard"
 }

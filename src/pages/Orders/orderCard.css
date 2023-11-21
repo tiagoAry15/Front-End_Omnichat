@@ -1,0 +1,38 @@
+.orderContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: start;
+    overflow-x: auto;
+    padding: 20px;
+  }
+  
+  .container_between {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .card {
+    background-color: #fff;
+    border-radius: 8px;
+    margin: 10px;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    height: 100%;
+
+  }
+  
+  .customerName {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .pizza {
+    font-size: 16px;
+  }
+  

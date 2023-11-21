@@ -1,16 +1,16 @@
 // OrderScreenContent.jsx
-import React, { useContext } from 'react';
-import { Accordion, AccordionItem, AccordionHeader, AccordionBody, Container, Button, Input, Form, Label, FormGroup, Spinner } from "reactstrap";
+import React, { useContext, useState } from 'react';
+import { Row, Col, Accordion, AccordionItem, AccordionHeader, AccordionBody, Card, CardBody, CardTitle, CardSubtitle, CardText, Container, Button, Input, Form, Label, FormGroup } from "reactstrap";
 import { ToastContainer } from 'react-toastify';
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import PlatformIcon from './PopUpIcon';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import './orderCard.css'
 import { OrderContext } from '../../contexts/OrderContext';
-import { useTranslation } from 'react-i18next';
-
-
-const OrderContent = () => {
+import { useTranslation, withTranslation } from 'react-i18next';
+import { withRouter } from 'react-router-dom/cjs/react-router-dom.min';
+import { } from "reactstrap";
+const OrderContent = (props) => {
 
   const {
     deletingOrderId,
@@ -28,6 +28,7 @@ const OrderContent = () => {
     orderToUpdate,
     open,
   } = useContext(OrderContext);
+
 
   const buildOrderItemsText = orderItems => {
     let orderItemsText = '';
@@ -47,176 +48,135 @@ const OrderContent = () => {
     return orderItemsText;
   }
   const { t } = useTranslation();
-
-  document.title = "Omnichat";
+  document.title = t("pedidos-title-page");
   return (
 
     <div className="page-content">
       <Container fluid={true}>
-        <Breadcrumbs title='Omnichat' breadcrumbItem={t("Order")} />
-        {loading === true ? (
-          <div className="loadingContainer">
-            <Spinner style={{ width: '6rem', height: '6rem', }} />
-            <h3>Carregando pedidos...</h3>
-          </div>) : error && error.message ? (
-            <div className="errorContainer">
-              <h3>{error.message}</h3>
-              <Button
-                color='primary'
-                onClick={() => dispatch(onGetOrders())}
-              >
-                Tentar novamente
-              </Button>
-            </div>) : (
-
-          <div style={styles.container} className='right'>
-
+        <Breadcrumbs title='Omnichat' breadcrumbItem={t("OrderScreen")} />
+        <div className='right orderContainer'>
+          <Row>
             {orders.map((order, index) => (
-              console.log(order),
-              <div key={orderKeys[index]} style={styles.card} className={`order-item ${deletingOrderId === orderKeys[index] ? 'up' : ''}`}>
-                <div style={styles.container_between}>
-                  <h3 style={styles.customerName}>{index + 1}: {order.customerName}</h3>
-                  <PlatformIcon platform={order.platform} communication={order.communication} />
-                </div>
-                <p style={styles.pizza}>{order.pizza}</p>
-                <p className="observation-field">
-                  <p><strong>Detalhes do pedido:</strong>{buildOrderItemsText(order.orderItems)}<strong>Observação:</strong></p>{order.observation}</p>
-                <div style={styles.container_between}>
-                  <select
-                    value={selectedOptions[orderKeys[index]] || ''}
-                    onChange={(event) => handleSelectChange(event, orderKeys[index])}
-                    className={selectedOptions[orderKeys[index]] ? `selected-${selectedOptions[orderKeys[index]].toLowerCase()}` : 'select'}
-                  >
-                    <option value="">Selecione</option>
-                    <option value="Em preparação">Em preparação</option>
-                    <option value="Pronto para entrega">Pronto para entrega</option>
-                    <option value="A caminho">A caminho</option>
-                    <option value="Entregue" >Entregue </option>
-                  </select>
-                  <i className="bx bx-map map_icon" onClick={() => handleCopy(order.address)}></i>
-                </div>
+              <Col md={4} key={index}>
+                <Card key={index} className='orderCard'>
+                  <CardBody>
+                    <CardTitle tag="h5">
+                      <div className='container_between'>
+                        <h3 className='customerName'>{index + 1}: {order.customerName}</h3>
+                        <PlatformIcon platform={order.platform} communication={order.communication} />
+                      </div>
+                    </CardTitle>
+                    <CardText>
+                      <p className='pizza'>{order.pizza}</p>
+                      <p className="observation-field">
+                        <p>
+                          <strong>{props.t("detalhesDoPedidoCard")}</strong>{buildOrderItemsText(order.orderItems)}<strong>{props.t("observacaoCard")}:</strong></p>{order.observation}</p>
+                      <div className='container_between'>
+                        <select
+                          value={selectedOptions[orderKeys[index]] || ''}
+                          onChange={(event) => handleSelectChange(event, orderKeys[index])}
+                          className={selectedOptions[orderKeys[index]] ? `selected-${selectedOptions[orderKeys[index]].toLowerCase()}` : 'select'}
+                        >
+                          <option value="">{props.t("selecione")}</option>
+                          <option value="Em preparação">{props.t("Preparation")}</option>
+                          <option value="Pronto para entrega">{props.t("Ready")}</option>
+                          <option value="A caminho">{props.t("EnRoute")}</option>
+                          <option value="Entregue" >{props.t("Delivered")} </option>
+                        </select>
+                        <i className="bx bx-map map_icon" onClick={() => handleCopy(order.address)}></i>
+                      </div>
 
 
-                <Accordion flush open={open} toggle={toggle}>
-                  <AccordionItem>
-                    <AccordionHeader targetId={orderKeys[index]} className='btn-update'>
-                      <strong>Atualizar pedido</strong>
-                    </AccordionHeader>
-                    <AccordionBody accordionId={orderKeys[index]}>
-                      <Form
-                        onSubmit={submitEditOrder}
-                      >
-                        <FormGroup>
-                          <Label>
-                            Nome
-                          </Label>
-                          <Input
-                            type="text"
-                            name="customerName"
-                            placeholder={order.customerName}
-                            value={orderToUpdate.customerName}
-                            onChange={changeItem}
+                      <Accordion flush open={open} toggle={toggle}>
+                        <AccordionItem>
+                          <AccordionHeader targetId={orderKeys[index]} className='btn-update'>
+                            <strong>{props.t("updateOrderbtn")}</strong>
+                          </AccordionHeader>
+                          <AccordionBody accordionId={orderKeys[index]}>
+                            <Form
+                              onSubmit={submitEditOrder}
+                            >
+                              <FormGroup>
+
+                                {order.orderItems.map((orderItem, itemIndex) => (
+                                  <div key={itemIndex}>
+                                    {orderItem.flavors.map((flavor, flavorIndex) => (
+                                      <div key={flavorIndex}>
+                                        <Label>{flavor}</Label>
+                                        <Input
+                                          type="text"
+                                          name={`flavorQuantity_${index}_${itemIndex}_${flavorIndex}`}
+                                          placeholder={`Altere o produto: ${flavor}`}
+                                          onChange={(event) => changeItem(event, itemIndex, flavorIndex)}
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
+                                ))}
+
+                                <Label>
+                                  {props.t("nomeLabel")}
+                                </Label>
+                                <Input
+                                  type="text"
+                                  name="customerName"
+                                  placeholder={order.customerName}
+                                  onChange={(event) => changeItem(event, index)}
 
 
-                          />
-                          <Label>
-                            Pizza
-                          </Label>
-                          <Input
-                            type="text"
-                            name="pizzaName"
-                            placeholder={order.pizzaName}
-                            value={orderToUpdate.pizzaName}
-                            onChange={changeItem}
+                                />
 
-                          />
-                          <Label>
-                            Comunicação
-                          </Label>
-                          <Input
-                            type="text"
-                            name="communication"
-                            placeholder={order.communication}
-                            value={orderToUpdate.communication}
-                            onChange={changeItem}
-                          />
-                          <Label>
-                            Observação
-                          </Label>
-                          <Input
-                            type="text"
-                            name="observation"
-                            placeholder={order.observation}
-                            value={orderToUpdate.observation}
-                            onChange={changeItem}
-                          />
-                          <Label>
-                            Endereço
-                          </Label>
-                          <Input
-                            type="text"
-                            name="address"
-                            placeholder={order.address}
-                            value={orderToUpdate.address}
-                            onChange={changeItem}
-                          />
+                                <Label>
+                                  {props.t("comunicacaoLabel")}
+                                </Label>
+                                <Input
+                                  type="text"
+                                  name="communication"
+                                  placeholder={order.communication}
+                                  onChange={(event) => changeItem(event, index)}
+                                />
+                                <Label>
+                                  {props.t("observacaoLabel")}
+                                </Label>
+                                <Input
+                                  type="text"
+                                  name="observation"
+                                  placeholder={order.observation}
+                                  onChange={(event) => changeItem(event, index)}
+                                />
+                                <Label>
+                                  {props.t("enderecoLabel")}
+                                </Label>
+                                <Input
+                                  type="text"
+                                  name="address"
+                                  placeholder={order.address}
+                                  onChange={(event) => changeItem(event, index)}
+                                />
+                              </FormGroup>
+                              <Button color='success'>
+                                {props.t("updateOrder")}
+                              </Button>
+                              <Button color='danger' className='mt-3 d-grid width btn' onClick={() => handleDelete(orderKeys[index])}>
+                                {props.t("endSession")}
+                              </Button>
+                            </Form>
 
-                        </FormGroup>
-                        <Button color='success'>
-                          Atualizar pedido!
-                        </Button>
-                        <Button color='danger' className='mt-3 d-grid width btn' onClick={() => handleDelete(orderKeys[index])}>
-                          Encerrar atendimento
-                        </Button>
-                      </Form>
-
-                    </AccordionBody>
-                  </AccordionItem>
-                </Accordion>
-              </div>
-
+                          </AccordionBody>
+                        </AccordionItem>
+                      </Accordion>
+                    </CardText>
+                  </CardBody>
+                </Card>
+              </Col>
             ))}
-            <ToastContainer />
-          </div>)}
+          </Row>
+          <ToastContainer />
+        </div>
+
       </Container>
     </div>
   );
 }
 
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'start',
-    overflowX: 'auto',
-    padding: '20px',
-  },
-  container_between: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: '8px',
-    margin: '10px',
-    padding: '20px',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '300px',
-    height: '100%'
-  },
-  customerName: {
-    fontSize: '18px',
-    fontWeight: 'bold',
-    marginBottom: '10px',
-  },
-  pizza: {
-    fontSize: '16px',
-  },
-
-};
-
-export default OrderContent;
+export default withRouter(withTranslation()(OrderContent));

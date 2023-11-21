@@ -29,7 +29,11 @@ const OrderProvider = ({ children }) => {
     communication: '',
     customerName: '',
     observation: '',
-    pizzaName: '',
+    orderItems: [
+      {
+        flavors: [''],
+      }
+    ],
   });
 
 
@@ -107,12 +111,44 @@ const OrderProvider = ({ children }) => {
     dispatch(onUpdateOrder(orderData))
   }
 
-  const changeItem = event => {
-    setOrderToUpdate({
-      ...orderToUpdate,
-      [event.target.name]: event.target.value
-    })
-  }
+  const changeItem = (event, orderIndex, flavorIndex) => {
+    const { name, value } = event.target;
+  
+    if (name.startsWith("flavorQuantity")) {
+      setOrderToUpdate((prevOrder) => {
+        const updatedOrderItems = [...prevOrder.orderItems];
+        
+        if (!updatedOrderItems[orderIndex]) {
+          updatedOrderItems[orderIndex] = {
+            flavors: [],
+          };
+        }
+  
+        if (!updatedOrderItems[orderIndex].flavors) {
+          updatedOrderItems[orderIndex].flavors = [];
+        }
+        
+        updatedOrderItems[orderIndex].flavors[flavorIndex] = value;
+
+        return {
+          ...prevOrder,
+          orderItems: updatedOrderItems,
+        };
+      });
+    } else {
+      // Update other fields in orderToUpdate
+      setOrderToUpdate((prevOrder) => ({
+        
+        ...prevOrder,
+        [name]: value,
+      }));
+    }
+  };
+  
+  
+  
+  
+  
 
   const orderContextValue = useMemo(() => ({
     handleDelete,
