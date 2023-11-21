@@ -1,7 +1,7 @@
 import { Col, Container, Row } from "reactstrap";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import ProfileMenu from "../../components/CommonForBoth/TopbarDropdown/ProfileMenu";
-import React, { Suspense } from "react";
+import React from "react";
 import ChatWindow from "./ChatWindow";
 import ChatList from "./ChatList";
 

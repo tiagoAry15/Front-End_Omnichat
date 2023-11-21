@@ -8,16 +8,13 @@ const ChatWindow = () => {
 
   let lastDate = null;
   const {
-    currentPhoneNumber,
-    ChatBoxUsername,
-    Chat_Box_User_Status,
     currentUser,
     currentMessage,
     onKeyPress,
     setCurrentMessage,
     setMessageBox,
     sendMessageToUser,
-    messages,
+    currentChat,
   } = useContext(ChatContext);
 
 
@@ -25,21 +22,21 @@ const ChatWindow = () => {
     <div className="w-100 user-chat">
       <Card className="border_rounded">
         <div className="p-4 border-bottom" id='divHeader'>
-          {currentPhoneNumber && (
+          {currentChat && (
             <Row className='headerClass'>
               <Col md="4" xs="9">
-                <h5 className="font-size-15 mb-1">{ChatBoxUsername}</h5>
+                <h5 className="font-size-15 mb-1">{currentChat.name}</h5>
                 <p className="text-muted mb-0">
                   <i
                     className={
-                      Chat_Box_User_Status === 'Active'
+                      currentChat.status === 'Active'
                         ? 'mdi mdi-circle text-success align-middle me-2'
-                        : Chat_Box_User_Status === 'intermediate'
+                        : currentChat.status === 'intermediate'
                           ? 'mdi mdi-circle text-warning align-middle me-1'
                           : 'mdi mdi-circle align-middle me-1'
                     }
                   />
-                  {Chat_Box_User_Status}
+                  {currentChat.status}
                 </p>
               </Col>
             </Row>
@@ -52,7 +49,7 @@ const ChatWindow = () => {
                 style={{ height: '55vh' }}
                 containerRef={(ref) => setMessageBox(ref)}
               >
-                {messages && messages.map((message, index) => {
+                {currentChat && currentChat.messagePot && currentChat.messagePot.map((message, index) => {
 
 
                   let [msgDate, msgTime] = message.timestamp.split(' ');
@@ -78,13 +75,14 @@ const ChatWindow = () => {
                       <li
                         key={'test_k' + index}
                         className={
-                          message.sender === currentUser.name ||
+                          message.sender === currentUser.email.split('@')[0] ||
                             message.sender === 'Bot' ||
                             message.sender === 'ChatBot'
                             ? 'right'
                             : 'left'
                         }
                       >
+
                         <div className="conversation-list">
                           <div className="ctext-wrap">
                             <div className="conversation-name">
@@ -123,7 +121,7 @@ const ChatWindow = () => {
               <Col className="col-auto">
                 <Button
                   color="primary"
-                  disabled={!currentPhoneNumber || !currentMessage}
+                  disabled={!currentChat || !currentMessage}
                   onClick={() => sendMessageToUser()}
                   className="btn1 border_rounded"
                 >
@@ -140,9 +138,7 @@ const ChatWindow = () => {
 };
 
 ChatWindow.propTypes = {
-  currentPhoneNumber: PropTypes.string,
-  chatBoxUsername: PropTypes.string,
-  Chat_Box_User_Status: PropTypes.string,
+
   currentUser: PropTypes.object,
   messages: PropTypes.array,
   currentMessage: PropTypes.string,

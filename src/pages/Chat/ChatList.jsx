@@ -5,7 +5,7 @@ import ChatItemList from './ChatItemList';
 import { ChatContext } from "../../contexts/ChatContext";
 
 const ChatList = (props) => {
-  const { activeTab, chats, currentPhoneNumber, userChatOpen, social_icons, isLoading } = useContext(ChatContext);
+  const { activeTab, chats, currentChat, userChatOpen, social_icons, isLoading } = useContext(ChatContext);
 
   return (
     <div className="chat-leftsidebar-nav">
@@ -33,7 +33,7 @@ const ChatList = (props) => {
                     return (
                       <li
                         key={chat.id + chat.phoneNumber}
-                        className={`li-max-width ${currentPhoneNumber === chat.phoneNumber ? props.t("Active") : ""}`}
+                        className={`li-max-width ${currentChat && currentChat.phoneNumber === chat.phoneNumber ? props.t("Active") : ""}`}
                       >
                         <ChatItemList chat={chat} userChatOpen={userChatOpen} t={props.t} from={social_icons[chat_from]} />
                       </li>
