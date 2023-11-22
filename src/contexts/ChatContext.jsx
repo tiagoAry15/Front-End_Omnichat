@@ -102,14 +102,15 @@ const ChatProvider = ({ children }) => {
     if (currentUser) {
       const message = {
         id: _.uniqueId(),
-        phoneNumber: currentPhoneNumber,
+        phoneNumber: currentChat.phoneNumber,
         sender: currentUser.email.split('@')[0],
         body: currentMessage,
+        from: currentChat.from[0],
       };
       try {
         console.log(message)
         dispatch(onAddMessage(message));
-        setIsSendingMessage(false)
+        setCurrentMessage("");
       } catch (err) {
         console.log(err);
       }
