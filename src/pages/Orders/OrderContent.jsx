@@ -1,6 +1,25 @@
 // OrderScreenContent.jsx
 import React, { useContext, useState } from 'react';
-import { Row, Col, Accordion, AccordionItem, AccordionHeader, AccordionBody, Card, CardBody, CardTitle, CardSubtitle, CardText, Container, Button, Input, Form, Label, FormGroup } from "reactstrap";
+import { Row, 
+          Col, 
+          Accordion, 
+          AccordionItem, 
+          AccordionHeader, 
+          ModalHeader, 
+          Card, 
+          CardBody, 
+          CardTitle, 
+          CardSubtitle, 
+          CardText, 
+          Container, 
+          Button, 
+          Input, 
+          Form, 
+          Label, 
+          FormGroup,
+          Modal,
+          ModalBody,
+          ModalFooter} from "reactstrap";
 import { ToastContainer } from 'react-toastify';
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import PlatformIcon from './PopUpIcon';
@@ -29,7 +48,8 @@ const OrderContent = (props) => {
     open,
   } = useContext(OrderContext);
 
-
+  const [modal, setModal] = useState(false);
+  const [selectOrderIndex, setSelectorderIndex] = useState(null);
   const buildOrderItemsText = orderItems => {
     let orderItemsText = '';
     let flavorsText = '';
@@ -56,14 +76,23 @@ const OrderContent = (props) => {
         <Breadcrumbs title='Omnichat' breadcrumbItem={t("OrderScreen")} />
         <div className='right orderContainer'>
           <Row>
-            {orders.map((order, index) => (
+          {orders.map((order, index) => (
               <Col md={4} key={index}>
-                <Card key={index} className='orderCard'>
+                <Card 
+                key={index} 
+                className='orderCard'
+                style={{
+                  borderRadius: '20px',
+                  borderColor: '#2A3042',
+                  boxShadow: '5px 5px 20px 0px'
+                }}
+                >
                   <CardBody>
                     <CardTitle tag="h5">
                       <div className='container_between'>
-                        <h3 className='customerName'>{index + 1}: {order.customerName}</h3>
                         <PlatformIcon platform={order.platform} communication={order.communication} />
+                        <h3>{order.customerName}</h3>
+                        <h3 className='customerName'>ID: {index + 1}</h3>
                       </div>
                     </CardTitle>
                     <CardText>
@@ -86,14 +115,20 @@ const OrderContent = (props) => {
                         <i className="bx bx-map map_icon" onClick={() => handleCopy(order.address)}></i>
                       </div>
 
-
-                      <Accordion flush open={open} toggle={toggle}>
-                        <AccordionItem>
-                          <AccordionHeader targetId={orderKeys[index]} className='btn-update'>
-                            <strong>{props.t("updateOrderbtn")}</strong>
-                          </AccordionHeader>
-                          <AccordionBody accordionId={orderKeys[index]}>
-                            <Form
+                      <Button color="primary" onClick={() => {
+                        setModal(!modal);
+                        setSelectorderIndex(index);
+                        }}>
+                      {props.t("updateOrder")}
+                      </Button>
+                      <Modal isOpen={modal} toggle={() => setModal(!modal)}>
+                        <ModalHeader toggle={() => {
+                          setModal(!modal)
+                          }}>
+                            {selectOrderIndex !== null && orders[selectOrderIndex].customerName}
+                          </ModalHeader>
+                        <ModalBody>
+                        <Form
                               onSubmit={submitEditOrder}
                             >
                               <FormGroup>
@@ -120,7 +155,7 @@ const OrderContent = (props) => {
                                 <Input
                                   type="text"
                                   name="customerName"
-                                  placeholder={order.customerName}
+                                  placeholder={orders[selectOrderIndex].customerName}
                                   onChange={(event) => changeItem(event, index)}
 
 
@@ -132,7 +167,7 @@ const OrderContent = (props) => {
                                 <Input
                                   type="text"
                                   name="communication"
-                                  placeholder={order.communication}
+                                  placeholder={orders[selectOrderIndex].communication}
                                   onChange={(event) => changeItem(event, index)}
                                 />
                                 <Label>
@@ -141,7 +176,7 @@ const OrderContent = (props) => {
                                 <Input
                                   type="text"
                                   name="observation"
-                                  placeholder={order.observation}
+                                  placeholder={orders[selectOrderIndex].observation}
                                   onChange={(event) => changeItem(event, index)}
                                 />
                                 <Label>
@@ -150,11 +185,11 @@ const OrderContent = (props) => {
                                 <Input
                                   type="text"
                                   name="address"
-                                  placeholder={order.address}
+                                  placeholder={orders[selectOrderIndex].address}
                                   onChange={(event) => changeItem(event, index)}
                                 />
                               </FormGroup>
-                              <Button color='success'>
+                              <Button color='success' className='mt-3 d-grid width btn'>
                                 {props.t("updateOrder")}
                               </Button>
                               <Button color='danger' className='mt-3 d-grid width btn' onClick={() => handleDelete(orderKeys[index])}>
@@ -162,9 +197,8 @@ const OrderContent = (props) => {
                               </Button>
                             </Form>
 
-                          </AccordionBody>
-                        </AccordionItem>
-                      </Accordion>
+                        </ModalBody>
+                      </Modal>
                     </CardText>
                   </CardBody>
                 </Card>
