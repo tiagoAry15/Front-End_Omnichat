@@ -29,14 +29,20 @@ const INIT_STATE = {
 
 const convertToDateTime = (str) => {
   // Converte a string "21-Nov-2023 23:45" em um objeto Date
-  const [day, month, year, time] = str.match(/(\d+)-(\w+)-(\d+)\s(\d+:\d+)/);
-  let date = new Date(`${month} ${day}, ${year} ${time}`);
+  const parts = str.match(/(\d+)-(\w+)-(\d+)\s(\d+:\d+)/);
+  const months = {
+    'Jan': 'January', 'Fev': 'February', 'Mar': 'March', 'Abr': 'April', 'Mai': 'May', 'Jun': 'June',
+    'Jul': 'July', 'Ago': 'August', 'Set': 'September', 'Out': 'October', 'Nov': 'November', 'Dez': 'December'
+  };
+  const month = months[parts[2]] || parts[2]; // Converte o mês para inglês, se necessário
+  
+  let date = new Date(`${month} ${parts[1]}, ${parts[3]} ${parts[4]}`);
   console.log(date)
-  return date
+  return new Date(`${month} ${parts[1]}, ${parts[3]} ${parts[4]}`);
 }
 
 const orderChatsByDate = (chats) =>  {
-  return chats.sort((a, b) => convertToDateTime(a.lastMessage_timestamp) - convertToDateTime(b.lastMessage_timestamp));
+  return chats.sort((a, b) => convertToDateTime(b.lastMessage_timestamp) - convertToDateTime(a.lastMessage_timestamp));
 }
 
 
