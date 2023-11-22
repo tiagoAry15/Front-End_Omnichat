@@ -71,7 +71,8 @@ const ChatProvider = ({ children }) => {
   }, [chats, currentPhoneNumber]);
 
   useEffect(() => {
-    if (currentChat.messagePot.length > 0) scrollToBottom();
+
+    if (currentChat && currentChat.messagePot && currentChat.messagePot.length > 0) scrollToBottom();
   }, [chats]);
 
   useEffect(() => {

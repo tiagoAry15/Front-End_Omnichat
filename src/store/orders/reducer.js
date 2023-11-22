@@ -99,7 +99,7 @@ const OrderReducer = (state = INIT_STATE, action) => {
         loading: false,
       }
     default:
-      return {...state, loading: true}
+      return {...state}
   }
 }
 

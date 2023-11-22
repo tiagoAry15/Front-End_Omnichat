@@ -27,13 +27,26 @@ const INIT_STATE = {
   
 }
 
+const convertToDateTime = (str) => {
+  // Converte a string "21-Nov-2023 23:45" em um objeto Date
+  const [day, month, year, time] = str.match(/(\d+)-(\w+)-(\d+)\s(\d+:\d+)/);
+  let date = new Date(`${month} ${day}, ${year} ${time}`);
+  console.log(date)
+  return date
+}
+
+const orderChatsByDate = (chats) =>  {
+  return chats.sort((a, b) => convertToDateTime(a.lastMessage_timestamp) - convertToDateTime(b.lastMessage_timestamp));
+}
+
+
 const Calendar = (state = INIT_STATE, action) => {
   switch (action.type) {
     case GET_CHATS_SUCCESS:
   
       return {
         ...state,
-        chats: action.payload,
+        chats: orderChatsByDate(action.payload),
         loading: false,
       }
 
@@ -98,7 +111,7 @@ const Calendar = (state = INIT_STATE, action) => {
   // Retorna o estado atualizado
   return {
     ...state,
-    chats: updatedChats
+    chats: orderChatsByDate(updatedChats)
   };
 }
 
@@ -113,7 +126,7 @@ const Calendar = (state = INIT_STATE, action) => {
             state.chats[chatId].unreadMessages = action.payload.unreadMessages
             return {
               ...state,
-              chats: [...state.chats]
+              chats:orderChatsByDate([...state.chats])
             }
           }
         }
@@ -121,7 +134,7 @@ const Calendar = (state = INIT_STATE, action) => {
 
       return {
         ...state,
-        chats: [...state.chats , action.payload]
+        chats: orderChatsByDate([...state.chats , action.payload])
 
       }
     }
@@ -154,7 +167,7 @@ const Calendar = (state = INIT_STATE, action) => {
        
       
         ...state,
-        chats: chats
+        chats: orderChatsByDate(chats)
       }
   }
     case PUT_UPDATE_CHAT_FAIL:

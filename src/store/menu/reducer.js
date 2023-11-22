@@ -1,5 +1,4 @@
 import {
-  GET_MENU,
   GET_MENU_SUCCESS,
   GET_MENU_FAIL,
   POST_ADD_MENU_SUCCESS,
@@ -61,7 +60,7 @@ const MenuReducer = (state = INIT_STATE, action) => {
       }
 
     default:
-      return {...state, loading: true}
+      return {...state }
   }
 }
 
