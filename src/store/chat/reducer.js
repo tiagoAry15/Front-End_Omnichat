@@ -1,4 +1,5 @@
 import {
+  POST_ADD_MESSAGE,
   GET_GROUPS_SUCCESS,
   GET_CHATS_SUCCESS,
   GET_GROUPS_FAIL,
@@ -24,6 +25,7 @@ const INIT_STATE = {
   messages: [],
   error: [],
   loading: true,
+  loading_message: false,
   
 }
 
@@ -100,6 +102,12 @@ const Calendar = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       }
+    case POST_ADD_MESSAGE: {
+      return {
+        ...state,
+        loading_message: true,
+      }
+    }
 
     case POST_ADD_MESSAGE_SUCCESS: {
   // Cria uma cópia do array de chats
@@ -121,6 +129,7 @@ const Calendar = (state = INIT_STATE, action) => {
   };
 }
 
+      
     
     case POST_ADD_CHAT_SUCCESS: {
       
@@ -140,7 +149,8 @@ const Calendar = (state = INIT_STATE, action) => {
 
       return {
         ...state,
-        chats: orderChatsByDate([...state.chats , action.payload])
+        chats: orderChatsByDate([...state.chats, action.payload]),
+        loading_message: false
 
       }
     }
@@ -154,6 +164,7 @@ const Calendar = (state = INIT_STATE, action) => {
       return {
         ...state,
         error: action.payload,
+        loading_message: false,
       }
     
     case PUT_UPDATE_CHAT_SUCCESS: { 

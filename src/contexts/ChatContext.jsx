@@ -40,6 +40,10 @@ const ChatProvider = ({ children }) => {
     state => state.chat.loading,
     loading => loading
   );
+  const selectIsLoadingMessages = createSelector(
+    state => state.chat.loading_message,
+    loading_message => loading_message
+  )
 
   const social_icons = {
     whatsapp: whatsappIcon,
@@ -49,7 +53,7 @@ const ChatProvider = ({ children }) => {
 
   const error = useSelector(selectError);
   const isLoading = useSelector(selectIsLoading);
-
+  const isLoadingMessages = useSelector(selectIsLoadingMessages);
 
   useEffect(() => {
     // Encontra a conversa com o phoneNumber correspondente
@@ -155,6 +159,7 @@ const ChatProvider = ({ children }) => {
     social_icons,
     messages,
     isLoading,
+    isLoadingMessages,
     sendMessageToUser
   }
 

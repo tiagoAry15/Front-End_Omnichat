@@ -15,6 +15,7 @@ const ChatWindow = () => {
     setMessageBox,
     sendMessageToUser,
     currentChat,
+    isLoadingMessages
   } = useContext(ChatContext);
 
 
@@ -121,12 +122,19 @@ const ChatWindow = () => {
               <Col className="col-auto">
                 <Button
                   color="primary"
-                  disabled={!currentChat || !currentMessage}
+                  disabled={!currentChat || !currentMessage || isLoadingMessages}
                   onClick={() => sendMessageToUser()}
                   className="btn1 border_rounded"
                 >
-                  <span className="d-none d-sm-inline-block me-2">Send</span>{' '}
-                  <i className="mdi mdi-send" />
+                  {isLoadingMessages ? (
+                    <span className="spinner-border spinner-border-sm"></span>
+                  ) : (
+                    <>
+                      <span className="d-none d-sm-inline-block me-2">Send</span>
+                      <i className="mdi mdi-send" />
+                    </>
+                  )}
+
                 </Button>
               </Col>
             </Row>
