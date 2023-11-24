@@ -6,7 +6,9 @@
     overflow-x: auto;
     padding: 20px;
   }
-  
+  .observation-field{
+    cursor: pointer;
+  }
   .container_between {
     display: flex;
     flex-direction: row;

@@ -19,7 +19,9 @@ import { Row,
           FormGroup,
           Modal,
           ModalBody,
-          ModalFooter} from "reactstrap";
+          ModalFooter,
+        ListGroup,
+      ListGroupItem} from "reactstrap";
 import { ToastContainer } from 'react-toastify';
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import PlatformIcon from './PopUpIcon';
@@ -49,21 +51,24 @@ const OrderContent = (props) => {
   } = useContext(OrderContext);
 
   const [modal, setModal] = useState(false);
+  const [modalOrders, setModalOrders] = useState(false);
   const [selectOrderIndex, setSelectorderIndex] = useState(null);
   const buildOrderItemsText = orderItems => {
     let orderItemsText = '';
-    let flavorsText = '';
     console.log(orderItems);
+  
     if (orderItems.length !== 0) {
       orderItems.forEach((item) => {
+        let flavorsText = '';
+  
         if (item.flavors.length > 1) {
           flavorsText = `(${item.flavors.join('/')})`;
-        }
-        else if (item.flavors.length === 1) {
+        } else if (item.flavors.length === 1) {
           flavorsText = `${item.flavors[0]}`;
         }
-        orderItemsText += `${item.quantity} X ${flavorsText} ${item.size}\n`;
-      })
+  
+        orderItemsText += `${item.quantity} - ${flavorsText} - ${item.size} - \n`;
+      });
     }
     return orderItemsText;
   }
@@ -97,10 +102,127 @@ const OrderContent = (props) => {
                     </CardTitle>
                     <CardText>
                       <p className='pizza'>{order.pizza}</p>
-                      <p className="observation-field">
-                        <p>
-                          <strong>{props.t("detalhesDoPedidoCard")}</strong>{buildOrderItemsText(order.orderItems)}<strong>{props.t("observacaoCard")}:</strong></p>{order.observation}</p>
-                      <div className='container_between'>
+                      <p className="observation-field" onClick={() => {
+                        setModalOrders(!modalOrders);
+                        setSelectorderIndex(index);
+                        }}>
+                          <strong>{props.t("detalhesDoPedidoCard")}</strong>
+                          {order.orderItems.map((orderItem, itemIndex) => (
+                            <div key={itemIndex}>
+                              {orderItem.flavors.map((flavor, flavorIndex) => (
+                                <div key={flavorIndex}>
+                                  {orderItem.quantity} - {flavor}
+                                </div>
+                              ))}
+                              {order.quantity}
+                            </div>
+                          ))}
+                          <strong>{props.t("observacaoCard")}</strong>
+                          <p>{order.observation}</p>
+
+                         </p>
+
+                          <Modal isOpen={modalOrders} toggle={() => setModalOrders(!modalOrders)}>
+                            <ModalHeader toggle={() => {
+                              setModalOrders(!modalOrders)
+                              }}>
+                          <strong>Altere detalhes do pedido de {order.customerName}</strong>
+                        </ModalHeader>
+                      <ModalBody>
+                                {order.orderItems.map((orderItem, itemIndex) => (
+                                  <div key={itemIndex}>
+                                    {orderItem.flavors.map((flavor, flavorIndex) => (
+                                      <div key={flavorIndex}>
+                                        <ListGroup>
+                                          <ListGroupItem>
+                                          <div class="row">
+                                          <div class="col">
+                                          <Input placeholder= {orderItem.quantity}/>
+                                          </div>
+                                          <div class="col">
+                                          
+                                          <Input placeholder= {flavor}/>
+                                          </div>
+
+                                            <div class="col">
+                                            <Button color="success">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                                            </svg>
+                                            </Button>
+                                            </div>
+                                            <div class="col">
+                                            <Button color="danger">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                                          </svg>
+                                            </Button>
+                                            </div>
+                                            </div>
+                                          </ListGroupItem>
+                                        </ListGroup>
+                                      </div>
+                                    ))}
+                                  </div>
+                                ))}
+                      </ModalBody>
+                      </Modal>
+                      <Button color="primary" onClick={() => {
+                        setModal(!modal);
+                        setSelectorderIndex(index);
+                        }}>
+                      {props.t("updateOrder")}
+                      </Button>
+
+                      <Modal isOpen={modal} toggle={() => setModal(!modal)}>
+                        <ModalHeader toggle={() => {
+                          setModal(!modal)
+                          }}>
+                            {selectOrderIndex !== null && order.customerName}
+                            <i className="bx bx-map map_icon" onClick={() => handleCopy(order.address)}></i>
+                          </ModalHeader>
+                        <ModalBody>
+                        <Form
+                              onSubmit={submitEditOrder}
+                            >
+                              <FormGroup>
+                                <Label>
+                                  {props.t("nomeLabel")}
+                                </Label>
+                                <Input
+                                  type="text"
+                                  name="customerName"
+                                  placeholder={order.customerName}
+                                  onChange={(event) => changeItem(event, index)}
+                                />
+                                <Label>
+                                  {props.t("comunicacaoLabel")}
+                                </Label>
+                                <Input
+                                  type="text"
+                                  name="communication"
+                                  placeholder={order.communication}
+                                  onChange={(event) => changeItem(event, index)}
+                                />
+                                <Label>
+                                  {props.t("observacaoLabel")}
+                                </Label>
+                                <Input
+                                  type="text"
+                                  name="observation"
+                                  placeholder={order.observation}
+                                  onChange={(event) => changeItem(event, index)}
+                                />
+                                <Label>
+                                  {props.t("enderecoLabel")}
+                                </Label>
+                                <Input
+                                  type="text"
+                                  name="address"
+                                  placeholder={order.address}
+                                  onChange={(event) => changeItem(event, index)}
+                                />
+                              </FormGroup>
                         <select
                           value={selectedOptions[orderKeys[index]] || ''}
                           onChange={(event) => handleSelectChange(event, orderKeys[index])}
@@ -112,83 +234,6 @@ const OrderContent = (props) => {
                           <option value="A caminho">{props.t("EnRoute")}</option>
                           <option value="Entregue" >{props.t("Delivered")} </option>
                         </select>
-                        <i className="bx bx-map map_icon" onClick={() => handleCopy(order.address)}></i>
-                      </div>
-
-                      <Button color="primary" onClick={() => {
-                        setModal(!modal);
-                        setSelectorderIndex(index);
-                        }}>
-                      {props.t("updateOrder")}
-                      </Button>
-                      <Modal isOpen={modal} toggle={() => setModal(!modal)}>
-                        <ModalHeader toggle={() => {
-                          setModal(!modal)
-                          }}>
-                            {selectOrderIndex !== null && orders[selectOrderIndex].customerName}
-                          </ModalHeader>
-                        <ModalBody>
-                        <Form
-                              onSubmit={submitEditOrder}
-                            >
-                              <FormGroup>
-
-                                {order.orderItems.map((orderItem, itemIndex) => (
-                                  <div key={itemIndex}>
-                                    {orderItem.flavors.map((flavor, flavorIndex) => (
-                                      <div key={flavorIndex}>
-                                        <Label>{flavor}</Label>
-                                        <Input
-                                          type="text"
-                                          name={`flavorQuantity_${index}_${itemIndex}_${flavorIndex}`}
-                                          placeholder={`Altere o produto: ${flavor}`}
-                                          onChange={(event) => changeItem(event, itemIndex, flavorIndex)}
-                                        />
-                                      </div>
-                                    ))}
-                                  </div>
-                                ))}
-
-                                <Label>
-                                  {props.t("nomeLabel")}
-                                </Label>
-                                <Input
-                                  type="text"
-                                  name="customerName"
-                                  placeholder={orders[selectOrderIndex].customerName}
-                                  onChange={(event) => changeItem(event, index)}
-
-
-                                />
-
-                                <Label>
-                                  {props.t("comunicacaoLabel")}
-                                </Label>
-                                <Input
-                                  type="text"
-                                  name="communication"
-                                  placeholder={orders[selectOrderIndex].communication}
-                                  onChange={(event) => changeItem(event, index)}
-                                />
-                                <Label>
-                                  {props.t("observacaoLabel")}
-                                </Label>
-                                <Input
-                                  type="text"
-                                  name="observation"
-                                  placeholder={orders[selectOrderIndex].observation}
-                                  onChange={(event) => changeItem(event, index)}
-                                />
-                                <Label>
-                                  {props.t("enderecoLabel")}
-                                </Label>
-                                <Input
-                                  type="text"
-                                  name="address"
-                                  placeholder={orders[selectOrderIndex].address}
-                                  onChange={(event) => changeItem(event, index)}
-                                />
-                              </FormGroup>
                               <Button color='success' className='mt-3 d-grid width btn'>
                                 {props.t("updateOrder")}
                               </Button>
