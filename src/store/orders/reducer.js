@@ -50,7 +50,7 @@ const OrderReducer = (state = INIT_STATE, action) => {
     case POST_ADD_ORDER_SUCCESS:
       return {
         ...state,
-        orders: [...state.orders, action.payload],
+        orders: [action.payload, ...state.orders],
         loading: false,
       }
 
