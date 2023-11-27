@@ -194,6 +194,7 @@
   "comunicacaoLabel": "Communication",
   "observacaoLabel": "Observation",
   "observacaoCard": "Observation",
+  "semObservacaoCard": "No observation",
   "enderecoLabel": "Address",
   "pedidos-title-page": "Orders Page | Omnichat",
   "detalhesDoPedidoCard": "Order Details:",
