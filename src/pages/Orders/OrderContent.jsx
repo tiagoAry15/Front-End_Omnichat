@@ -106,12 +106,12 @@ const OrderContent = (props) => {
 
         ) : (
           <div className='right orderContainer'>
-            <Row>
+            <Row style={{ width: '100%' }} >
               {[...orders].reverse().map((order, index) => {
                 const reverseIndex = orders.length - 1 - index;
 
                 return (
-                  <Col md={4} key={index}>
+                  <Col md={4} key={index} >
                     <Card
                       key={index}
                       className='orderCard'
@@ -162,7 +162,7 @@ const OrderContent = (props) => {
 
 
 
-                            {order.observation ?
+                            {order.observation && order.observation != "None" ?
                               (
                                 <>
                                   <strong>{props.t("observacaoCard")}</strong>

@@ -63,6 +63,7 @@ const SocketProvider = ({ children }) => {
         });
         socket.on('connect_error', (error) => {
             displayErrorToast("Erro ao conectar com o servidor socket", error);
+            console.log(error)
         });
 
         socket.on('order', (data) => {
@@ -166,7 +167,7 @@ const SocketProvider = ({ children }) => {
             name: data.sender,
             messagePot: [data],
             unreadMessages: 1,
-            status: "active",
+            isBotActive: true,
             isImg: false,
             from: data.from,
             lastMessage_timestamp: data.timestamp,
