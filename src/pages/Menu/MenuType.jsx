@@ -38,6 +38,7 @@ const MenuType = (props) => {
             if (!/^\d*\.?\d*$/.test(value)) {
                 return; // If it's not numeric, we simply return without updating the state
             }
+            value = parseFloat(value).toFixed(2);
         }
 
         const updatedItems = localItems.map((item, index) => {
@@ -132,7 +133,7 @@ const MenuType = (props) => {
                                             disabled={!isEditing}
                                             type="number"
                                             placeholder='R$'
-                                            value={item.preço}
+                                            value={parseFloat(item.preço).toFixed(2)}
                                             onChange={(e) => handleInputChange(e, index, 'preço')} />
                                     </td>
                                     {isEditing ?

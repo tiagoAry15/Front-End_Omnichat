@@ -25,8 +25,8 @@ const ChatProvider = ({ children }) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messages, setMessages] = useState("");
   const [currentChat, setCurrentChat] = useState(null)
-  const [isSendingMessage, setIsSendingMessage] = useState(false)
   const { chats, displayErrorToast } = useContext(SocketContext);
+  const [booleanName, setBooleanName] = useState({ true: 'Active', false: 'Inactive' });
   const dispatch = useDispatch();
 
   const currentUser = useSelector(state => state.Login.user);
@@ -160,7 +160,8 @@ const ChatProvider = ({ children }) => {
     messages,
     isLoading,
     isLoadingMessages,
-    sendMessageToUser
+    sendMessageToUser,
+    booleanName
   }
 
 

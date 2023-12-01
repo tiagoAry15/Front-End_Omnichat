@@ -19,7 +19,7 @@ const ChatContent = ({ t }) => {
                         <div className="d-lg-flex">
                             <div className="chat-leftsidebar me-lg-4">
                                 <div>
-                                    <div className="py-4 border-bottom">
+                                    <div>
                                         <div className="d-flex"
                                             style={{ justifyContent: "center", alignItems: 'center' }}>
                                             <ProfileMenu />

@@ -17,6 +17,7 @@ import avatar1 from "../../assets/images/users/Icone_Usuario.png"
 function CardUser(props) {
   const [settingsMenu, setSettingsMenu] = useState(false)
   const [seletedMonth, setSeletedMonth] = useState("Mensal");
+  const orders = props.orders;
   const user = useSelector((state) => state.Login.user);
   const onChangeMonth = (value) => {
     setSeletedMonth(value);
@@ -55,26 +56,23 @@ function CardUser(props) {
                 <Col lg="4" className="align-self-center">
                   <div className="text-lg-center mt-4 mt-lg-0">
                     <Row>
-                      <Col xs="4">
+                      <Col xs="6">
                         <div>
                           <p className="text-muted text-truncate mb-2">
                             Pedidos total
                           </p>
-                          <h5 className="mb-0">48</h5>
+                          {orders && (
+                            <h5 className="mb-0">{orders}</h5>
+                          )
+                          }
+
                         </div>
                       </Col>
-                      <Col xs="4">
+
+                      <Col xs="6">
                         <div>
                           <p className="text-muted text-truncate mb-2">
-                            Projects
-                          </p>
-                          <h5 className="mb-0">40</h5>
-                        </div>
-                      </Col>
-                      <Col xs="4">
-                        <div>
-                          <p className="text-muted text-truncate mb-2">
-                            Clients
+                            Clientes
                           </p>
                           <h5 className="mb-0">18</h5>
                         </div>

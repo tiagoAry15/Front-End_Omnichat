@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import {
   Container,
   Row,
@@ -6,6 +6,8 @@ import {
   Card,
   CardBody,
 } from "reactstrap";
+
+import { SocketContext } from "../../contexts/SocketContext";
 
 import { Link } from "react-router-dom";
 
@@ -28,38 +30,68 @@ import SocialSource from "./SocialSource";
 
 
 const DashboardSaas = (props) => {
+  const { orders } = useContext(SocketContext);
+
+  const [periodData, setPeriodData] = useState([]);
+  const [periodType, setPeriodType] = useState("yearly");
+  const [data, setData] = useState()
+  const [totalPedidos, setTotalPedidos] = useState()
+  const [receita, setReceita] = useState()
+
+
+  const createPedidos = () => {
+    setTotalPedidos(orders.length)
+  }
+
+  const createReceita = () => {
+    let receita = [];
+    orders.map(order => {
+      order.orderItems.map(item => {
+        receita.push(item.price);
+      });
+    })
+
+    let newArray = receita.map(item => item === undefined ? 0 : item);
+    let total = newArray.reduce((a, b) => a + b, 0);
+
+
+    setReceita(total); // Isso irá imprimir o total no console
+
+
+    console.log(total)
+  }
+
+  const createTempoMedio = () => {
+    //todo
+  }
+
   const reports = [
-    {
-      icon: "bx bx-copy-alt",
-      title: "Pedidos",
-      value: "48",
-      badgeValue: "+ 2%",
-      color: "success",
-      desc: "From previous period",
-    },
     {
       icon: "bx bx-archive-in",
       title: "Receita",
-      value: "R$ 1440",
-      badgeValue: "+ 2%",
-      color: "success",
-      desc: "From previous period",
+      value: "R$" + receita + "0",
+
     },
     {
       icon: "bx bx-time",
       title: "Tempo Medio(minuto)",
       value: "25minutos",
-      badgeValue: "1%",
-      color: "success",
-      desc: "From previous period",
+
     },
   ];
   const { chartsData } = useSelector(state => ({
     chartsData: state.Dashboard.chartsData
   }));
 
-  const [periodData, setPeriodData] = useState([]);
-  const [periodType, setPeriodType] = useState("yearly");
+
+  useEffect(() => {
+    setData(orders)
+    console.log(orders)
+    createPedidos()
+    createReceita()
+    createTempoMedio()
+  }, [orders])
+
 
   useEffect(() => {
     setPeriodData(chartsData);
@@ -73,6 +105,7 @@ const DashboardSaas = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(onGetChartsData("yearly"));
+
   }, [dispatch]);
 
 
@@ -87,12 +120,19 @@ const DashboardSaas = (props) => {
 
           <Breadcrumbs title="Dashboards" breadcrumbItem="Omnichat" />
 
-          <CardUser />
+          <CardUser orders={totalPedidos} />
 
           <Row className="align-center">
             <Col xl="8"  >
               <Row >
                 <MiniWidget reports={reports} />
+              </Row>
+              <Row>
+
+                <Earning dataColors='["--bs-primary"]' />
+                <Col xl="8">
+                  <SocialSource />
+                </Col>
               </Row>
             </Col>
             <SalesAnalytics dataColors='["--bs-success", "--bs-danger", "--bs-primary"]' />
@@ -101,13 +141,7 @@ const DashboardSaas = (props) => {
           <Row>
 
           </Row>
-          <Row>
 
-            <Earning dataColors='["--bs-primary"]' />
-            <Col xl="4">
-              <SocialSource />
-            </Col>
-          </Row>
         </Container>
       </div>
     </React.Fragment>
