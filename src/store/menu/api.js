@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const apiUrl = import.meta.env.VITE_GCR_MIDDLEWARE_URL + '/speisekarte';
-const MenuAuthor = import.meta.env.VITE_MENU_AUTHOR;
-const menuAPI = axios.create({
+export const MenuAuthor = import.meta.env.VITE_MENU_AUTHOR;
+export const menuAPI = axios.create({
     baseURL: apiUrl 
 });
 

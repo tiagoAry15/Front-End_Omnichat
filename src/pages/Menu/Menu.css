@@ -4,6 +4,20 @@ justify-content: space-between;
 align-items:center;
 padding-bottom: 1% ;
 
+.saveButtonContainer  {
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    padding-bottom: 1% ;
+    
+}
+.versionStyle{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+}
+    
+
 }
 .AddButton {
     border-radius: 100%;
