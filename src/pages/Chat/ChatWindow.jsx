@@ -91,7 +91,7 @@ const ChatWindow = () => {
                             </div>
                             <p>{message.body}</p>
                             <p className="chat-time mb-0">
-                              {msgTime}{' '}
+                              {msgTime.split(":").slice(0, 2).join(":")}{' '}
                               <i className="bx bx-check-double align-middle me-1"></i>
                             </p>
                           </div>

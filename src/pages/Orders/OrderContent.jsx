@@ -82,7 +82,7 @@ const OrderContent = (props) => {
             <Spinner style={{ width: '6rem', height: '6rem', }} />
             <h3>Carregando Pedidos...</h3>
           </div>
-        ) : error.length > 0 ? (
+        ) : error.message ? (
           <div className="errorContainer">
             <h3>{error.message}</h3>
             <Button

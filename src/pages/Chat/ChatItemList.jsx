@@ -42,11 +42,11 @@ const ChatItemList = (props) => {
         <div className="flex-grow-1 overflow-hidden">
           <div className="d-flex justify-content-between">
             <h5 className="text-truncate font-size-14 mb-1">
-              {chat.name} {chat.phoneNummber}
+              {chat.name}
             </h5>
             {chat.messagePot && chat.messagePot.length > 0 && (
 
-              <div className="font-size-11">{chat.lastMessage_timestamp}</div>
+              <div className="font-size-11">{chat.lastMessage_timestamp.split(":").slice(0, 2).join(":")}</div>
             )}
           </div>
 
