@@ -51,7 +51,7 @@ const SalesAnalytics = ({ dataColors }) => {
     if (count.WhatsApp === undefined) {
       setWhatsapp(0)
     } else {
-      setWhatsapp(count.WhatsApp)
+      setWhatsapp(count.Whatsapp)
     }
 
     if (count.Messenger === undefined) {

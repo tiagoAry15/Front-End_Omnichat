@@ -126,13 +126,11 @@ const DashboardSaas = (props) => {
             <Col xl="8"  >
               <Row >
                 <MiniWidget reports={reports} />
-              </Row>
-              <Row>
 
+              </Row>
+              <Row xs="4">
                 <Earning dataColors='["--bs-primary"]' />
-                <Col xl="8">
-                  <SocialSource />
-                </Col>
+                <SocialSource />
               </Row>
             </Col>
             <SalesAnalytics dataColors='["--bs-success", "--bs-danger", "--bs-primary"]' />
