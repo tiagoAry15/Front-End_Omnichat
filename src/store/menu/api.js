@@ -9,15 +9,13 @@ const menuAPI = axios.create({
 export const getMenu = async () => {
     try {
         const menuKey = 'localMenu'
+        
         const localMenu = localStorage.getItem(menuKey);
         if (localMenu) {
             return JSON.parse(localMenu);
         }
         else {
-            const headers = {
-                'Access-Control-Allow-Origin': '*' // Defina a origem correta
-            };
-
+         
             const response = await menuAPI.get(`/get_menu_by_author/${MenuAuthor}`);
             console.log(response.data);
             return response.data ? response.data : [];

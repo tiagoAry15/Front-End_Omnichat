@@ -37,6 +37,8 @@
     background-color: #f2f2f2;
     padding: 10px;
     border-radius: 8px;
+    height: 170px; /* Defina a altura que você deseja */
+     overflow-y: hidden; 
   }
 
   .down{
@@ -73,6 +75,30 @@
     padding: 5px;
     margin-bottom: 5px;
   }
+
+  .no-orders-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px; /* Altura do container, ajuste conforme necessário */
+    margin-top: 50px;
+}
+
+.no-orders-content {
+    text-align: center;
+}
+
+.icon-no-orders {
+    font-size: 48px; /* Tamanho do ícone */
+    color: #9e9e9e; /* Cor do ícone, pode ser alterada */
+    margin-bottom: 20px;
+}
+
+.no-orders-text {
+    font-size: 18px;
+    color: #616161; /* Cor do texto */
+}
+
   
   .selected-em  {
     background-color: orange;

@@ -4,7 +4,15 @@ import { Progress } from 'reactstrap';
 const OrderStatusProgress = ({ status }) => {
     const [progress, setProgress] = useState(0);
     const [color, setColor] = useState('secondary'); // Define a cor padrão como 'secondary'
-
+    const getColor = (status) => {
+        if (status === "Finalizado") {
+            return "green";
+        } else if (status === "Cancelado") {
+            return "red";
+        }
+        // Adicione mais condições para outros status
+        return "defaultColor"; // Um fallback para status não especificados
+    }
     useEffect(() => {
         switch (status) {
             case 'Confirmado':
@@ -21,7 +29,15 @@ const OrderStatusProgress = ({ status }) => {
                 break;
             case 'Entregue':
                 setProgress(100);
-                setColor('success'); // Verde para status 'Entregue'
+                setColor('success');
+                break;
+            case 'Finalizado':
+                setProgress(100);
+                setColor('success');
+                break;
+            case 'Cancelado':
+                setProgress(100);
+                setColor('danger');
                 break;
             default:
                 setProgress(0);
@@ -31,7 +47,14 @@ const OrderStatusProgress = ({ status }) => {
 
     return (
         <div>
+            <div className='container_between'>
 
+                <p style={{ marginBottom: '0px' }}>Status:</p>
+                <p style={{
+                    color: getColor(status),
+                    fontWeight: 'bold', marginBottom: '0px'
+                }}>{status}</p>
+            </div>
             <Progress value={progress} color={color} />
         </div>
     );

@@ -10,7 +10,7 @@ export const getOrders = async () => {
     try {
     
         const response = await ordersAPI.get(`/order_handler/read`);
-        return response.data ? response.data.reverse() : [];
+        return response.data ? response.data : [];
     } catch (error) {
         error.message = "Erro na comunicação com o servidor ao obter pedidos";
         throw error;
