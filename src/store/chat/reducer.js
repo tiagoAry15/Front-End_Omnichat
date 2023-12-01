@@ -1,4 +1,5 @@
 import {
+  POST_ADD_MESSAGE,
   GET_GROUPS_SUCCESS,
   GET_CHATS_SUCCESS,
   GET_GROUPS_FAIL,
@@ -24,8 +25,28 @@ const INIT_STATE = {
   messages: [],
   error: [],
   loading: true,
+  loading_message: false,
   
 }
+
+const convertToDateTime = (str) => {
+  // Converte a string "21-Nov-2023 23:45" em um objeto Date
+  const parts = str.match(/(\d+)-(\w+)-(\d+)\s(\d+:\d+)/);
+  const months = {
+    'Jan': 'January', 'Fev': 'February', 'Mar': 'March', 'Abr': 'April', 'Mai': 'May', 'Jun': 'June',
+    'Jul': 'July', 'Ago': 'August', 'Set': 'September', 'Out': 'October', 'Nov': 'November', 'Dez': 'December'
+  };
+  const month = months[parts[2]] || parts[2]; // Converte o mês para inglês, se necessário
+  
+  let date = new Date(`${month} ${parts[1]}, ${parts[3]} ${parts[4]}`);
+  console.log(date)
+  return new Date(`${month} ${parts[1]}, ${parts[3]} ${parts[4]}`);
+}
+
+const orderChatsByDate = (chats) =>  {
+  return chats.sort((a, b) => convertToDateTime(b.lastMessage_timestamp) - convertToDateTime(a.lastMessage_timestamp));
+}
+
 
 const Calendar = (state = INIT_STATE, action) => {
   switch (action.type) {
@@ -33,7 +54,7 @@ const Calendar = (state = INIT_STATE, action) => {
   
       return {
         ...state,
-        chats: action.payload,
+        chats: orderChatsByDate(action.payload),
         loading: false,
       }
 
@@ -81,6 +102,12 @@ const Calendar = (state = INIT_STATE, action) => {
         ...state,
         error: action.payload,
       }
+    case POST_ADD_MESSAGE: {
+      return {
+        ...state,
+        loading_message: true,
+      }
+    }
 
     case POST_ADD_MESSAGE_SUCCESS: {
   // Cria uma cópia do array de chats
@@ -98,10 +125,11 @@ const Calendar = (state = INIT_STATE, action) => {
   // Retorna o estado atualizado
   return {
     ...state,
-    chats: updatedChats
+    chats: orderChatsByDate(updatedChats)
   };
 }
 
+      
     
     case POST_ADD_CHAT_SUCCESS: {
       
@@ -113,7 +141,7 @@ const Calendar = (state = INIT_STATE, action) => {
             state.chats[chatId].unreadMessages = action.payload.unreadMessages
             return {
               ...state,
-              chats: [...state.chats]
+              chats:orderChatsByDate([...state.chats])
             }
           }
         }
@@ -121,7 +149,8 @@ const Calendar = (state = INIT_STATE, action) => {
 
       return {
         ...state,
-        chats: [...state.chats , action.payload]
+        chats: orderChatsByDate([...state.chats, action.payload]),
+        loading_message: false
 
       }
     }
@@ -135,6 +164,7 @@ const Calendar = (state = INIT_STATE, action) => {
       return {
         ...state,
         error: action.payload,
+        loading_message: false,
       }
     
     case PUT_UPDATE_CHAT_SUCCESS: { 
@@ -154,7 +184,7 @@ const Calendar = (state = INIT_STATE, action) => {
        
       
         ...state,
-        chats: chats
+        chats: orderChatsByDate(chats)
       }
   }
     case PUT_UPDATE_CHAT_FAIL:

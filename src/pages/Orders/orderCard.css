@@ -1,0 +1,125 @@
+.orderContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: start;
+    overflow-x: auto;
+    padding: 20px;
+  }
+  .observation-field{
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 5%;
+  }
+  .observation-field .bx-edit-alt {
+  position: absolute; /* Posiciona absolutamente o ícone dentro do .observation-field */
+  right: 10px; /* 5px do canto direito */
+  bottom: 10px; /* 5px do fundo */
+}
+  .container_between {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    flex-wrap: nowrap;
+  }
+  
+  .orderCard .card{
+    background-color: #fff;
+    border-radius: 20px;
+    height: 100%;
+    border-color: #2A3042;
+    box-shadow:5px 5px 20px 0px ;
+     
+        
+  }
+  .orderCard .card-header{
+    background-color: #2A3042;
+    border-radius: 10px;
+   
+    font-size: 20px;
+    font-weight: bold;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 100%;
+;
+  }
+
+  .centered-container {
+    display: flex; /* Utiliza flexbox */
+    justify-content: center; /* Centraliza horizontalmente */
+    margin-top: 20px; /* Espaçamento acima do botão, ajuste conforme necessário */
+}
+
+
+  .orderCard .card-body{
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 100%;
+    border-radius: 8px;
+  }
+  .orderCard button{
+    background-color: #2A3042;
+    border-radius: 10px;
+    color: #fff;
+   
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 100%;
+  }
+  
+
+  .customerName {
+   color: #fff;
+   margin-bottom: 0%;
+
+  }
+
+/* Arquivo: ModalItemsList.css */
+
+/* Estilização para a tabela */
+.modal-items-table {
+    width: 100%;
+    text-align: center; /* Centraliza o conteúdo das células */
+}
+
+/* Estilização para os cabeçalhos da tabela */
+.modal-items-table thead th {
+    text-align: center;
+}
+
+/* Estilização para as células da tabela */
+.modal-items-table tbody td {
+    vertical-align: middle; /* Alinha verticalmente o conteúdo no meio */
+}
+
+/* Estilização para o botão de adicionar */
+.add-button {
+    display: block; /* Faz o botão ser um bloco para centralizá-lo */
+    width: 40px;
+    height: 40px;
+    margin: 10px auto; /* Centraliza o botão horizontalmente */
+    border-radius: 50%; /* Torna o botão redondo */
+    text-align: center;
+    font-size: 24px; /* Ajuste o tamanho da fonte conforme necessário */
+}
+
+/* Estilização para o botão de remover */
+.remove-button {
+    border: none;
+    background-color: transparent;
+    color: #f00; /* Cor do ícone de fechar/remover */
+    cursor: pointer;
+}
+
+/* Aplicando estilizações customizadas aos Inputs */
+.custom-input {
+    text-align: center; /* Centraliza o texto dentro do input */
+}
+
+  
+  .pizza {
+    font-size: 16px;
+  }
+  

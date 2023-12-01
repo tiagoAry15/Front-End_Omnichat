@@ -6,7 +6,7 @@ const MiniWidget = ({ reports }) => {
   return (
     <React.Fragment>
       {reports.map((report, key) => (
-        <Col sm="4" key={key}>
+        <Col sm="6" key={key}>
           <Card>
             <CardBody>
               <div className="d-flex align-items-center mb-3">
@@ -20,7 +20,7 @@ const MiniWidget = ({ reports }) => {
               <div className="text-muted mt-4">
                 <h4>
                   {report.value}{" "}
-                 
+
                 </h4>
                 <div className="d-flex">
                   <span

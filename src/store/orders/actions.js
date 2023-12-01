@@ -80,15 +80,20 @@ export const updateOrderFail = error => (
   payload: error,
 })
 
-export const deleteOrder = orderId => ({
+export const deleteOrder = orderId => {
+  console.log("ACTION DELETE_ORDER: ",orderId)
+return {
   type: DELETE_ORDER,
   orderId,
-})
+  };
+};
 
-export const deleteOrderSuccess = orderId => ({
+export const deleteOrderSuccess = orderId => {
+  console.log("DELETEORDER_SUCESS: ", orderId)
+  return{
   type: DELETE_ORDER_SUCCESS,
   payload: orderId,
-})
+}};
 
 export const deleteOrderFail = error => ({
   type: DELETE_ORDER_FAIL,

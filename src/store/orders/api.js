@@ -46,6 +46,7 @@ export const addOrder = async (orderData) => {
 
 // Atualizar um pedido existente
 export const updateOrder = async (orderData) => {
+    console.log('orderId', orderData)
     try {
         console.log('orderData', orderData);
         if (!orderData) throw new Error("Dados de pedido inválidos");
@@ -59,6 +60,7 @@ export const updateOrder = async (orderData) => {
 
 // Deletar um pedido
 export const deleteOrder = async (orderId) => {
+    console.warn(orderId)
     try {
         if (!orderId) throw new Error("ID de pedido inválido");
         const response = await ordersAPI.delete(`/order_handler/delete/${orderId}`);

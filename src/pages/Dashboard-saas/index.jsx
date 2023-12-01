@@ -38,7 +38,7 @@ const DashboardSaas = (props) => {
   const [totalPedidos, setTotalPedidos] = useState()
   const [receita, setReceita] = useState()
 
-  
+
   const createPedidos = () => {
     setTotalPedidos(orders.length)
   }
@@ -47,15 +47,15 @@ const DashboardSaas = (props) => {
     let receita = [];
     orders.map(order => {
       order.orderItems.map(item => {
-          receita.push(item.price);
+        receita.push(item.price);
       });
-  })
+    })
 
-  let newArray = receita.map(item => item === undefined ? 0 : item);
-  let total = newArray.reduce((a, b) => a + b, 0);
+    let newArray = receita.map(item => item === undefined ? 0 : item);
+    let total = newArray.reduce((a, b) => a + b, 0);
 
 
-  setReceita(total); // Isso irá imprimir o total no console
+    setReceita(total); // Isso irá imprimir o total no console
 
 
     console.log(total)
@@ -66,12 +66,6 @@ const DashboardSaas = (props) => {
   }
 
   const reports = [
-    {
-      icon: "bx bx-copy-alt",
-      title: "Pedidos",
-      value: totalPedidos,
-
-    },
     {
       icon: "bx bx-archive-in",
       title: "Receita",
@@ -96,7 +90,7 @@ const DashboardSaas = (props) => {
     createPedidos()
     createReceita()
     createTempoMedio()
-  },[orders])
+  }, [orders])
 
 
   useEffect(() => {
@@ -126,20 +120,18 @@ const DashboardSaas = (props) => {
 
           <Breadcrumbs title="Dashboards" breadcrumbItem="Omnichat" />
 
-          <CardUser />
+          <CardUser orders={totalPedidos} />
 
           <Row className="align-center">
             <Col xl="8"  >
               <Row >
                 <MiniWidget reports={reports} />
+              
               </Row>
-              <Row>
-
-            <Earning dataColors='["--bs-primary"]' />
-            <Col xl="8">
-              <SocialSource />
-            </Col>
-          </Row>
+              <Row  xs="4">
+                <Earning dataColors='["--bs-primary"]' />
+                <SocialSource />
+             </Row>
             </Col>
             <SalesAnalytics dataColors='["--bs-success", "--bs-danger", "--bs-primary"]' />
           </Row>
@@ -147,7 +139,7 @@ const DashboardSaas = (props) => {
           <Row>
 
           </Row>
-          
+
         </Container>
       </div>
     </React.Fragment>

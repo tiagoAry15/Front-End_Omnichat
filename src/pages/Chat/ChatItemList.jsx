@@ -1,18 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; // Assuming you are using React Router
-import whatsappIcon from "../../assets/images/chat/whatsappIcon.png";
-import instagramIcon from "../../assets/images/chat/instagramIcon.png";
-import facebookIcon from "../../assets/images/chat/MenssagerIcon.png";
+import PropTypes from 'prop-types';
 const ChatItemList = (props) => {
   const { chat, userChatOpen, t, from } = props;
-
-  const social_icons = {
-    whatsapp: whatsappIcon,
-    instagram: instagramIcon,
-    messenger: facebookIcon,
-  }
-
   return (
+
     <Link
       to="#"
       onClick={() => {
@@ -50,11 +42,11 @@ const ChatItemList = (props) => {
         <div className="flex-grow-1 overflow-hidden">
           <div className="d-flex justify-content-between">
             <h5 className="text-truncate font-size-14 mb-1">
-              {chat.name} {chat.phoneNummber}
+              {chat.name}
             </h5>
             {chat.messagePot && chat.messagePot.length > 0 && (
 
-              <div className="font-size-11">{chat.lastMessage_timestamp}</div>
+              <div className="font-size-11">{chat.lastMessage_timestamp.split(":").slice(0, 2).join(":")}</div>
             )}
           </div>
 
@@ -75,6 +67,26 @@ const ChatItemList = (props) => {
       </div>
     </Link>
   );
+
+
 };
 
+ChatItemList.propTypes = {
+  chat: PropTypes.shape({
+    status: PropTypes.string.isRequired,
+    isImg: PropTypes.bool,
+    profile: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    phoneNumber: PropTypes.string,
+    messagePot: PropTypes.arrayOf(PropTypes.shape({
+      sender: PropTypes.string,
+      body: PropTypes.string,
+    })),
+    lastMessage_timestamp: PropTypes.string,
+    unreadMessages: PropTypes.number,
+  }),
+  userChatOpen: PropTypes.func.isRequired,
+  t: PropTypes.func.isRequired,
+  from: PropTypes.string,
+};
 export default ChatItemList;

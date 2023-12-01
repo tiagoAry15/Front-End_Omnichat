@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { createSelector } from 'reselect';
 
 import {
   getOrders as onGetOrders,
@@ -29,10 +29,26 @@ const OrderProvider = ({ children }) => {
     communication: '',
     customerName: '',
     observation: '',
-    pizzaName: '',
+    orderItems: [
+      {
+        flavors: [''],
+      }
+    ],
   });
 
 
+  const selectError = createSelector(
+    state => state.chat.error,
+    error => error
+  );
+
+  const selectIsLoading = createSelector(
+    state => state.chat.loading,
+    loading => loading
+  );
+
+  const error = useSelector(selectError);
+  const loading = useSelector(selectIsLoading);
 
   const orderKeys = Object.keys(orders);
 
@@ -95,12 +111,44 @@ const OrderProvider = ({ children }) => {
     dispatch(onUpdateOrder(orderData))
   }
 
-  const changeItem = event => {
-    setOrderToUpdate({
-      ...orderToUpdate,
-      [event.target.name]: event.target.value
-    })
-  }
+  const changeItem = (event, orderIndex, flavorIndex) => {
+    const { name, value } = event.target;
+  
+    if (name.startsWith("flavorQuantity")) {
+      setOrderToUpdate((prevOrder) => {
+        const updatedOrderItems = [...prevOrder.orderItems];
+        
+        if (!updatedOrderItems[orderIndex]) {
+          updatedOrderItems[orderIndex] = {
+            flavors: [],
+          };
+        }
+  
+        if (!updatedOrderItems[orderIndex].flavors) {
+          updatedOrderItems[orderIndex].flavors = [];
+        }
+        
+        updatedOrderItems[orderIndex].flavors[flavorIndex] = value;
+
+        return {
+          ...prevOrder,
+          orderItems: updatedOrderItems,
+        };
+      });
+    } else {
+      // Update other fields in orderToUpdate
+      setOrderToUpdate((prevOrder) => ({
+        
+        ...prevOrder,
+        [name]: value,
+      }));
+    }
+  };
+  
+  
+  
+  
+  
 
   const orderContextValue = useMemo(() => ({
     handleDelete,
@@ -109,6 +157,8 @@ const OrderProvider = ({ children }) => {
     selectedOptions,
     open,
     orders,
+    error,
+    loading,
     orderKeys,
     orderToUpdate,
     handleSelectChange,

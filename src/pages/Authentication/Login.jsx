@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Row, Col, CardBody, Card, Alert, Container, Form, Input, FormFeedback, Label, Button } from "reactstrap";
 
@@ -43,13 +43,13 @@ const Login = props => {
     }
   });
 
-  const { error } = useSelector(state => ({
-    error: state.Login.error,
-  }));
+
+  const error = useSelector(state => state.Login.error);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (error && error !== "") {
-      console.log(error)
+      setErrorMessage("Email ou senha incorretos");
     }
   }, [error]);
   return (
@@ -92,7 +92,7 @@ const Login = props => {
                         return false;
                       }}
                     >
-                      {error && error !== "" ? <Alert color="danger">{error.message}</Alert> : null}
+                      {errorMessage && errorMessage !== "" ? <Alert color="danger">{errorMessage}</Alert> : null}
 
 
                       <div className="mb-3">

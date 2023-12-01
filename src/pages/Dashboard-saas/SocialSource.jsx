@@ -4,6 +4,7 @@ import { Link } from "react-router-dom"
 import { SocketContext } from "../../contexts/SocketContext";
 
 
+
 const SocialSource = () => {
 
   const { orders } = useContext(SocketContext);
@@ -16,7 +17,7 @@ const SocialSource = () => {
     setData(orders)
     console.log(orders)
     setSabores()
-  },[orders])
+  }, [orders])
 
   const setSabores = () => {
     let flavors = [];
@@ -44,7 +45,7 @@ const SocialSource = () => {
 
     setPedidos(top5)
 
-   
+
 
     console.log(pedidos)
   }
@@ -78,24 +79,26 @@ const SocialSource = () => {
 
   return (
     <React.Fragment>
-      <Card>
-        <CardBody>
-          <CardTitle className="mb-16">Top 5 Pedidos</CardTitle>
-          {pedidos ? ( <Row className="mt-4">
-          {pedidos.map((pedido, key) => (
-              <Col xs="4" key={"_li_" + key}>
-                <div className="social-source text-center mt-3">
-                  <h5 className="font-size-15">{pedido.title}</h5>
-                  <p className="text-muted mb-0">{pedido.description} Pedidos</p>
-                </div>
-              </Col>
-            ))}
-          </Row>
-          ) : (<h1>Carregando itens...</h1>)}
-         
-        </CardBody>
+        <Col sm="6">
+          <Card>  
+          <CardBody>
+            <CardTitle className="mb-16">Top 5 Pedidos</CardTitle>
+            {pedidos ? (<Row className="mt-4">
+              {pedidos.map((pedido, key) => (
+                <Col xs="4" key={"_li_" + key}>
+                  <div className="social-source text-center mt-3">
+                    <h5 className="font-size-15">{pedido.title}</h5>
+                    <p className="text-muted mb-2">{pedido.description} Pedidos</p>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+            ) : (<h1>Carregando itens...</h1>)}
+
+          </CardBody>
       </Card>
-    </React.Fragment>
+    </Col>
+    </React.Fragment >
   )
 }
 

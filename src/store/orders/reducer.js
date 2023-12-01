@@ -14,7 +14,7 @@ import {
 const INIT_STATE = {
   orders: [],
   error: [],
-  loading: false,
+  loading: true,
 }
 
 const OrderReducer = (state = INIT_STATE, action) => {
@@ -50,7 +50,7 @@ const OrderReducer = (state = INIT_STATE, action) => {
     case POST_ADD_ORDER_SUCCESS:
       return {
         ...state,
-        orders: [...state.orders, action.payload],
+        orders: [action.payload, ...state.orders],
         loading: false,
       }
 
@@ -73,6 +73,7 @@ const OrderReducer = (state = INIT_STATE, action) => {
       };
 
     case PUT_UPDATE_ORDER_FAIL:
+      console.error('Conteúdo de action.payload:', action.payload);
       return {
         ...state,
         error: action.payload,
@@ -81,8 +82,9 @@ const OrderReducer = (state = INIT_STATE, action) => {
       
     case DELETE_ORDER_SUCCESS:
       const orderIdToDelete = action.payload;
-      const updatedOrders = state.orders.filter(order => order.id !== orderIdToDelete);
-
+      console.log("Pedidos antes do delete:", state.orders)
+      const updatedOrders = state.orders.filter((order, index) => index != orderIdToDelete);
+      console.log("Pedidos pos-delete:", updatedOrders)
       return {
         ...state,
         orders: updatedOrders,
@@ -90,13 +92,14 @@ const OrderReducer = (state = INIT_STATE, action) => {
       }
     
     case DELETE_ORDER_FAIL:
+      console.error('Conteúdo de action.payload:', action.payload);
       return{
         ...state,
         error: action.payload,
         loading: false,
       }
     default:
-      return {...state, loading: false}
+      return {...state}
   }
 }
 

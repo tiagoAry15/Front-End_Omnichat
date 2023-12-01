@@ -1,7 +1,7 @@
 import { Col, Container, Row } from "reactstrap";
 import Breadcrumbs from "../../components/Common/Breadcrumb";
 import ProfileMenu from "../../components/CommonForBoth/TopbarDropdown/ProfileMenu";
-import React, { Suspense } from "react";
+import React from "react";
 import ChatWindow from "./ChatWindow";
 import ChatList from "./ChatList";
 
@@ -19,7 +19,7 @@ const ChatContent = ({ t }) => {
                         <div className="d-lg-flex">
                             <div className="chat-leftsidebar me-lg-4">
                                 <div>
-                                    <div className="py-4 border-bottom">
+                                    <div>
                                         <div className="d-flex"
                                             style={{ justifyContent: "center", alignItems: 'center' }}>
                                             <ProfileMenu />

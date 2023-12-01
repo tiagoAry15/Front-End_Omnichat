@@ -15,6 +15,7 @@ const INIT_STATE = {
 
 const MenuReducer = (state = INIT_STATE, action) => {
   switch (action.type) {
+   
     case GET_MENU_SUCCESS:
       return {
         ...state,
@@ -59,7 +60,7 @@ const MenuReducer = (state = INIT_STATE, action) => {
       }
 
     default:
-      return {...state, loading: false}
+      return {...state }
   }
 }
 
